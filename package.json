@@ -1,0 +1,36 @@
+{
+  "name": "audacioustux",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "nodemon -w ./tailwindcss -x 'yon run _vite'",
+    "build": "yon run _vite build",
+    "serve": "yon run _vite preview",
+    "_vite": "yon run _tw && vite",
+    "_tw": "tsc -p ./tailwindcss"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/jit": "^0.1.1",
+    "@types/lodash": "^4.14.168",
+    "@types/node": "^14.14.37",
+    "@types/tailwindcss": "^2.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "@typescript-eslint/parser": "^4.20.0",
+    "@vitejs/plugin-vue": "^1.1.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "autoprefixer": "^10.2.5",
+    "eslint": "^7.23.0",
+    "eslint-plugin-vue": "^7.7.0",
+    "nodemon": "^2.0.7",
+    "postcss": "^8.2.8",
+    "sass": "^1.32.8",
+    "tailwindcss": "^2.0.3",
+    "tailwindcss-pseudo-elements": "^1.5.1",
+    "typescript": "^4.2.3",
+    "vite": "^2.0.1",
+    "yarn-or-npm": "^3.0.1"
+  }
+}
