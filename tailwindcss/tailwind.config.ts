@@ -35,17 +35,18 @@ const spacing = () => {
     ...range(2).map(() => _mapper(8, 2)),
     ...range(1).map(() => _mapper(16, 4)),
   ];
-  console.log(
-    Object.fromEntries([
-      ..._spacing.map(([k, v]) => [
-        [k, `${v}rem`],
-        [`${k}_em`, `${v}em`],
-      ]),
-    ])
-  );
+
   return {
     0: "0px",
     px: 1,
+    ...Object.fromEntries(
+      [
+        ..._spacing.map(([k, v]) => [
+          [k, `${v}rem`],
+          [`${k}_em`, `${v}em`],
+        ]),
+      ].flat()
+    ),
   };
 };
 

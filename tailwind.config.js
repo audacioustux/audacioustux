@@ -20,7 +20,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 const colors = __importStar(require("tailwindcss/colors"));
 const lodash_1 = require("lodash");
-const twPseudoElem = __importStar(require("tailwindcss-pseudo-elements"));
 const screens = () => {
     const viewports = {
         xs: 320,
@@ -28,7 +27,7 @@ const screens = () => {
         md: 768,
         lg: 1024,
         xl: 1280,
-        '2xl': 1536
+        "2xl": 1536,
     };
     return Object.entries(viewports).map(([k, v]) => [k, `${v}px`]);
 };
@@ -42,33 +41,36 @@ const spacing = () => {
     })(0, 0);
     const _mapper = (_k, _v) => spacer((k) => k + _k, (v) => v + _v);
     const _spacing = [
-        ...lodash_1.range(8).map(() => _mapper(.5, 1 / 8)),
+        ...lodash_1.range(8).map(() => _mapper(0.5, 1 / 8)),
         ...lodash_1.range(8).map(() => _mapper(1, 1 / 4)),
         ...lodash_1.range(2).map(() => _mapper(2, 1 / 2)),
         ...lodash_1.range(12).map(() => _mapper(4, 1)),
         ...lodash_1.range(2).map(() => _mapper(8, 2)),
         ...lodash_1.range(1).map(() => _mapper(16, 4)),
     ];
-    console.log(Object.fromEntries([..._spacing.map(([k, v]) => [[k, `${v}rem`], [`${k}_em`, `${v}em`]])]));
     return {
-        0: '0px',
+        0: "0px",
         px: 1,
+        ...Object.fromEntries([
+            ..._spacing.map(([k, v]) => [
+                [k, `${v}rem`],
+                [`${k}_em`, `${v}em`],
+            ]),
+        ].flat()),
     };
 };
 const config = {
-    purge: ['./index.html', './src/**/*.vue'],
-    plugins: [
-        twPseudoElem
-    ],
-    darkMode: 'class',
+    purge: ["./index.html", "./src/**/*.vue"],
+    plugins: [require("tailwindcss-pseudo-elements")],
+    darkMode: "class",
     theme: {
         spacing: spacing(),
         screens: screens(),
         colors: {
-            transparent: 'transparent',
-            current: 'currentColor',
-            ...colors
+            transparent: "transparent",
+            current: "currentColor",
+            ...colors,
         },
-    }
+    },
 };
 module.exports = config;

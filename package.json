@@ -2,7 +2,7 @@
   "name": "audacioustux",
   "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon -w ./tailwindcss -x 'yon run _vite'",
+    "dev": "nodemon -w tailwindcss -x 'yon run _vite'",
     "build": "yon run _vite build",
     "serve": "yon run _vite preview",
     "_vite": "yon run _tw && vite",
