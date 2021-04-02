@@ -286,9 +286,14 @@
         "signature": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
         "affectsGlobalScope": true
       },
+      "./node_modules/@types/tailwindcss/defaultTheme.d.ts": {
+        "version": "c434b1cba6231d9c0add8946b845d95eab5511ccf16c1697129e8338a50cdc90",
+        "signature": "c434b1cba6231d9c0add8946b845d95eab5511ccf16c1697129e8338a50cdc90",
+        "affectsGlobalScope": false
+      },
       "./tailwindcss/tailwind.config.ts": {
-        "version": "bcc7b49bfea42e7e0d644ea938b1ef279e09d077026f3926c6e9097a520fa1f1",
-        "signature": "4b5341376a8da72617c4f1df0ccf08db12e1a97042930a8aa8b74dd56fac58c2",
+        "version": "7f8b272cbc156079a06aa8f32b66993a547412fd18ecfcd66ca7d6190febc4f4",
+        "signature": "e2a48819151317c065b3e631c71b1696125f5c16b560c7b645e907652882d600",
         "affectsGlobalScope": false
       },
       "./tailwindcss/index.d.ts": {
@@ -965,12 +970,17 @@
       "./node_modules/@types/tailwindcss/colors.d.ts": [
         "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
       ],
+      "./node_modules/@types/tailwindcss/defaultTheme.d.ts": [
+        "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
+      ],
       "./node_modules/@types/tailwindcss/index.d.ts": [
         "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
       ],
       "./tailwindcss/tailwind.config.ts": [
         "./node_modules/@types/lodash/index.d.ts",
-        "./node_modules/@types/tailwindcss/colors.d.ts"
+        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/tailwindcss/colors.d.ts",
+        "./node_modules/@types/tailwindcss/defaultTheme.d.ts"
       ]
     },
     "exportedModulesMap": {
@@ -1387,6 +1397,9 @@
       "./node_modules/@types/tailwindcss/colors.d.ts": [
         "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
       ],
+      "./node_modules/@types/tailwindcss/defaultTheme.d.ts": [
+        "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
+      ],
       "./node_modules/@types/tailwindcss/index.d.ts": [
         "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
       ],
@@ -1456,6 +1469,7 @@
       "./node_modules/@types/node/worker_threads.d.ts",
       "./node_modules/@types/node/zlib.d.ts",
       "./node_modules/@types/tailwindcss/colors.d.ts",
+      "./node_modules/@types/tailwindcss/defaultTheme.d.ts",
       "./node_modules/@types/tailwindcss/index.d.ts",
       "./node_modules/@types/tailwindcss/tailwind-config.d.ts",
       "./node_modules/typescript/lib/lib.es2015.collection.d.ts",

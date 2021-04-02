@@ -18,28 +18,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 const colors = __importStar(require("tailwindcss/colors"));
 const lodash_1 = require("lodash");
-const screens = () => {
-    const viewports = {
-        xs: 320,
-        sm: 640,
-        md: 768,
-        lg: 1024,
-        xl: 1280,
-        "2xl": 1536,
-    };
-    return Object.entries(viewports).map(([k, v]) => [k, `${v}px`]);
+const defaultTheme_1 = require("tailwindcss/defaultTheme");
+const fs_1 = __importDefault(require("fs"));
+// incremental key-value generator
+const incKVGen = (key, size) => (key_func, size_func) => {
+    key = key_func(key);
+    size = size_func(size);
+    return [key, size];
 };
 const spacing = () => {
-    let spacer = ((key, size) => {
-        return (key_func, size_func) => {
-            key = key_func(key);
-            size = size_func(size);
-            return [key, size];
-        };
-    })(0, 0);
-    const _mapper = (_k, _v) => spacer((k) => k + _k, (v) => v + _v);
+    const _mapper = (_k, _v) => incKVGen(0, 0)((k) => k + _k, (v) => v + _v);
     const _spacing = [
         ...lodash_1.range(8).map(() => _mapper(0.5, 1 / 8)),
         ...lodash_1.range(8).map(() => _mapper(1, 1 / 4)),
@@ -65,12 +58,18 @@ const config = {
     darkMode: "class",
     theme: {
         spacing: spacing(),
-        screens: screens(),
+        screens: { xs: "320px", ...defaultTheme_1.screens },
         colors: {
             transparent: "transparent",
             current: "currentColor",
             ...colors,
         },
+        fontFamily: {
+            ...defaultTheme_1.fontFamily,
+            mono: ['"JetBrains Mono"', ...defaultTheme_1.fontFamily.mono],
+            playfair_serif: ['"Playfair Display"', ...defaultTheme_1.fontFamily.serif],
+        },
     },
 };
+fs_1.default.writeFileSync("tailwind.config.json", JSON.stringify(config));
 module.exports = config;

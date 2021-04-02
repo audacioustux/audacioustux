@@ -1,29 +1,18 @@
 import * as colors from "tailwindcss/colors";
 import { range } from "lodash";
+import { screens, fontFamily } from "tailwindcss/defaultTheme";
+import fs from "fs";
 
-const screens = () => {
-  const viewports = {
-    xs: 320,
-    sm: 640,
-    md: 768,
-    lg: 1024,
-    xl: 1280,
-    "2xl": 1536,
-  };
-  return Object.entries(viewports).map(([k, v]) => [k, `${v}px`]);
+// incremental key-value generator
+const incKVGen = (key: any, size: any) => (key_func: any, size_func: any) => {
+  key = key_func(key);
+  size = size_func(size);
+  return [key, size];
 };
 
 const spacing = () => {
-  let spacer = ((key, size) => {
-    return (key_func: any, size_func: any) => {
-      key = key_func(key);
-      size = size_func(size);
-      return [key, size];
-    };
-  })(0, 0);
-
   const _mapper = (_k: any, _v: any) =>
-    spacer(
+    incKVGen(0, 0)(
       (k: any) => k + _k,
       (v: any) => v + _v
     );
@@ -56,13 +45,20 @@ const config = {
   darkMode: "class",
   theme: {
     spacing: spacing(),
-    screens: screens(),
+    screens: { xs: "320px", ...screens },
     colors: {
       transparent: "transparent",
       current: "currentColor",
       ...colors,
     },
+    fontFamily: {
+      ...fontFamily,
+      mono: ['"JetBrains Mono"', ...fontFamily.mono],
+      playfair_serif: ['"Playfair Display"', ...fontFamily.serif],
+    },
   },
 };
+
+fs.writeFileSync("tailwind.config.json", JSON.stringify(config));
 
 export = config;
