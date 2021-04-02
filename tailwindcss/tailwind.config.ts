@@ -7,11 +7,14 @@ import {
   borderRadius,
   lineHeight,
 } from "tailwindcss/defaultTheme";
-import fs from "fs";
+import { pickBy } from "lodash";
 
 type TtoT<T = any> = (_: T) => T;
 
+const key2em: TtoT<String> = (key) => `${key}_em`;
 const rem2em: TtoT<String> = (rem) => rem.replace("rem", "em");
+const isRem = (v: String) => v.endsWith("rem");
+
 const mapEntries = (obj: Object, k_func: TtoT<String>, v_func: TtoT) =>
   Object.fromEntries(
     Object.entries(obj).map(([k, v]) => [k_func(k), v_func(v)])
@@ -28,54 +31,35 @@ const config = {
       current: "currentColor",
       ...colors,
     },
-    spacing: (() => {
-      const { 0: _, px, ..._spacing } = spacing;
-      return {
-        ...spacing,
-        ...mapEntries(_spacing, (k) => `${k}_em`, rem2em),
-      };
-    })(),
+    spacing: {
+      ...spacing,
+      ...mapEntries(pickBy(spacing, isRem), key2em, rem2em),
+    },
     fontFamily: {
       ...fontFamily,
       mono: ['"JetBrains Mono"', ...fontFamily.mono],
       playfair_serif: ['"Playfair Display"', ...fontFamily.serif],
     },
-    borderRadius: (() => {
-      const { none, full, ..._borderRadius } = borderRadius;
-      return {
-        ...spacing,
-        ...mapEntries(_borderRadius, (k) => `${k}_em`, rem2em),
-      };
-    })(),
+    borderRadius: {
+      ...borderRadius,
+      ...mapEntries(pickBy(borderRadius, isRem), key2em, rem2em),
+    },
     fontSize: {
       ...fontSize,
       ...mapEntries(
-        fontSize,
-        (k) => `${k}_em`,
+        pickBy(fontSize, ([size]) => isRem(size)),
+        key2em,
         (v) => {
           const [size, { lineHeight }] = v;
           return [rem2em(size), { lineHeight: rem2em(lineHeight) }];
         }
       ),
     },
-    lineHeight: (() => {
-      const {
-        none,
-        tight,
-        snug,
-        normal,
-        relaxed,
-        loose,
-        ..._lineHeight
-      } = lineHeight;
-      return {
-        ...spacing,
-        ...mapEntries(_lineHeight, (k) => `${k}_em`, rem2em),
-      };
-    })(),
+    lineHeight: {
+      ...lineHeight,
+      ...mapEntries(pickBy(lineHeight, isRem), key2em, rem2em),
+    },
   },
 };
-
-fs.writeFileSync("tailwind.config.json", JSON.stringify(config));
 
 export = config;

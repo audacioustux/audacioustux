@@ -2,11 +2,11 @@
   "name": "audacioustux",
   "version": "0.0.0",
   "scripts": {
-    "dev": "nodemon -w tailwindcss -e '*' -x 'yon run _vite'",
+    "dev": "nodemon",
     "build": "yon run _vite build",
     "serve": "yon run _vite preview",
     "_vite": "yon run _tw && vite",
-    "_tw": "tsc -p ./tailwindcss"
+    "_tw": "tsc -p ./tailwindcss && node ./tailwind.config.js"
   },
   "dependencies": {
     "lodash": "^4.17.21",
@@ -32,5 +32,13 @@
     "typescript": "^4.2.3",
     "vite": "^2.0.1",
     "yarn-or-npm": "^3.0.1"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "tailwindcss/",
+      "src/styles/"
+    ],
+    "ext": "ts,scss",
+    "exec": "yon run _vite"
   }
 }

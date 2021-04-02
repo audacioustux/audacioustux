@@ -226,21 +226,6 @@
         "signature": "c434b1cba6231d9c0add8946b845d95eab5511ccf16c1697129e8338a50cdc90",
         "affectsGlobalScope": false
       },
-      "./tailwindcss/tailwind.config.ts": {
-        "version": "1ba666b59003e2a586f6f8865f794ed82b959c97551406525f436e0b634aa894",
-        "signature": "677817bd562f9fcf5173c99290f36d2fc0905857fcfdce26ae00271d5d85f8c3",
-        "affectsGlobalScope": false
-      },
-      "./tailwindcss/index.d.ts": {
-        "version": "46c9dd59336a0d3d012642fbc072b9d8a466c924d6a2bf436e14a92ef0648a0c",
-        "signature": "46c9dd59336a0d3d012642fbc072b9d8a466c924d6a2bf436e14a92ef0648a0c",
-        "affectsGlobalScope": false
-      },
-      "./node_modules/@types/json-schema/index.d.ts": {
-        "version": "3a1e165b22a1cb8df82c44c9a09502fd2b33f160cd277de2cd3a055d8e5c6b27",
-        "signature": "3a1e165b22a1cb8df82c44c9a09502fd2b33f160cd277de2cd3a055d8e5c6b27",
-        "affectsGlobalScope": false
-      },
       "./node_modules/@types/lodash/common/common.d.ts": {
         "version": "3594c022901a1c8993b0f78a3f534cfb81e7b619ed215348f7f6882f3db02abc",
         "signature": "3594c022901a1c8993b0f78a3f534cfb81e7b619ed215348f7f6882f3db02abc",
@@ -305,6 +290,21 @@
         "version": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
         "signature": "0714e2046df66c0e93c3330d30dbc0565b3e8cd3ee302cf99e4ede6220e5fec8",
         "affectsGlobalScope": true
+      },
+      "./tailwindcss/tailwind.config.ts": {
+        "version": "dabbfdb5add837fb3ca58e019aa5e1db7ae0d7c835c382c90f74e0c070b31313",
+        "signature": "677817bd562f9fcf5173c99290f36d2fc0905857fcfdce26ae00271d5d85f8c3",
+        "affectsGlobalScope": false
+      },
+      "./tailwindcss/index.d.ts": {
+        "version": "f32ce2109bc71c19ca557eeabf7f9aba39d1ea4623a6121dc004367de1db573d",
+        "signature": "f32ce2109bc71c19ca557eeabf7f9aba39d1ea4623a6121dc004367de1db573d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/json-schema/index.d.ts": {
+        "version": "3a1e165b22a1cb8df82c44c9a09502fd2b33f160cd277de2cd3a055d8e5c6b27",
+        "signature": "3a1e165b22a1cb8df82c44c9a09502fd2b33f160cd277de2cd3a055d8e5c6b27",
+        "affectsGlobalScope": false
       },
       "./node_modules/@types/node/globals.d.ts": {
         "version": "25b4a0c4fab47c373ee49df4c239826ee3430019fc0c1b5e59edc3e398b7468d",
@@ -546,6 +546,8 @@
       "target": 99,
       "module": 1,
       "strict": true,
+      "allowJs": true,
+      "checkJs": false,
       "resolveJsonModule": true,
       "esModuleInterop": true,
       "lib": [
@@ -977,7 +979,7 @@
         "./node_modules/@types/tailwindcss/tailwind-config.d.ts"
       ],
       "./tailwindcss/tailwind.config.ts": [
-        "./node_modules/@types/node/fs.d.ts",
+        "./node_modules/@types/lodash/index.d.ts",
         "./node_modules/@types/tailwindcss/colors.d.ts",
         "./node_modules/@types/tailwindcss/defaultTheme.d.ts"
       ]
