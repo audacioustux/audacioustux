@@ -1,61 +1,78 @@
 import * as colors from "tailwindcss/colors";
-import { range } from "lodash";
-import { screens, fontFamily } from "tailwindcss/defaultTheme";
+import {
+  screens,
+  fontFamily,
+  fontSize,
+  spacing,
+  borderRadius,
+  lineHeight,
+} from "tailwindcss/defaultTheme";
 import fs from "fs";
 
-// incremental key-value generator
-const incKVGen = (key: any, size: any) => (key_func: any, size_func: any) => {
-  key = key_func(key);
-  size = size_func(size);
-  return [key, size];
-};
+type TtoT<T = any> = (_: T) => T;
 
-const spacing = () => {
-  const _mapper = (_k: any, _v: any) =>
-    incKVGen(0, 0)(
-      (k: any) => k + _k,
-      (v: any) => v + _v
-    );
-  const _spacing = [
-    ...range(8).map(() => _mapper(0.5, 1 / 8)),
-    ...range(8).map(() => _mapper(1, 1 / 4)),
-    ...range(2).map(() => _mapper(2, 1 / 2)),
-    ...range(12).map(() => _mapper(4, 1)),
-    ...range(2).map(() => _mapper(8, 2)),
-    ...range(1).map(() => _mapper(16, 4)),
-  ];
-
-  return {
-    0: "0px",
-    px: 1,
-    ...Object.fromEntries(
-      [
-        ..._spacing.map(([k, v]) => [
-          [k, `${v}rem`],
-          [`${k}_em`, `${v}em`],
-        ]),
-      ].flat()
-    ),
-  };
-};
+const rem2em: TtoT<String> = (rem) => rem.replace("rem", "em");
+const mapEntries = (obj: Object, k_func: TtoT<String>, v_func: TtoT) =>
+  Object.fromEntries(
+    Object.entries(obj).map(([k, v]) => [k_func(k), v_func(v)])
+  );
 
 const config = {
   purge: ["./index.html", "./src/**/*.vue"],
   plugins: [require("tailwindcss-pseudo-elements")],
   darkMode: "class",
   theme: {
-    spacing: spacing(),
     screens: { xs: "320px", ...screens },
     colors: {
       transparent: "transparent",
       current: "currentColor",
       ...colors,
     },
+    spacing: (() => {
+      const { 0: _, px, ..._spacing } = spacing;
+      return {
+        ...spacing,
+        ...mapEntries(_spacing, (k) => `${k}_em`, rem2em),
+      };
+    })(),
     fontFamily: {
       ...fontFamily,
       mono: ['"JetBrains Mono"', ...fontFamily.mono],
       playfair_serif: ['"Playfair Display"', ...fontFamily.serif],
     },
+    borderRadius: (() => {
+      const { none, full, ..._borderRadius } = borderRadius;
+      return {
+        ...spacing,
+        ...mapEntries(_borderRadius, (k) => `${k}_em`, rem2em),
+      };
+    })(),
+    fontSize: {
+      ...fontSize,
+      ...mapEntries(
+        fontSize,
+        (k) => `${k}_em`,
+        (v) => {
+          const [size, { lineHeight }] = v;
+          return [rem2em(size), { lineHeight: rem2em(lineHeight) }];
+        }
+      ),
+    },
+    lineHeight: (() => {
+      const {
+        none,
+        tight,
+        snug,
+        normal,
+        relaxed,
+        loose,
+        ..._lineHeight
+      } = lineHeight;
+      return {
+        ...spacing,
+        ...mapEntries(_lineHeight, (k) => `${k}_em`, rem2em),
+      };
+    })(),
   },
 };
 

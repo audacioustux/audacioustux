@@ -22,53 +22,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 const colors = __importStar(require("tailwindcss/colors"));
-const lodash_1 = require("lodash");
 const defaultTheme_1 = require("tailwindcss/defaultTheme");
 const fs_1 = __importDefault(require("fs"));
-// incremental key-value generator
-const incKVGen = (key, size) => (key_func, size_func) => {
-    key = key_func(key);
-    size = size_func(size);
-    return [key, size];
-};
-const spacing = () => {
-    const _mapper = (_k, _v) => incKVGen(0, 0)((k) => k + _k, (v) => v + _v);
-    const _spacing = [
-        ...lodash_1.range(8).map(() => _mapper(0.5, 1 / 8)),
-        ...lodash_1.range(8).map(() => _mapper(1, 1 / 4)),
-        ...lodash_1.range(2).map(() => _mapper(2, 1 / 2)),
-        ...lodash_1.range(12).map(() => _mapper(4, 1)),
-        ...lodash_1.range(2).map(() => _mapper(8, 2)),
-        ...lodash_1.range(1).map(() => _mapper(16, 4)),
-    ];
-    return {
-        0: "0px",
-        px: 1,
-        ...Object.fromEntries([
-            ..._spacing.map(([k, v]) => [
-                [k, `${v}rem`],
-                [`${k}_em`, `${v}em`],
-            ]),
-        ].flat()),
-    };
-};
+const rem2em = (rem) => rem.replace("rem", "em");
+const mapEntries = (obj, k_func, v_func) => Object.fromEntries(Object.entries(obj).map(([k, v]) => [k_func(k), v_func(v)]));
 const config = {
     purge: ["./index.html", "./src/**/*.vue"],
     plugins: [require("tailwindcss-pseudo-elements")],
     darkMode: "class",
     theme: {
-        spacing: spacing(),
         screens: { xs: "320px", ...defaultTheme_1.screens },
         colors: {
             transparent: "transparent",
             current: "currentColor",
             ...colors,
         },
+        spacing: (() => {
+            const { 0: _, px, ..._spacing } = defaultTheme_1.spacing;
+            return {
+                ...defaultTheme_1.spacing,
+                ...mapEntries(_spacing, (k) => `${k}_em`, rem2em),
+            };
+        })(),
         fontFamily: {
             ...defaultTheme_1.fontFamily,
             mono: ['"JetBrains Mono"', ...defaultTheme_1.fontFamily.mono],
             playfair_serif: ['"Playfair Display"', ...defaultTheme_1.fontFamily.serif],
         },
+        borderRadius: (() => {
+            const { none, full, ..._borderRadius } = defaultTheme_1.borderRadius;
+            return {
+                ...defaultTheme_1.spacing,
+                ...mapEntries(_borderRadius, (k) => `${k}_em`, rem2em),
+            };
+        })(),
+        fontSize: {
+            ...defaultTheme_1.fontSize,
+            ...mapEntries(defaultTheme_1.fontSize, (k) => `${k}_em`, (v) => {
+                const [size, { lineHeight }] = v;
+                return [rem2em(size), { lineHeight: rem2em(lineHeight) }];
+            }),
+        },
+        lineHeight: (() => {
+            const { none, tight, snug, normal, relaxed, loose, ..._lineHeight } = defaultTheme_1.lineHeight;
+            return {
+                ...defaultTheme_1.spacing,
+                ...mapEntries(_lineHeight, (k) => `${k}_em`, rem2em),
+            };
+        })(),
     },
 };
 fs_1.default.writeFileSync("tailwind.config.json", JSON.stringify(config));
