@@ -4,16 +4,16 @@
       class="greeting mx-auto flex flex-col justify-center font-playfair_serif"
     >
       <h1>
-        <span class="italic mr-2">Henlo!</span>
+        <span class="italic mr-2_em">Henlo!</span>
         <span aria-hidden="true">(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧</span>
       </h1>
-      <p class="my-6">
+      <p class="leading-loose my-2_em">
         I'm Tanjim Hossain, a
         <span class="border-b-2 border-gray-300">Tehc Enthusiast</span><br />
         &amp; Co-Founder of
         <a href="https://nobinalo.com" target="_blank">Nobinālo</a>.
       </p>
-      <nav class="h5">
+      <nav class="h6 leading-8_em">
         <span aria-hidden="true" class="mr-4">༼ つ ◕_◕ ༽つ</span>
         <ul
           class="uwuify inline-flex font-mono child-first:before:hidden child:before:mx-2"
@@ -64,7 +64,7 @@ ul.uwuify {
   min-height: min(100vh, 100vw);
 }
 .greeting {
-  width: min(1408px, calc(80vw + 16px));
+  width: min(1408px, calc(80vw + 1rem));
   font-size: clamp(0.875rem, 2vw, 3.8rem);
 }
 a {
