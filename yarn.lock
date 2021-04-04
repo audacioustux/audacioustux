@@ -2268,6 +2268,14 @@ table@^6.0.4:
     slice-ansi "^4.0.0"
     string-width "^4.2.0"
 
+tailwindcss-children@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-children/-/tailwindcss-children-2.1.0.tgz#364ef860f62bc7e31bc66548c4eae945fed1ac6f"
+  integrity sha512-ND+qLjco864/h85VUhF8LpNimZefcskGUdt9R94NXA+QWNqKVp5HmfILYgPioCZ+zUr7LmV+C6ijpaiwTSKZxA==
+  dependencies:
+    lodash "^4.17.15"
+    postcss-selector-parser "^6.0.2"
+
 tailwindcss-pseudo-elements@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/tailwindcss-pseudo-elements/-/tailwindcss-pseudo-elements-1.5.1.tgz#81603ddd96670d0d18bc85dc26c742b2cfe2aa8a"

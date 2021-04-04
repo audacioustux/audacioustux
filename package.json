@@ -6,7 +6,7 @@
     "build": "yon run _vite build",
     "serve": "yon run _vite preview",
     "_vite": "yon run _tw && vite",
-    "_tw": "tsc -p ./tailwindcss && node ./tailwind.config.js"
+    "_tw": "tsc -p ./tailwindcss"
   },
   "dependencies": {
     "lodash": "^4.17.21",
@@ -26,8 +26,10 @@
     "eslint-plugin-vue": "^7.7.0",
     "nodemon": "^2.0.7",
     "postcss": "^8.2.8",
+    "postcss-selector-parser": "^6.0.4",
     "sass": "^1.32.8",
     "tailwindcss": "^2.0.3",
+    "tailwindcss-children": "^2.1.0",
     "tailwindcss-pseudo-elements": "^1.5.1",
     "typescript": "^4.2.3",
     "vite": "^2.0.1",
