@@ -16,7 +16,7 @@
       <nav class="h6 leading-8/em">
         <span aria-hidden="true" class="mr-4/em">༼ つ ◕_◕ ༽つ</span>
         <ul
-          class="uwuify inline-flex font-mono children:first:before:hidden children:before:mx-2"
+          class="uwuify inline-flex font-mono children:first:before:hidden children:before:mx-2/em"
         >
           <li><a href="#">Blogs</a></li>
           <li><a href="#">Thoughts</a></li>
@@ -44,8 +44,22 @@ ul.uwuify {
   }
 }
 .greeting {
+  position: relative;
   width: min(1408px, calc(80vw + 1rem));
-  font-size: clamp(0.875rem, 2.5vw, 3.8rem);
+  font-size: clamp(0.875rem, 3vw, 3.8rem);
+  &::before {
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: " ";
+    display: block;
+    opacity: 0.04;
+    background-image: url("assets/04.png");
+    background-size: contain;
+    background-position: center right;
+    background-repeat: no-repeat;
+  }
 }
 a {
   @apply border-b border-dashed border-current transition;
