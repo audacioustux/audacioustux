@@ -2276,10 +2276,10 @@ tailwindcss-children@^2.1.0:
     lodash "^4.17.15"
     postcss-selector-parser "^6.0.2"
 
-tailwindcss-pseudo-elements@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/tailwindcss-pseudo-elements/-/tailwindcss-pseudo-elements-1.5.1.tgz#81603ddd96670d0d18bc85dc26c742b2cfe2aa8a"
-  integrity sha512-B7ABn5MeXWH1aXYSXui+MenSjv8bCd2PVIJEXue/sVKGuPYo3FKfpKzkcNXUUe/wgFTLbpVArlU0rCD6rZYkPg==
+tailwindcss-pseudo-elements@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tailwindcss-pseudo-elements/-/tailwindcss-pseudo-elements-2.0.0.tgz#778a29b9aafeef89fe2e22efe047ae56822627a3"
+  integrity sha512-cbnF8Rg1tJjsgrUK1sLt/TNAea9zKNhWGTI5NtKxZ8WhYjHCMAGOjaHg+iql8UlXaW1U9jPeyJsGlQsLGrbomQ==
 
 tailwindcss@^2.0.3:
   version "2.0.4"
