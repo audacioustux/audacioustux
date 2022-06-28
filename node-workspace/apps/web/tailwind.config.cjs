@@ -1,9 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./src/**/*.{html,js,svelte,ts}'],
-  content: [],
+  darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        mono: ['"Fira Mono"'],
+        "playfair-serif": ['"Playfair Display"'],
+      },
+      colors: {
+        transparent: 'transparent',
+        current: 'currentColor',
+      },
+    }
   },
-  plugins: [],
+  plugins: [require('tailwind-children'), require('@tailwindcss/typography')],
 }
