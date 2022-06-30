@@ -1,0 +1,19 @@
+micronaut:
+  application:
+    name: gateway
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+        descriptions: true
+        step: PT1M
+    enabled: true
+  security:
+    enabled: false
+netty:
+  default:
+    allocator:
+      max-order: 3
+endpoints:
+  prometheus:
+    sensitive: true
