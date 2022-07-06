@@ -1,13 +1,12 @@
-package com.audacioustux
+package com.audacioustux.controller
 
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
-import io.micronaut.http.HttpStatus
 
-@Controller("/greeting")
-class GreetingController {
+@Controller("/echo")
+class EchoController {
 
-    @Get(uri="/", produces=["text/plain"])
+    @Get(uri = "/", produces = ["text/plain"])
     fun index(): String {
         return "Example Response"
     }

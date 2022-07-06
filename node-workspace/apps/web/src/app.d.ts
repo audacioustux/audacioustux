@@ -13,3 +13,8 @@ declare namespace App {
 
 	// interface Stuff {}
 }
+
+declare module "*&imagetools" {
+	const src: string
+	export default src
+}

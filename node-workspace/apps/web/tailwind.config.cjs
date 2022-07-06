@@ -8,11 +8,15 @@ module.exports = {
     extend: {
       fontFamily: {
         mono: ['"Fira Mono"'],
-        "playfair-serif": ['"Playfair Display"'],
+        "playfair": ['"Playfair Display"', 'serif'],
+        "unifont": ['"Unifont"', 'sans-serif'],
       },
       colors: {
         transparent: 'transparent',
         current: 'currentColor',
+      },
+      minHeight: {
+        'screen-min': '100vmin',
       },
     }
   },

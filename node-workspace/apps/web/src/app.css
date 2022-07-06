@@ -1,5 +1,6 @@
 @import '@fontsource/fira-mono';
 @import '@fontsource/playfair-display';
+@import '@fontsource/unifont';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
