@@ -41,9 +41,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/unifont": "^4.5.5",
 		"@fontsource/fira-mono": "^4.5.0",
+		"@fontsource/noto-color-emoji": "^4.5.0",
 		"@fontsource/playfair-display": "^4.5.10",
+		"@fontsource/unifont": "^4.5.5",
 		"cookie": "^0.4.1",
 		"tailwind-children": "^0.5.0"
 	}

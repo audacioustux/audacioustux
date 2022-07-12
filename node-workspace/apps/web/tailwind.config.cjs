@@ -10,6 +10,7 @@ module.exports = {
         mono: ['"Fira Mono"'],
         "playfair": ['"Playfair Display"', 'serif'],
         "unifont": ['"Unifont"', 'sans-serif'],
+        "noto-color-emoji": ['"Noto Color Emoji"', 'sans-serif'],
       },
       colors: {
         transparent: 'transparent',
@@ -18,6 +19,9 @@ module.exports = {
       minHeight: {
         'screen-min': '100vmin',
       },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      }
     }
   },
   plugins: [require('tailwind-children'), require('@tailwindcss/typography')],
