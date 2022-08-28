@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -7,10 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"Fira Mono"'],
         "playfair": ['"Playfair Display"', 'serif'],
-        "unifont": ['"Unifont"', 'sans-serif'],
-        "noto-color-emoji": ['"Noto Color Emoji"', 'sans-serif'],
       },
       colors: {
         transparent: 'transparent',
@@ -19,8 +17,8 @@ module.exports = {
       minHeight: {
         'screen-min': '100vmin',
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+      boxShadow: {
+        'y-2xl': '0 -25px 50px -12px rgba(0, 0, 0, 0.25), 0 25px 50px -12px rgb(0 0 0 / 0.25);',
       }
     }
   },

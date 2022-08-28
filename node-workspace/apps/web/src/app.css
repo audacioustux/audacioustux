@@ -1,12 +1,10 @@
-@import '@fontsource/fira-mono';
-@import '@fontsource/playfair-display';
-@import '@fontsource/unifont';
-@import "@fontsource/noto-color-emoji";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.scrollbar-thin {
-		scrollbar-width: thin;
+.no-scrollbar {
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar{
+    display: none;
 }
