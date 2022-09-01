@@ -1,5 +1,6 @@
 const plugin = require('tailwindcss/plugin')
 const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -8,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        "playfair": ['"Playfair Display"', 'serif'],
+        'sans': ['"Work SansVariable"', ...defaultTheme.fontFamily.sans],
+        'serif': ['"Playfair DisplayVariable"', ...defaultTheme.fontFamily.serif],
       },
       colors: {
         transparent: 'transparent',
@@ -22,5 +24,18 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwind-children'), require('@tailwindcss/typography')],
+  plugins: [
+    require('tailwind-children'),
+    require('@tailwindcss/typography'),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          font: (value) => ({
+            fontVariationSettings: `"wght" ${value}`
+          }),
+        },
+        { values: theme('fontWeight') }
+      )
+    })
+  ],
 }

@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        @apply text-slate-700;
+    }
+    @supports (font-variation-settings: normal) {
+        html {
+          @apply font-sans;
+          font-display: optional;
+          font-variation-settings: "wght" 400;
+        }
+      }
+}
+
 .no-scrollbar {
     scrollbar-width: none;
 }

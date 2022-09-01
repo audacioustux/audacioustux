@@ -43,10 +43,17 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fontsource/cormorant-garamond": "^4.5.9",
 		"@fontsource/fira-mono": "^4.5.8",
+		"@fontsource/ibm-plex-mono": "^4.5.11",
+		"@fontsource/ibm-plex-sans": "^4.5.12",
+		"@fontsource/ibm-plex-serif": "^4.5.11",
 		"@fontsource/noto-color-emoji": "^4.5.0",
 		"@fontsource/playfair-display": "^4.5.10",
+		"@fontsource/proza-libre": "^4.5.7",
+		"@fontsource/roboto": "^4.5.8",
 		"@fontsource/unifont": "^4.5.5",
+		"@fontsource/work-sans": "^4.5.12",
 		"cookie": "^0.5.0",
 		"radash": "^7.0.0",
 		"tailwind-children": "^0.5.0"

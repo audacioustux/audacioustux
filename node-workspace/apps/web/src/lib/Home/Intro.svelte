@@ -4,14 +4,16 @@
 	import IntroBackgroundImageSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
 </script>
 
-<section class="relative grid place-content-center min-h-screen-min py-8 font-playfair antialiased">
+<section
+	class="relative grid place-content-center min-h-screen-min py-8 font-serif antialiased select-none bg-slate-50"
+>
 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
 		<source srcset={IntroBackgroundImageSrcsetAvif} type="image/avif" />
 		<source srcset={IntroBackgroundImageSrcsetWebp} type="image/webp" />
 		<img alt="" class="object-contain object-center h-full w-full" />
 	</picture>
 	<div
-		class="prose prose-slate select-none descendant-a:opacity-75 hover:descendant-a:opacity-100 descendant-a:transition-opacity"
+		class="prose prose-slate descendant-a:opacity-75 hover:descendant-a:opacity-100 descendant-a:transition-opacity"
 		style:font-size="clamp(1rem, 4vw, 3rem)"
 		style:width="min(1536px, calc(80vw + 1rem))"
 	>
@@ -31,6 +33,4 @@
 </section>
 
 <style lang="postcss">
-	/* TODO: use Variable Fonts - https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide */
-	@import '@fontsource/playfair-display';
 </style>
