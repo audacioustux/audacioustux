@@ -5,7 +5,7 @@
 </script>
 
 <section
-	class="relative grid place-content-center min-h-screen-min py-8 font-serif antialiased select-none bg-slate-50"
+	class="relative grid place-content-center min-h-screen-min py-8 font-serif antialiased select-none"
 >
 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
 		<source srcset={IntroBackgroundImageSrcsetAvif} type="image/avif" />
@@ -13,7 +13,7 @@
 		<img alt="" class="object-contain object-center h-full w-full" />
 	</picture>
 	<div
-		class="prose prose-slate descendant-a:opacity-75 hover:descendant-a:opacity-100 descendant-a:transition-opacity"
+		class="prose prose-slate"
 		style:font-size="clamp(1rem, 4vw, 3rem)"
 		style:width="min(1536px, calc(80vw + 1rem))"
 	>
@@ -33,4 +33,10 @@
 </section>
 
 <style lang="postcss">
+	a {
+		@apply opacity-75 transition-opacity;
+		&:hover {
+			@apply opacity-100;
+		}
+	}
 </style>
