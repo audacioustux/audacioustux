@@ -1,15 +1,15 @@
-<script lang="ts">
+<script context="module" lang="ts">
 	// flatten - remove alpha channel from image - for smaller size
-	import IntroBackgroundImageSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
-	import IntroBackgroundImageSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
 </script>
 
 <section
 	class="relative grid place-content-center min-h-screen-min py-8 font-serif antialiased select-none"
 >
 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
-		<source srcset={IntroBackgroundImageSrcsetAvif} type="image/avif" />
-		<source srcset={IntroBackgroundImageSrcsetWebp} type="image/webp" />
+		<source srcset={bgImgSrcsetAvif} type="image/avif" />
+		<source srcset={bgImgSrcsetWebp} type="image/webp" />
 		<img alt="" class="object-contain object-center h-full w-full" />
 	</picture>
 	<div

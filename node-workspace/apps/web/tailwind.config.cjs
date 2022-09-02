@@ -23,10 +23,24 @@ const config = {
       boxShadow: {
         'y-2xl': '0 -25px 50px -12px rgba(0, 0, 0, 0.25), 0 25px 50px -12px rgb(0 0 0 / 0.25);',
       },
+    },
+    contain: {
+      none: 'none',
+      strict: 'strict',
+      content: 'content',
     }
   },
   plugins: [
     require('@tailwindcss/typography'),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          contain: (value) => ({
+            contain: value
+          }),
+        }, { values: theme('contain') }
+      )
+    })
   ],
 }
 
