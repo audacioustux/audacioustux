@@ -4,7 +4,6 @@
 	"scripts": {
 		"dev": "NODE_ENV=dev vite dev",
 		"build": "vite build",
-		"package": "vite package",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync",
 		"test": "playwright test",

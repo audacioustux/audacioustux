@@ -14,12 +14,12 @@ declare namespace App {
 	// interface Stuff {}
 }
 
-declare module "*metadata&imagetools" {
-	export const src: string
-	export const width: number
-	export const height: number
+declare module '*metadata&imagetools' {
+	export const src: string;
+	export const width: number;
+	export const height: number;
 }
-declare module "*imagetools" {
-	const src: string
-	export default src
+declare module '*imagetools' {
+	const src: string;
+	export default src;
 }
