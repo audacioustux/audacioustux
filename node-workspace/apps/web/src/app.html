@@ -4,9 +4,30 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- <link rel="manifest" href="/manifest.json" /> -->
+		<script>
+			try {
+				if (!('theme' in localStorage)) {
+					localStorage.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+						? 'dark'
+						: 'light';
+				}
+
+				document.querySelector('html').classList.add(localStorage.theme);
+			} catch (e) {
+				console.error(e);
+			}
+		</script>
+		<script>
+			// https://github.com/GoogleChromeLabs/container-query-polyfill
+			if (!("container" in document.documentElement.style)) {
+			  import("https://unpkg.com/container-query-polyfill@^0.2.0");
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
-	<body>
-		%sveltekit.body%
+	<body data-sveltekit-prefetch>
+		<div id="svelte">%sveltekit.body%</div>
 	</body>
 </html>

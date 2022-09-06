@@ -11,7 +11,7 @@
 		{ title: "Podcasts I've Listened", link: './' },
 		{ title: '2022', link: './' }
 	];
-	const pinned_nav_items = [{ title: 'Join In !! ヽ(⌣◡⌣”)ﾉ', link: './' }];
+	const pinned_nav_items = [{ title: 'Join In !! (´• ω •`)ﾉ', link: './' }];
 	const history_nav_items = [{ title: '~', link: './' }];
 	const recommended_nav_items = [
 		{
@@ -27,95 +27,33 @@
 			link: './'
 		}
 	];
+	import SvelteWindow from '$lib/SvelteWindow.svelte';
+</script>
+
+<script lang="ts">
+	import HorizontalNavSimple from '$lib/HorizontalNavSimple.svelte';
+	import HorizontalNavFancy from '$lib/HorizontalNavFancy.svelte';
 </script>
 
 <!-- general layer -->
 <main
 	class="overflow-auto w-screen h-screen bg-slate-50 text-slate-700 will-change-scroll scrollbar-hidden"
 >
+	<SvelteWindow />
 	<slot />
 </main>
-
+<!-- opacity-0 invisible transition-visibility -->
 <!-- overlay layer -->
 <div
-	class="absolute top-0 left-0 pointer-events-none select-none w-screen h-screen overflow-hidden isolate contain-none"
+	class="absolute top-0 left-0 pointer-events-none select-none w-screen h-screen overflow-hidden isolate contain-none text-sm"
 >
 	<div class="flex justify-between my-2 fixed top-0 z-40 w-full">
-		<nav
-			aria-labelledby="quickaccess-navigation"
-			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
-		>
-			<ul class="flex space-x-2 flex-nowrap w-fit">
-				{#each quickaccess_nav_items as { link, title }}
-					<li class="flex-initial">
-						<a href={link}>
-							<div
-								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
-							>
-								<span>{title}</span>
-							</div>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
-		<nav
-			aria-labelledby="pinned-navigation"
-			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
-		>
-			<ul class="flex space-x-2 flex-nowrap w-fit">
-				{#each pinned_nav_items as { link, title }}
-					<li class="flex-initial">
-						<a href={link}>
-							<div
-								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
-							>
-								<span>{title}</span>
-							</div>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+		<HorizontalNavSimple items={quickaccess_nav_items} aria_labelledby="quickaccess-navigation" />
+		<HorizontalNavSimple items={pinned_nav_items} aria_labelledby="pinned-navigation" />
 	</div>
 	<div class="flex flex-col space-y-2 my-2 fixed bottom-0 z-40 w-full">
-		<nav
-			aria-labelledby="recommended-navigation"
-			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden snap-x snap-proximity scroll-px-2 pointer-events-auto"
-		>
-			<ul class="flex space-x-2 flex-nowrap w-fit">
-				{#each recommended_nav_items as { link, subtitle, title }}
-					<li class="snap-start flex-initial">
-						<a href={link}>
-							<div
-								class="max-w-md truncate select-none bg-slate-50/95 border border-slate-200 pl-4 pr-12 py-2 rounded"
-							>
-								<span class="font-semibold font-serif">{title}</span><br />
-								<span class="font-light">{subtitle}</span>
-							</div>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
-		<nav
-			aria-labelledby="history-navigation"
-			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
-		>
-			<ul class="flex space-x-2 flex-nowrap w-fit">
-				{#each history_nav_items as { link, title }}
-					<li class="flex-initial">
-						<a href={link}>
-							<div
-								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
-							>
-								<span>{title}</span>
-							</div>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+		<HorizontalNavFancy items={recommended_nav_items} aria_labelledby="recommended-navigation" />
+		<HorizontalNavSimple items={history_nav_items} aria_labelledby="history-navigation" />
 	</div>
 </div>
 

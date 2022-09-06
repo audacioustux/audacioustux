@@ -1,0 +1,15 @@
+{
+    "background_color": "#f8fafc",
+    "theme_color": "#10b981",
+    "name": "@AudaciousTux - An Übermensch Wannabe",
+    "short_name": "AudaciousTux",
+    "display": "standalone",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "logo-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
+}
