@@ -18,8 +18,6 @@ export const model = createModel(
             }
         ],
         label: 'Recommended Links'
-    },
-    {
     }
 );
 
@@ -27,6 +25,7 @@ export const machine = model.createMachine({
     predictableActionArguments: true,
     context: model.initialContext,
     id: "nav-recommended",
+    type: "parallel",
     states: {
         idle: {
         }

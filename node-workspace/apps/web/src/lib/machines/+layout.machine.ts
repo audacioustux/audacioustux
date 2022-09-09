@@ -7,8 +7,6 @@ export const model = createModel(
         navigationMenus: {
             recommended: undefined as Maybe<recommendedNav.AsActorType>
         }
-    },
-    {
     }
 );
 

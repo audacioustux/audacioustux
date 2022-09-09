@@ -4,7 +4,7 @@
 	import '../app.postcss';
 
 	// TODO: remove kaoemojis from screen readers `aria-hidden="true"`
-	const quickaccess_nav = {
+	const related_nav = {
 		items: [
 			{ title: 'All Thoughts', link: './' },
 			{ title: 'Music Stream ヾ(´〇`)ﾉ♪♪♪', link: './' },
@@ -43,7 +43,6 @@
 </script>
 
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { useMachine } from '@xstate/svelte';
 	import { inspect } from '@xstate/inspect';
@@ -64,6 +63,7 @@
 		console.log(state.value);
 	});
 
+	console.log(navigationMenus);
 	onMount(() => {
 		// send('READY');
 	});
@@ -81,9 +81,42 @@
 	class="absolute top-0 left-0 pointer-events-none select-none w-screen h-screen overflow-hidden isolate contain-none text-sm"
 >
 	<div class="flex justify-between my-2 fixed top-0 z-40 w-full">
-		{JSON.stringify(navigationMenus)}
-		<!-- <HorizontalNavSimple {...pinned_nav} /> -->
-		<!-- <HorizontalNavSimple {...pinned_nav} /> -->
+		<nav
+			aria-label={related_nav.label}
+			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
+		>
+			<ul class="flex space-x-2 flex-nowrap w-fit">
+				{#each related_nav.items as { link, title }}
+					<li class="flex-initial">
+						<a href={link}>
+							<div
+								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
+							>
+								<span>{title}</span>
+							</div>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+		<nav
+			aria-label={pinned_nav.label}
+			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
+		>
+			<ul class="flex space-x-2 flex-nowrap w-fit">
+				{#each pinned_nav.items as { link, title }}
+					<li class="flex-initial">
+						<a href={link}>
+							<div
+								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
+							>
+								<span>{title}</span>
+							</div>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 	</div>
 	<div class="flex flex-col space-y-2 my-2 fixed bottom-0 z-40 w-full">
 		<nav
@@ -105,9 +138,24 @@
 				{/each}
 			</ul>
 		</nav>
-
-		<!-- <HorizontalNavFancy {...recommended_nav} /> -->
-		<!-- <HorizontalNavSimple {...history_nav} /> -->
+		<nav
+			aria-label={history_nav.label}
+			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
+		>
+			<ul class="flex space-x-2 flex-nowrap w-fit">
+				{#each history_nav.items as { link, title }}
+					<li class="flex-initial">
+						<a href={link}>
+							<div
+								class="max-w-sm truncate select-none bg-slate-50/95 border border-slate-200 px-2 rounded"
+							>
+								<span>{title}</span>
+							</div>
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 	</div>
 </div>
 
