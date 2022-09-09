@@ -23,3 +23,5 @@ declare module '*imagetools' {
 	const src: string;
 	export default src;
 }
+
+type Maybe<A> = A | undefined;

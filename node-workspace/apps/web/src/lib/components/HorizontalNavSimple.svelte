@@ -1,10 +1,16 @@
 <script lang="ts">
-	export let items: { link: string; title: string }[];
-	export let aria_labelledby: string;
+	import type { ActorRef } from 'xstate';
+	// import type { machine as navMachine } from '$lib/Machines/nav.machine';
+	// export let items: { link: string; title: string }[];
+	// export let label: string;
+
+	// export let state: any;
 </script>
 
+<!-- {JSON.stringify($state.state.context)} -->
+<!-- 
 <nav
-	aria-labelledby={aria_labelledby}
+	aria-label={label}
 	class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
 >
 	<ul class="flex space-x-2 flex-nowrap w-fit">
@@ -20,4 +26,4 @@
 			</li>
 		{/each}
 	</ul>
-</nav>
+</nav> -->
