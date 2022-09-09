@@ -21,14 +21,14 @@ export const machine = model.createMachine({
         NavigationMenus: {
             type: 'parallel',
             states: {
-                recommended: {
-                    initial: 'initializing',
+                Recommended: {
+                    initial: 'Initializing',
                     states: {
-                        initializing: {
+                        Initializing: {
                             entry: 'initializeNavigationMenus',
-                            always: 'initialized'
+                            always: 'Initialized'
                         },
-                        initialized: {}
+                        Initialized: {}
                     },
                 }
             }
