@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "node-workspace/apps/web"
+		},
+		{
+			"path": "node-workspace"
 		}
 	],
 	"settings": {}
