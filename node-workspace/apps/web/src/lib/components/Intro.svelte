@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
 	// flatten - remove alpha channel from image - for smaller size
-	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
-	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+	import bgImgSrcsetAvif from '$Assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+	import bgImgSrcsetWebp from '$Assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
 </script>
 
 <section
@@ -23,7 +23,7 @@
 		</h3>
 		<p class="break-wrap">
 			I'm Tanjim Hossain / @audacioustux <br />
-			An Übermensch Wannabe... <br />
+			An Übermensch Wannabe.. <br />
 			Founder
 			<a class="text-emerald-500" href="https://nobinalo.com" target="_blank">@NobinĀlo</a>
 			& <br class="md:hidden" /> Researcher

@@ -11,7 +11,13 @@ const config = {
 	kit: {
 		adapter: adapter(),
 
-		inlineStyleThreshold: 32 * 1024
+		inlineStyleThreshold: 32 * 1024,
+		alias: {
+			$Components: './src/lib/Components',
+			$Machines: './src/lib/Machines',
+			$Utils: './src/lib/Utils',
+			$Assets: './src/lib/Assets'
+		}
 	}
 };
 

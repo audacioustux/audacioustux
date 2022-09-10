@@ -23,32 +23,16 @@
 		items: [{ title: '~', link: './' }],
 		label: 'History'
 	};
-	const recommended_nav = {
-		items: [
-			{
-				title: 'Drop Me Anything!',
-				subtitle: 'Anonymously.. <span aria-hidden="true">( ͡° ͜ʖ ͡°)</span>',
-				link: './'
-			},
-			{ title: 'Hire Me!', subtitle: 'As Dev? Designer? Assassin?', link: './' },
-			{ title: 'Buy Me a Coffee UwU', subtitle: 'For all the boolsh*t i do', link: './' },
-			{
-				title: 'Follow Me On The Internet..',
-				subtitle: `And watch me suffer everyplace ᵔ◡ᵔ`,
-				link: './'
-			}
-		],
-		label: 'Recommended Links'
-	};
 </script>
 
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { useMachine } from '@xstate/svelte';
 	import { inspect } from '@xstate/inspect';
-	import { machine as appMachine } from '$lib/machines/+layout.machine';
+	import { machine as appMachine } from '$Machines/+layout.machine';
 
 	import { browser, dev } from '$app/environment';
+	import NavWithSubtitle from '$Components/NavWithSubtitle.svelte';
 
 	if (browser && dev) inspect({ iframe: false });
 
@@ -56,14 +40,16 @@
 	const { state, service } = useMachine(appMachine, machineOptions);
 
 	const {
-		context: { navigationMenus }
+		context: {
+			navigationMenus: { recommended }
+		}
 	} = $state;
 
-	service.onTransition((state) => {
-		console.log(state.value);
-	});
+	dev &&
+		service.onTransition((state) => {
+			console.log(state.value);
+		});
 
-	console.log(navigationMenus);
 	onMount(() => {
 		// send('READY');
 	});
@@ -119,25 +105,9 @@
 		</nav>
 	</div>
 	<div class="flex flex-col space-y-2 my-2 fixed bottom-0 z-40 w-full">
-		<nav
-			aria-label={recommended_nav.label}
-			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden snap-x snap-proximity scroll-px-2 pointer-events-auto"
-		>
-			<ul class="flex space-x-2 flex-nowrap w-fit">
-				{#each recommended_nav.items as { link, subtitle, title }}
-					<li class="snap-start flex-initial">
-						<a href={link}>
-							<div
-								class="max-w-md truncate select-none bg-slate-50/95 border border-slate-200 pl-4 pr-12 py-2 rounded"
-							>
-								<span class="font-semibold font-serif">{@html title}</span><br />
-								<span class="font-light">{@html subtitle}</span>
-							</div>
-						</a>
-					</li>
-				{/each}
-			</ul>
-		</nav>
+		{#if $recommended}
+			<NavWithSubtitle {...$recommended.context} />
+		{/if}
 		<nav
 			aria-label={history_nav.label}
 			class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"

@@ -25,6 +25,9 @@ const config = {
 			},
 			transitionProperty: {
 				visibility: 'opacity,  visibility'
+			},
+			backgroundImage: {
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'
 			}
 		},
 		contain: {
