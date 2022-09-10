@@ -1,7 +1,17 @@
 <script context="module" lang="ts">
-	import '@fontsource/work-sans/variable-full.css';
-	import '@fontsource/playfair-display/variable.css';
+	// TODO: fix variable font 404 error in production build
+	// import '@fontsource/work-sans/variable-full.css';
+	import '@fontsource/work-sans';
+	// import '@fontsource/playfair-display/variable.css';
+	import '@fontsource/playfair-display';
 	import '../app.postcss';
+
+	import NavWithSubtitle from '$lib/Components/NavWithSubtitle.svelte';
+	import { onMount } from 'svelte';
+	import { useMachine } from '@xstate/svelte';
+	import { inspect } from '@xstate/inspect';
+	import { machine as appMachine } from '$lib/Machines/+layout.machine';
+	import { browser, dev } from '$app/environment';
 
 	// TODO: remove kaoemojis from screen readers `aria-hidden="true"`
 	const related_nav = {
@@ -26,14 +36,6 @@
 </script>
 
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { useMachine } from '@xstate/svelte';
-	import { inspect } from '@xstate/inspect';
-	import { machine as appMachine } from '$Machines/+layout.machine';
-
-	import { browser, dev } from '$app/environment';
-	import NavWithSubtitle from '$Components/NavWithSubtitle.svelte';
-
 	if (browser && dev) inspect({ iframe: false });
 
 	const machineOptions = { devTools: dev };

@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import Intro from '$Components/Intro.svelte';
+	import Intro from '$lib/Components/Intro.svelte';
 </script>
 
 <svelte:head>
