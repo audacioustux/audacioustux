@@ -6,11 +6,11 @@
 	import '@fontsource/playfair-display';
 	import '../app.postcss';
 
-	import NavWithSubtitle from '$lib/Components/NavWithSubtitle.svelte';
+	import NavWithSubtitle from '$lib/components/NavWithSubtitle.svelte';
 	import { onMount } from 'svelte';
 	import { useMachine } from '@xstate/svelte';
 	import { inspect } from '@xstate/inspect';
-	import { machine as appMachine } from '$lib/Machines/+layout.machine';
+	import { machine as appMachine } from '$lib/machines/+layout.machine';
 	import { browser, dev } from '$app/environment';
 
 	// TODO: remove kaoemojis from screen readers `aria-hidden="true"`
