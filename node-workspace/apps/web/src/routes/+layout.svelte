@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
 	// TODO: fix variable font 404 error in production build
-	// import '@fontsource/work-sans/variable-full.css';
-	import '@fontsource/work-sans';
-	// import '@fontsource/playfair-display/variable.css';
-	import '@fontsource/playfair-display';
+	import '@fontsource/work-sans/variable-full.css';
+	// import '@fontsource/work-sans';
+	import '@fontsource/playfair-display/variable.css';
+	// import '@fontsource/playfair-display';
 	import '../app.postcss';
 
 	import NavWithSubtitle from '$lib/components/NavWithSubtitle.svelte';

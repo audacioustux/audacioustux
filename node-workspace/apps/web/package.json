@@ -22,8 +22,6 @@
 		"@types/cookie": "^0.5.1",
 		"@typescript-eslint/eslint-plugin": "^5.36.2",
 		"@typescript-eslint/parser": "^5.36.2",
-		"@whyframe/core": "^0.1.3",
-		"@whyframe/svelte": "^0.1.1",
 		"@xstate/cli": "^0.3.3",
 		"cssnano": "^5.1.13",
 		"eslint": "^8.23.0",

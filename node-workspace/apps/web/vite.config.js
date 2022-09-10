@@ -1,12 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { imagetools } from 'vite-imagetools';
-import { whyframe } from '@whyframe/core';
-import { whyframeSvelte } from '@whyframe/svelte';
-import path from 'path';
 
 /** @type {import('vite').UserConfig} */
 const config = {
-	plugins: [sveltekit(), imagetools(), whyframe(), whyframeSvelte()],
+	plugins: [sveltekit(), imagetools()],
 	experimental: {
 		useVitePreprocess: true
 	},

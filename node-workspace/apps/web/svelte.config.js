@@ -11,7 +11,8 @@ const config = {
 	kit: {
 		adapter: adapter(),
 
-		inlineStyleThreshold: 32 * 1024
+		// NOTE: inline causes links to be broken
+		// inlineStyleThreshold: 32 * 1024
 	}
 };
 
