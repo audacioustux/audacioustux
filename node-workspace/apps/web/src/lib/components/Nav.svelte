@@ -1,14 +1,8 @@
 <script lang="ts">
-	import type { ActorRef } from 'xstate';
-	// import type { machine as navMachine } from '$lib/Machines/nav.machine';
-	// export let items: { link: string; title: string }[];
-	// export let label: string;
-
-	// export let state: any;
+	export let label: string;
+	export let items: { link: string; title: string }[];
 </script>
 
-<!-- {JSON.stringify($state.state.context)} -->
-<!-- 
 <nav
 	aria-label={label}
 	class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden pointer-events-auto"
@@ -26,4 +20,4 @@
 			</li>
 		{/each}
 	</ul>
-</nav> -->
+</nav>

@@ -1,9 +1,11 @@
 <script type="ts">
 	export let label: string;
 	export let items: { link: string; title: string; subtitle: string }[];
+	export let isVisible: boolean;
 </script>
 
 <nav
+	hidden={!isVisible}
 	aria-label={label}
 	class="px-2 overflow-x-scroll will-change-scroll scrollbar-hidden snap-x snap-proximity scroll-px-2 pointer-events-auto"
 >

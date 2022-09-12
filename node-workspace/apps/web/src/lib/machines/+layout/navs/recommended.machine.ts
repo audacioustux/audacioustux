@@ -1,4 +1,4 @@
-import type { ActorRefFrom, ContextFrom, EventFrom } from 'xstate';
+import type { ContextFrom, EventFrom } from 'xstate';
 import { createModel } from 'xstate/lib/model';
 
 export const model = createModel({
@@ -20,19 +20,43 @@ export const model = createModel({
             link: './'
         }
     ],
-    label: 'Recommended Links'
-});
+    label: 'Recommended Links',
+    isVisible: true
+},
+    {
+        events: {
+            mouseIdle: () => ({}),
+            mouseActive: () => ({})
+        }
+    });
 
 export const machine = model.createMachine({
     predictableActionArguments: true,
+    strict: true,
     context: model.initialContext,
-    id: 'NavRecommended',
-    type: 'parallel',
+    id: 'recommendedNav',
+    initial: 'idle',
     states: {
-        Idle: {}
+        idle: {
+            entry: 'hide',
+            on: {
+                mouseActive: 'active'
+            },
+        },
+        active: {
+            entry: 'show',
+            on: {
+                mouseIdle: 'idle'
+            },
+        }
     }
-});
+},
+    {
+        actions: {
+            hide: model.assign({ isVisible: false }),
+            show: model.assign({ isVisible: true }),
+        }
+    });
 
-export type MachineActorRef = ActorRefFrom<typeof machine>;
 export type MachineContext = ContextFrom<typeof model>;
 export type MachineEvent = EventFrom<typeof model>;
