@@ -17,7 +17,7 @@
 		style:font-size="clamp(1rem, 4vw, 3rem)"
 		style:width="min(1536px, calc(80vw + 1rem))"
 	>
-		<h3>
+		<h3 role="presentation">
 			<em class="mr-2">Henlo!</em>
 			<span aria-hidden="true">(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧</span>
 		</h3>

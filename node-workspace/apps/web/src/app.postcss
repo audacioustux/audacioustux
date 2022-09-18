@@ -15,4 +15,11 @@
 	.scrollbar-hidden {
 		scrollbar-width: none;
 	}
+	.scrollbar-stable {
+		overflow: scroll;
+		@supports (scrollbar-gutter: stable) {
+			overflow: auto;
+			scrollbar-gutter: stable;
+		}
+	}
 }

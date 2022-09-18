@@ -1,7 +1,5 @@
 const plugin = require('tailwindcss/plugin');
-const colors = require('tailwindcss/colors');
 const defaultTheme = require('tailwindcss/defaultTheme');
-const resolveConfig = require('tailwindcss/resolveConfig');
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -39,14 +37,7 @@ const config = {
 	plugins: [
 		require('@tailwindcss/typography'),
 		plugin(function ({ matchUtilities, theme }) {
-			matchUtilities(
-				{
-					contain: (value) => ({
-						contain: value
-					})
-				},
-				{ values: theme('contain') }
-			);
+			matchUtilities({ contain: (value) => ({ contain: value }) }, { values: theme('contain') });
 		})
 	]
 };

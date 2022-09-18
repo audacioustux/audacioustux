@@ -9,7 +9,7 @@ const config = {
 		})
 	],
 	kit: {
-		adapter: adapter(),
+		adapter: adapter()
 
 		// NOTE: inline causes links to be broken
 		// inlineStyleThreshold: 32 * 1024

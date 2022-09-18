@@ -13,7 +13,7 @@
 
 <!-- general layer -->
 <main
-	class="overflow-auto w-screen h-screen bg-slate-50 text-slate-700 will-change-scroll scrollbar-hidden"
+	class="w-screen h-screen bg-slate-50 text-slate-700 will-change-scroll scrollbar-stable scroll-smooth"
 >
 	<slot />
 </main>
