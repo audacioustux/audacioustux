@@ -13,9 +13,9 @@
 		<img alt="" class="object-contain object-center h-full w-full" />
 	</picture>
 	<div
-		class="prose prose-slate"
-		style:font-size="clamp(1rem, 4vw, 3rem)"
-		style:width="min(1536px, calc(80vw + 1rem))"
+		class="prose prose-slate my-8"
+		style:font-size="clamp(1rem, 3vw, 3rem)"
+		style:width="min(1536px, 80vw)"
 	>
 		<h3 role="presentation">
 			<em class="mr-2">Henlo!</em>
