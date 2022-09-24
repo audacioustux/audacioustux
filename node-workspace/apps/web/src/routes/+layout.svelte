@@ -1,15 +1,9 @@
-<script context="module" lang="ts">
+<script lang="ts">
 	// NOTE: https://github.com/sveltejs/kit/issues/6720
 	import '@fontsource/work-sans/variable-full.css';
 	import '@fontsource/playfair-display/variable.css';
 	import '../app.postcss';
 </script>
-
-<script lang="ts">
-	const onMousemove = (event: MouseEvent) => {};
-</script>
-
-<svelte:window on:mousemove={onMousemove} />
 
 <!-- general layer -->
 <main

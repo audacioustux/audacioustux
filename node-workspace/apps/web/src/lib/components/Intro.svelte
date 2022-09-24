@@ -1,4 +1,4 @@
-<script context="module" lang="ts">
+<script lang="ts">
 	// flatten - remove alpha channel from image - for smaller size
 	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
 	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
