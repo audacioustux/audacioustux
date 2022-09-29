@@ -14,7 +14,7 @@
 	</picture>
 	<div
 		class="prose prose-slate my-8"
-		style:font-size="clamp(1rem, 3vw, 3rem)"
+		style:font-size="clamp(1rem, calc(3 * min(1vw, 1.78vh)), 3rem)"
 		style:width="min(1536px, 80vw)"
 	>
 		<h3 role="presentation">
