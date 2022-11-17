@@ -24,10 +24,9 @@
 		<p class="break-wrap">
 			I'm Tanjim Hossain / @audacioustux <br />
 			An Übermensch Wannabe.. <br />
-			Founder
-			<a class="text-emerald-500" href="https://nobinalo.com" target="_blank">@NobinĀlo</a>
-			<br class="sm:hidden" /> & Researcher
-			<a class="text-[rebeccapurple]" href="https://alo.dev" target="_blank">@ĀloLabs</a>
+			Founder <a class="text-emerald-500" href="https://nobinalo.com" target="_blank">@NobinĀlo</a>
+			<br class="sm:hidden" />
+			& Researcher <a class="text-[rebeccapurple]" href="https://alo.dev" target="_blank">@ĀloLabs</a>
 		</p>
 	</div>
 </section>
