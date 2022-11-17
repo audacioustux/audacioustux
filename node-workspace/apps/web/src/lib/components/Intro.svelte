@@ -5,7 +5,7 @@
 </script>
 
 <section
-	class="relative grid place-content-center min-h-screen-min py-8 font-serif antialiased select-none"
+	class="relative grid place-content-center min-h-screen-min py-8 font-serif select-none"
 >
 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
 		<source srcset={bgImgSrcsetAvif} type="image/avif" />
@@ -26,7 +26,7 @@
 			An Übermensch Wannabe.. <br />
 			Founder
 			<a class="text-emerald-500" href="https://nobinalo.com" target="_blank">@NobinĀlo</a>
-			& <br class="md:hidden" /> Researcher
+			& Researcher
 			<a class="text-[rebeccapurple]" href="https://alo.dev" target="_blank">@ĀloLabs</a>
 		</p>
 	</div>
