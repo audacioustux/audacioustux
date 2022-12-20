@@ -7,7 +7,7 @@
 
 <!-- general layer -->
 <main
-	class="w-screen h-screen bg-slate-50 text-slate-700 will-change-scroll scrollbar-stable scroll-smooth"
+	class="w-screen h-screen bg-[ghostwhite] text-slate-700 will-change-scroll scrollbar-stable scroll-smooth"
 >
 	<slot />
 </main>
