@@ -1,17 +1,17 @@
 <script lang="ts">
-	// flatten - remove alpha channel from image - for smaller size
-	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
-	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+// 	// flatten - remove alpha channel from image - for smaller size
+// 	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+// 	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
 </script>
 
 <section
 	class="relative grid place-content-center min-h-screen-min py-8 font-serif select-none"
 >
-	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
+<!-- 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
 		<source srcset={bgImgSrcsetAvif} type="image/avif" />
 		<source srcset={bgImgSrcsetWebp} type="image/webp" />
 		<img alt="" class="object-contain object-center h-full w-full" />
-	</picture>
+	</picture> -->
 	<div
 		class="prose prose-slate my-8"
 		style:font-size="clamp(1rem, calc(3 * min(1vw, 1.78vh)), 3rem)"
