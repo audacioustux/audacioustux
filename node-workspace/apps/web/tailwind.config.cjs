@@ -38,7 +38,7 @@ const config = {
 		require('@tailwindcss/typography'),
 		plugin(function ({ matchUtilities, theme }) {
 			matchUtilities({ contain: (value) => ({ contain: value }) }, { values: theme('contain') });
-		})
+		}),
 	]
 };
 

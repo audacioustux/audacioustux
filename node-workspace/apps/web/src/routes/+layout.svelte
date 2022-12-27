@@ -6,8 +6,6 @@
 </script>
 
 <!-- general layer -->
-<main
-	class="w-screen h-screen bg-[ghostwhite] text-slate-700 will-change-scroll scrollbar-stable scroll-smooth"
->
+<main class="w-screen h-screen will-change-scroll scrollbar-stable scroll-smooth">
 	<slot />
 </main>

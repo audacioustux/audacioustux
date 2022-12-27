@@ -1,19 +1,14 @@
 <script lang="ts">
-// 	// flatten - remove alpha channel from image - for smaller size
-// 	import bgImgSrcsetAvif from '$lib/assets/absurd_design/UwU.png?avif&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
-// 	import bgImgSrcsetWebp from '$lib/assets/absurd_design/UwU.png?webp&srcset&w=800;1000;1200;1600&background=rgb(248,250,252)&flatten&imagetools';
+	import blueball_machine from '$lib/assets/blueball_machine.webp';
 </script>
 
-<section
-	class="relative grid place-content-center min-h-screen-min py-8 font-serif select-none"
->
-<!-- 	<picture class="absolute opacity-5 pointer-events-none h-full w-full py-16">
-		<source srcset={bgImgSrcsetAvif} type="image/avif" />
-		<source srcset={bgImgSrcsetWebp} type="image/webp" />
-		<img alt="" class="object-contain object-center h-full w-full" />
-	</picture> -->
+<section class="grid min-h-screen-min font-serif">
 	<div
-		class="prose prose-slate my-8"
+		class="w-screen h-screen opacity-10 row-start-1 col-start-1 bg-cover contain-strict"
+		style="background-image:url({blueball_machine})"
+	/>
+	<div
+		class="prose prose-lg my-8 grid place-content-center drop-shadow-md row-start-1 col-start-1 select-none"
 		style:font-size="clamp(1rem, calc(3 * min(1vw, 1.78vh)), 3rem)"
 		style:width="min(1536px, 80vw)"
 	>
@@ -24,18 +19,18 @@
 		<p class="break-wrap">
 			I'm Tanjim Hossain / @audacioustux <br />
 			An Übermensch Wannabe.. <br />
-			Founder <a class="text-emerald-500" href="https://nobinalo.com" target="_blank">@NobinĀlo</a>
+			Founder
+			<a class="text-emerald-500" href="https://nobinalo.com" target="_blank" rel="noreferrer"
+				>@NobinĀlo</a
+			>
 			<br class="sm:hidden" />
-			& Researcher <a class="text-[rebeccapurple]" href="https://alo.dev" target="_blank">@ĀloLabs</a>
+			& Researcher
+			<a class="text-[rebeccapurple]" href="https://alo.dev" target="_blank" rel="noreferrer"
+				>@ĀloLabs</a
+			>
 		</p>
 	</div>
 </section>
 
 <style lang="postcss">
-	a {
-		@apply opacity-75 transition-opacity;
-		&:hover {
-			@apply opacity-100;
-		}
-	}
 </style>
