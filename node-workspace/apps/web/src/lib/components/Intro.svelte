@@ -4,7 +4,7 @@
 
 <section class="grid min-h-screen-min font-serif">
 	<div
-		class="w-screen h-screen opacity-10 row-start-1 col-start-1 bg-cover contain-strict"
+		class="w-screen h-screen bg-[length:69vmin] opacity-10 row-start-1 col-start-1 contain-strict"
 		style="background-image:url({blueball_machine})"
 	/>
 	<div
