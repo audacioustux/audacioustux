@@ -8,7 +8,7 @@
 		style="background-image:url({blueball_machine})"
 	/>
 	<div
-		class="prose prose-lg my-8 grid place-content-center drop-shadow-md row-start-1 col-start-1 select-none"
+		class="prose prose-lg my-8 grid place-self-center drop-shadow-md row-start-1 col-start-1 select-none"
 		style:font-size="clamp(1rem, calc(3 * min(1vw, 1.78vh)), 3rem)"
 		style:width="min(1536px, 80vw)"
 	>
