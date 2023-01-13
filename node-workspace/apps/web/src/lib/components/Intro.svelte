@@ -1,5 +1,5 @@
 <script lang="ts">
-	import blueball_machine from '$lib/assets/blueball_machine.webp';
+	import blueball_machine from '$lib/assets/blueball_machine_8fps.webp';
 </script>
 
 <section class="grid min-h-screen-min font-serif">
