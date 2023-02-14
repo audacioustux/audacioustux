@@ -1,10 +1,10 @@
 <script lang="ts">
-	import blueball_machine from '$lib/assets/blueball_machine_15fps.webp';
+	import blueball_machine from '$lib/assets/blueball_machine.avif';
 </script>
 
 <section class="grid min-h-full font-serif">
 	<div
-		class="bg-[length:69vmin] bg-repeat opacity-10 row-start-1 col-start-1 contain-strict"
+		class="bg-[length:100vmin] bg-repeat opacity-[0.06] row-start-1 col-start-1 contain-strict"
 		style="background-image:url({blueball_machine})"
 	/>
 	<div
