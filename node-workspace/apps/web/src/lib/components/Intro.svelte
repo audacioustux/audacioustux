@@ -2,7 +2,7 @@
 	import blueball_machine from '$lib/assets/blueball_machine_15fps.webp';
 </script>
 
-<section class="grid min-h-screen-min font-serif">
+<section class="grid min-h-full font-serif">
 	<div
 		class="bg-[length:69vmin] bg-repeat opacity-10 row-start-1 col-start-1 contain-strict"
 		style="background-image:url({blueball_machine})"
