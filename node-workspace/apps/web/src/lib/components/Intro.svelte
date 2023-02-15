@@ -1,5 +1,5 @@
 <script lang="ts">
-	import blueball_machine from '$lib/assets/blueball_machine.avif';
+	import blueball_machine from '$lib/assets/blueball_machine_20fps_10c.avif';
 </script>
 
 <section class="grid min-h-full font-serif">
