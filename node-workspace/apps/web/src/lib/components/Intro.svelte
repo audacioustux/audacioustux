@@ -18,7 +18,7 @@
 		</h3>
 		<p class="break-wrap">
 			I'm Tanjim Hossain / @audacioustux <br />
-			An Übermensch Wannabe.. <br />
+			Aiming to be Less-Wrong... <br />
 			Founder
 			<a class="text-emerald-500" href="https://nobinalo.com" target="_blank" rel="noreferrer"
 				>@NobinĀlo</a
