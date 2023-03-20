@@ -1,6 +1,6 @@
 Henlo! (ﾉ◕ヮ◕)ﾉ*:・ﾟ✧
 
-I'm Tanjim Hossain / @audacioustux, from Dhaka - Bangladesh  
+I'm Tanjim Hossain / @audacioustux  
 An Übermensch Wannabe…  
 Founder [@NobinĀlo](https://nobinalo.com/) & Researcher [@ĀloLabs](https://alo.dev/)  
 
