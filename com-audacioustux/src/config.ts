@@ -7,10 +7,10 @@ export const SITE: Site = {
   title: "Tanjim @AudaciousTux",
   ogImage: "audacioustux_workspace.jpg",
   lightAndDarkMode: true,
-  postPerPage: 10,
+  postPerPage: 50,
 };
 
-export const LOCALE = ["en-EN"]; // set to [] to use the environment default
+export const LOCALE = ["en-EN", "bn-BD"]; // set to [] to use the environment default
 
 export const LOGO_IMAGE = {
   enable: false,
