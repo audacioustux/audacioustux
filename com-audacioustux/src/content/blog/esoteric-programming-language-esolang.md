@@ -1,7 +1,7 @@
 ---
 author: Tanjim Hossain
 pubDatetime: 2017-05-06T02:40:49Z
-title: esoteric programming language (esolang)
+title: Esoteric programming language (esolang)
 postSlug: esoteric-programming-language-esolang
 featured: false
 draft: false

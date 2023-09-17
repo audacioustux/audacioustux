@@ -16,7 +16,8 @@
 			"extensions": [
 				"astro-build.astro-vscode",
 				"DavidAnson.vscode-markdownlint",
-				"znck.grammarly"
+				"znck.grammarly",
+				"jock.svg"
 			]
 		}
 	}
