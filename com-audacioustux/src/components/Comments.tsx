@@ -51,7 +51,12 @@ export default function Comments() {
     });
 
     document.body.appendChild(script);
-  }, []);
+
+    return () => {
+      observer.disconnect();
+      document.body.removeChild(script);
+    }
+  });
 
   return (
     <div className="giscus mb-8" />
