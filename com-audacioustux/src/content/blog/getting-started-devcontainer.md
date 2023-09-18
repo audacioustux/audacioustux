@@ -34,8 +34,8 @@ Let's first have a quick look at what a devcontainer is - by creating one. We'll
 - [Docker](https://docs.docker.com/get-docker/) installed
   - in case you've configured remote docker context, you can use that too (more on that later)
   - Or, [Github Codespaces](https://github.com/codespaces) subscription
-- [vscode](https://code.visualstudio.com/) installed
-- [vscode remote development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed
+- [VSCode](https://code.visualstudio.com/) installed
+- [VSCode remote development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed
 
 ### Steps
 
