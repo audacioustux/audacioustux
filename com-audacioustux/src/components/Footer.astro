@@ -1,5 +1,6 @@
 ---
 import Hr from "./Hr.astro";
+import Comments from "./Comments";
 import Socials from "./Socials.astro";
 
 const currentYear = new Date().getFullYear();
@@ -12,6 +13,7 @@ const { noMarginTop = false } = Astro.props;
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
+  <Comments client:idle />
   <Hr noPadding />
   <div class="footer-wrapper">
     <Socials centered />
