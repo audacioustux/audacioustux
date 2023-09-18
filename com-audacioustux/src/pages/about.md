@@ -20,7 +20,7 @@ Well, put simply, I'm an athiest. People might have different definitons and con
 
 ## Idiological Views
 
-Ideologies are not binary - they're a spectrum. No, I'm not fan of [Political Compass](https://en.wikipedia.org/wiki/Political_spectrum), Although I think those serve pragmatic purposes, the precision of it is questionable, as there're far more axioms to consider than can be put on a chart. The axiomatization itself is a very complex task. Also, idologies are not static, words change their meaning over time, people tends to have inconsistent views, over-simplify or generalize things, and so on. So, I'll just list some of my views without going into the details, and you can decide for yourself what I am.
+Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Compass](https://en.wikipedia.org/wiki/Political_spectrum), Although I think those serve pragmatic purposes, the precision of it is questionable, as there're far more axioms to consider than can be put on a chart. The axiomatization itself is a very complex task. Also, idologies are not static, words change their meaning over time, people tends to have inconsistent views, over-simplify or generalize things, and so on. So, I'll just list some of my views without going into the details, and you can decide for yourself what I am.
 
 - I believe in the freedom of speech, and expression. Unless it's a direct threat to someone's life, or a call for violence, I don't think it should be censored.
 - I support LGBTQ+ rights, and social reforms are necessary to ensure fairness for everyone.
