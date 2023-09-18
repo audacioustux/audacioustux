@@ -51,6 +51,10 @@ VSCode created a docker container with Ubuntu, and mounted the current directory
 Now, as you have a terminal inside the container, you can run any command inside the container. You can also install any package inside the container. But remember, the container is ephemeral. If you exit the container, and reopen it, you'll have to install the packages again.  
 For a more persistent solution, you can create a `Dockerfile` inside the `.devcontainer` folder [as described here](https://containers.dev/guide/dockerfile#dockerfile). You can also use a `docker-compose.yml` file to create a multi-container devcontainer [as described here](https://containers.dev/guide/dockerfile#docker-compose)
 
+### What's a Feature?
+
+Devcontainer features are pieces of configuration that can be reused across multiple devcontainers. Just as an example, [Here's a feature](https://github.com/audacioustux/devcontainers/tree/main/src/common-utils-extras) that installs some common utilities that I use in my devcontainers. There are a lot of official and community driven features available, But I think you got the idea.
+
 ## A More Practical Example
 
 Let's have a few files in out .devcontainer folder (then we'll discuss what they do):
@@ -226,8 +230,8 @@ You should run `docker system prune` from time to time to free up some space [as
 You may have wondered, why create the extra `compose.yml` and `Dockerfile`, instead of setting the `image` field in `devcontainer.json`?  
 Well, for two reasons:
 
-  1. It's more extensible. You can add more services to the compose file, and extend the base image in the Dockerfile in case you need to.
-  2. You can have a .env file in the `.devcontainer` folder, and docker compose will take care of it implicitly. That means, you should declare the environment variables in the compose file without any values, and docker compose will automatically read the values from the .env file, or from the host machine's environment variables. The later is useful when using Github Codespaces, as you can set the environment variables in the Codespaces settings. This way, you don't have to couple the source of env vars with the devcontainer.
+1. It's more extensible. You can add more services to the compose file, and extend the base image in the Dockerfile in case you need to.
+2. You can have a .env file in the `.devcontainer` folder, and docker compose will take care of it implicitly. That means, you should declare the environment variables in the compose file without any values, and docker compose will automatically read the values from the .env file, or from the host machine's environment variables. The later is useful when using Github Codespaces, as you can set the environment variables in the Codespaces settings. This way, you don't have to couple the source of env vars with the devcontainer.
 
 ### Why use Ubuntu as the base image?
 
