@@ -228,3 +228,12 @@ Well, for two reasons:
 
   1. It's more extensible. You can add more services to the compose file, and extend the base image in the Dockerfile in case you need to.
   2. You can have a .env file in the `.devcontainer` folder, and docker compose will take care of it implicitly. That means, you should declare the environment variables in the compose file without any values, and docker compose will automatically read the values from the .env file, or from the host machine's environment variables. The later is useful when using Github Codespaces, as you can set the environment variables in the Codespaces settings. This way, you don't have to couple the source of env vars with the devcontainer.
+
+### Why use Ubuntu as the base image?
+
+Ubunut is well supported by the official features, and ideal fit for development environments. Other options like Alpine would be too minimal, and require more work to get things working. There are also official images that comes with specific tools and language runtimes (node, go, rust) installed. But tbh, most I think most real projects use multiple languages and tools, so it's better to compose the devcontainer features, and maybe create custom features for your own use (and maybe share them with the community).
+
+## Links
+
+- A real project with devcontainer: [here](https://github.com/audacioustux/zeroSDP)
+- Devcontainer features written by me: [here](https://github.com/audacioustux/devcontainers)
