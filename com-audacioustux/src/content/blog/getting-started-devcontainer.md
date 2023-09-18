@@ -22,7 +22,7 @@ description: A step-by-step guide to get started with devcontainer in vscode and
 
 ## What is Devcontainer?
 
-Devcontainer is a feature of vscode that allows you to develop inside a container. It's a great way to ensure consistency across different environments, and to make sure that your development environment is isolated from your host machine. It's also a great way to ensure that your development environment is reproducible.  
+Devcontainer is an open specification for enriching containers with development specific content and settings. VSCode and Github Codespaces currently has full support for it. You can find the official documentation [here](https://containers.dev/). It's a great way to ensure consistency across different environments, and to make sure that your development environment is isolated from your host machine. It's also a great way to ensure that your development environment is reproducible.  
 With devcontainer, you can easily share your development environment with your team, and you can also use it to develop on the go - using Github Codespaces or your own remote docker context running on a Cloud VM, a Raspberry Pi, or your local machine (even if you don't have a public IP, more on that later)
 
 ## A Quick Dive
