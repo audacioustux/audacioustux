@@ -2,7 +2,7 @@
 
 ## I'm Tanjim / @audacioustux, Researcher [@ĀloLabs](https://alo.dev/)  
 
-_**Aiming to be Less Wrong**_
+_**Aiming to find better Truth**_
 
 > Currently working on: [**CompaaS**](https://github.com/audacioustux/CompaaS) & [**ZeroSDP**](https://github.com/audacioustux/ZeroSDP)
 
