@@ -214,3 +214,17 @@ Just use [tailscale](https://tailscale.com/). It's free for personal use, and it
 ### Using remote docker context
 
 You can use remote docker context to run the devcontainer on a remote machine. You can find the official documentation [here](https://docs.docker.com/engine/context/working-with-contexts/).
+
+### Docker taking too much space
+
+You should run `docker system prune` from time to time to free up some space [as described here](https://docs.docker.com/engine/reference/commandline/system_prune/). On linux, you may have a cron job to do that automatically. Also, set a max size for logs [as described here](https://docs.docker.com/config/containers/logging/configure/).
+
+## Disscussion
+
+### What about environment variables?
+
+You may have wondered, why create the extra `compose.yml` and `Dockerfile`, instead of setting the `image` field in `devcontainer.json`?  
+Well, for two reasons:
+
+  1. It's more extensible. You can add more services to the compose file, and extend the base image in the Dockerfile in case you need to.
+  2. You can have a .env file in the `.devcontainer` folder, and docker compose will take care of it implicitly. That means, you should declare the environment variables in the compose file without any values, and docker compose will automatically read the values from the .env file, or from the host machine's environment variables. The later is useful when using Github Codespaces, as you can set the environment variables in the Codespaces settings. This way, you don't have to couple the source of env vars with the devcontainer.
