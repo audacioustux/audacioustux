@@ -200,6 +200,10 @@ We used the Ubuntu image built for devcontainers as the base image. Instead of u
 
 These are the lifecycle scripts.
 
+[![Dev Container Running on VSCode](https://audacioustux.com/assets/devcontainer-vscode.png)](https://audacioustux.com/assets/devcontainer-vscode.png)
+
+> Now, you can press `Ctrl+Shift+P` and select `Dev Containers: Rebuild and Reopen in Container` to rebuild the container. It'll take a while to build the container for the first time. After that, it'll be much faster.
+
 ## Creating Custom Features
 
 In the devcontainer.json file, we used a custom feature named `ghcr.io/audacioustux/devcontainers/common-utils-extras:1`. That's a feature I created for my own use. You can find the source code [here](https://github.com/audacioustux/devcontainers/tree/main/src/common-utils-extras). Instead of re-inventing the wheel, I'll just link to the official documentation on how to create custom features: [here](https://github.com/devcontainers/feature-starter#readme)
