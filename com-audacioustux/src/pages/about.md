@@ -23,7 +23,7 @@ Well, put simply, I'm an athiest. People might have different definitons and con
 Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Compass](https://en.wikipedia.org/wiki/Political_spectrum), Although I think those serve pragmatic purposes, the precision of it is questionable, as there're far more axioms to consider than can be put on a chart. The axiomatization itself is a very complex task. Also, idologies are not static, words change their meaning over time, people tends to have inconsistent views, over-simplify or generalize things, and so on. So, I'll just list some of my views without going into the details, and you can decide for yourself what I am.
 
 - I believe in the freedom of speech, and expression. Unless it's a direct threat to someone's life, or a call for violence, I don't think it should be censored.
-- I support LGBTQ+ rights, and social reforms are necessary to ensure fairness for everyone.
+- I support LGBTQIA+ individuals, their rights, and social reforms are necessary to ensure fairness for everyone.
 - In my dictionary, Feminism is not only about female rights, it's about fairness for everyone. I support feminism. Also, I think people confuse feminism with misandry, and many self-proclaimed feminists are actually hurting the cause.
 - Free market is a good thing, but it's not perfect. It needs to be monitored and regulated to ensure fairness. With the technological advancements, I think we can do better.
 - Evolution is a fact, and it's a very beautiful process. I don't think it's a good idea to teach creationism in schools.
