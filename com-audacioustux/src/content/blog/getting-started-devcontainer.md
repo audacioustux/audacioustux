@@ -237,7 +237,7 @@ Well, for two reasons:
 
 ### Why use Ubuntu as the base image?
 
-Ubuntu is well supported by the official features, and ideal fit for development environments. Other options like Alpine would be too minimal, and require more work to get things working. There are also official images that comes with specific tools and language runtimes (node, go, rust) installed. But tbh, most I think most real projects use multiple languages and tools, so it's better to compose the official & community driven devcontainer features on top-of base Ubuntu image. You may also create new devcontainer features if you want to, and share them with the community.
+Ubuntu is well supported by the official features, and ideal fit for development environments. Other options like Alpine would be too minimal, and require more work to get things working. There are also official images that comes with specific tools and language runtimes (node, go, rust, etc.) installed. But tbh, I think most real projects use multiple languages and tools, so it's better to compose the official & community driven devcontainer features on top-of base Ubuntu image. You may also create new devcontainer features if you want to, and share them with the community.
 
 ## Links
 
