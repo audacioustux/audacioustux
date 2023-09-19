@@ -3,7 +3,7 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-## Interests
+## My Interests
 
 Different fields of study, school of thoughts, disciplines are hard to precisely generalize and catagorize into a few words. They're all inter-connected in a very complex dynamic way. But accepting the limitations of language, I'll start with:
 
@@ -28,7 +28,7 @@ Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Com
 - Free market is a good thing, but it's not perfect. It needs to be monitored and regulated to ensure fairness. With the technological advancements, I think we can do better.
 - Evolution is a fact, and it's a very beautiful process. I don't think it's a good idea to teach creationism in schools.
 
-## My Activities
+## Activities
 
 - _**Mentoring**_: It's like forming a virtual brain, where individual people acts like different parts of the brain, and the collective intelligence is the emergent property of the system. I've been mentoring people for a while now, and I think it's a great way to learn and grow.
 - _**Writing**_: I write about my thoughts, ideas, and experiences. I think it's a great way to organize my thoughts, and identify the contradictions and inconsistencies in my views. I also write about my projects, and the things I learn.
