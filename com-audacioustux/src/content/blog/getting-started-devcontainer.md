@@ -59,7 +59,7 @@ Devcontainer features are pieces of configuration that can be reused across mult
 
 Let's have a few files in out .devcontainer folder (then we'll discuss what they do):
 
-> .devcontainer/devcontainer.json
+`.devcontainer/devcontainer.json`
 
 ```json
 {
@@ -104,7 +104,7 @@ Let's have a few files in out .devcontainer folder (then we'll discuss what they
 }
 ```
 
-> .devcontainer/compose.yml
+`.devcontainer/compose.yml`
 
 ```yaml
 services:
@@ -118,13 +118,13 @@ services:
     command: sleep infinity
 ```
 
-> .devcontainer/Dockerfile
+`.devcontainer/Dockerfile`
 
 ```dockerfile
 FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04
 ```
 
-> .devcontainer/scripts/update.sh
+`.devcontainer/scripts/update.sh`
 
 ```bash
 #!/usr/bin/env bash
@@ -134,7 +134,7 @@ set -eax
 git clean -Xdf --exclude='!**/*.env'
 ```
 
-> .devcontainer/scripts/post-create.sh
+`.devcontainer/scripts/post-create.sh`
 
 ```bash
 #!/usr/bin/env bash
@@ -144,7 +144,7 @@ set -eax
 # let's keep it blank for now
 ```
 
-> .devcontainer/scripts/post-start.sh
+`.devcontainer/scripts/post-start.sh`
 
 ```bash
 #!/usr/bin/env bash
@@ -200,9 +200,7 @@ We used the Ubuntu image built for devcontainers as the base image. Instead of u
 
 These are the lifecycle scripts.
 
-[![Dev Container Running on VSCode](https://audacioustux.com/assets/devcontainer-vscode.png)](https://audacioustux.com/assets/devcontainer-vscode.png)
-
-> Now, you can press `Ctrl+Shift+P` and select `Dev Containers: Rebuild and Reopen in Container` to rebuild the container. It'll take a while to build the container for the first time. After that, it'll be much faster.
+> Now, you may press `Ctrl+Shift+P` and select `Dev Containers: Rebuild Container` to rebuild the container. It'll take a while to build the container for the first time. After that, it'll be much faster.
 
 ## Creating Custom Features
 

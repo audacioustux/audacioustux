@@ -115,9 +115,12 @@
     @apply bg-skin-card-muted;
   }
 
-  code {
-    white-space: pre-wrap;
-    overflow: scroll;
+  code, blockquote {
+    word-wrap: break-word;
+  }
+
+  pre {
+    white-space: pre !important;
   }
 }
 
