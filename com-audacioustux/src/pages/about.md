@@ -24,7 +24,7 @@ Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Com
 
 - I believe in the freedom of speech, and expression. Unless it's a direct threat to someone's life, or a call for violence, I don't think it should be censored.
 - I support LGBTQIA+ individuals, their rights, and social reforms are necessary to ensure fairness for everyone.
-- In my dictionary, Feminism is not only about female rights, it's about fairness for everyone. I support feminism. Also, I think people confuse feminism with misandry, and many self-proclaimed feminists are actually hurting the cause.
+- Feminism is not only about female rights, it's about fairness for everyone. I support feminism. Also, I think people confuse feminism with misandry, and many self-proclaimed feminists are actually hurting the cause.
 - Free market is a good thing, but it's not perfect. It needs to be monitored and regulated to ensure fairness. With the technological advancements, I think we can do better.
 - Evolution is a fact, and it's a very beautiful process. I don't think it's a good idea to teach creationism in schools.
 
@@ -33,3 +33,9 @@ Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Com
 - _**Mentoring**_: It's like forming a virtual brain, where individual people acts like different parts of the brain, and the collective intelligence is the emergent property of the system. I've been mentoring people for a while now, and I think it's a great way to learn and grow.
 - _**Writing**_: I write about my thoughts, ideas, and experiences. I think it's a great way to organize my thoughts, and identify the contradictions and inconsistencies in my views. I also write about my projects, and the things I learn.
 - _**Reading / Listening**_: I try to read as much as I can. Mostly technical and non-fiction books, but also fiction sometimes. Probably the half of the books that i've read are in form of audiobooks, and technical books as PDFs or EPUBs. I also listen to podcasts a lot.
+
+## People I Admire (and alive as of 2023)
+
+In no particular order, and I'm sure I'm missing a lot of people here.
+
+_**Michael Levin**_, _**Alan Kay**_, _**Stephen Wolfram**_, _**Slavoj Zizek**_, _**Shafqat Ullah**_, _**Sabine Hossenfelder**_, _**Lex Fridman**_, _**Yuval Noah Harari**_, _**Alex O'Connor**_, _**Stephen Woodford**_, _**Neil deGrasse Tyson**_, _**Seam Carroll**_, _**David Tong**_, _**Tom Scott**_, _**Dave Farley**_
