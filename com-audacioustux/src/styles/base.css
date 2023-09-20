@@ -119,8 +119,8 @@
     word-wrap: break-word;
   }
 
-  pre {
-    white-space: pre !important;
+  pre > code {
+    white-space: pre;
   }
 }
 
