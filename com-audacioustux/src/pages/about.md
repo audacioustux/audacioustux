@@ -7,7 +7,7 @@ title: "About"
 
 Different fields of study, school of thoughts, disciplines are hard to precisely generalize and catagorize into a few words. They're all inter-connected in a very complex dynamic way. But accepting the limitations of language, I'll start with:
 
-- _**Philosophy**_: I started my journey in this realm with the [Philosophize This](https://www.philosophizethis.org/podcast) Podcasts. It helped me to resolve some of my dilemmas, and gave me a new perspective to look at the world.
+- _**Philosophy**_: I started my journey in this realm with the [Philosophize This](https://www.philosophizethis.org/podcast) Podcasts. It helped me to resolve some of my dilemmas, and gave me new perspectives to look at the world.
 - _**Systems Science**_: It's a very broad field. But even having a crumbs of knowledge about it can help understand the world better. It's a very powerful tool to analyze complex systems, and it's a very useful skill to have for software engineer like me.
 - _**Psychology**_: I'm not a psychologist, but I think it's a very important field of study. It helps us understand ourselves, and others better. It helps us to be more empathetic, and to be a better person.
 - _**Physics**_: This kinda relates to my interest in Systems Science, as software systems are just simulation of the real world, and the laws of physics are as fundamental as it gets in case of e.g., distributed systems.
@@ -22,11 +22,12 @@ Well, put simply, I'm an athiest. People might have different definitons and con
 
 Ideologies are not binary - they're spectrums. No, I'm not fan of [Political Compass](https://en.wikipedia.org/wiki/Political_spectrum), Although I think those serve pragmatic purposes, the precision of it is questionable, as there're far more axioms to consider than can be put on a chart. The axiomatization itself is a very complex task. Also, idologies are not static, words change their meaning over time, people tends to have inconsistent views, over-simplify or generalize things, and so on. So, I'll just list some of my views without going into the details, and you can decide for yourself what I am.
 
-- I believe in the freedom of speech, and expression. Unless it's a direct threat to someone's life, or a call for violence, I don't think it should be censored.
+- I believe in the freedom of speech, and expression. Unless it's a direct threat to someone's life, I don't think it should be censored.
 - I support LGBTQIA+ individuals, their rights, and social reforms are necessary to ensure fairness for everyone.
-- Feminism is not only about female rights, it's about fairness for everyone. I support feminism. Also, I think people confuse feminism with misandry, and many self-proclaimed feminists are actually hurting the cause.
+- Feminism is not only about female rights, it's about fairness for everyone. Do we need a better term? Maybe, but that's a different discussion. I support feminism.
 - Free market is a good thing, but it's not perfect. It needs to be monitored and regulated to ensure fairness. With the technological advancements, I think we can do better.
 - Evolution is a fact, and it's a very beautiful process. I don't think it's a good idea to teach creationism in schools.
+- Things are complex. Critical thinking should be the base of all our decisions, including doing seemingly good things. We should train our [Fast and Slow Thinking](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow) to be more rational, and aim to find better truths.
 
 ## Activities
 
