@@ -14,7 +14,7 @@ tags:
   - ama
   - kickstart
   - resources
-description: 
+description: A comprehensive guide for beginner programmers to kickstart their career.
 ---
 
 - how should I maintain my grade and learn out of curriculum in parallel?
