@@ -16,7 +16,7 @@ Different fields of study, school of thoughts, disciplines are hard to precisely
 
 ## Theological Views
 
-Well, put simply, I'm an athiest. People might have different definitons and connotations of atheism, so lemme narrow that down a bit - I simply don't believe in any Gods existence, neither do I claim God doesn't exist. [Athiesm is NOT a religion](https://www.youtube.com/watch?v=bIXGRoPr8a4). To me, "God" is a label used to describe the yet unknown and unexplained, kindof like the way use had used the term "aether" to describe the medium through which light travelled before we discovered the electromagnetic spectrum. But again, there're different definitions of God, and Atheism, so I'll just say I'm an agnostic athiest - to be a bit more precise.
+Well, put simply, I'm an athiest. People might have different definitons and connotations of atheism, so lemme narrow that down a bit - I simply don't believe in any Gods existence, neither do I claim God doesn't exist. [Athiesm is NOT a religion](https://www.youtube.com/watch?v=bIXGRoPr8a4). To me, "God" is "the reason" that bootstraped the root of all we can or can not percieve, and most religions (that includes all abrahamic religions) are too funny to be taken seriously. But again, there're different definitions of God, and Atheism, so I'll just say I'm an agnostic athiest - to be a bit more precise.
 
 ## Idiological Views
 
