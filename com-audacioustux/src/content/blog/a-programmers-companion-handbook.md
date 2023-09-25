@@ -3,8 +3,8 @@ author: Tanjim Hossain
 pubDatetime: 2023-09-24T10:40:49Z
 title: A Programmer's Companion Handbook
 postSlug: a-programmers-companion-handbook
-featured: true
-draft: true
+featured: false
+draft: false
 tags:
   - tips
   - opinion
@@ -14,8 +14,21 @@ tags:
   - ama
   - kickstart
   - resources
+ogImage: "assets/diataxis.png"
 description: A comprehensive guide for beginner programmers to kickstart their career.
 ---
+
+## It's a draft
+
+## Resources
+
+- [Untools](https://untools.co/) - A collection of thinking tools and frameworks to help you solve problems, make decisions and understand systems.
+- [Philosophize This](https://www.philosophizethis.org/podcast) - A podcast about philosophy.
+- [Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow) - A book by Daniel Kahneman.
+- [Crash Course Computer Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo) - A youtube playlist by Crash Course.
+- [The Cherno C++](https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb) - A youtube playlist by The Cherno.
+- [Roadmap.sh](https://roadmap.sh/) - A curated list of roadmaps to become a web developer, machine learning engineer, frontend, backend, devops, etc.
+- ...
 
 - how should I maintain my grade and learn out of curriculum in parallel?
 
