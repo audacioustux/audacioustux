@@ -11,12 +11,14 @@ tags:
   - academia
   - cse
   - bangla
+ogImage: "assets/pexels-tim-gouw-52608.jpg"
 description: Just some beginners learning resources and random opinions for CSE freshers.
 ---
 
 ## Context
 
-> This was written in first quarter of 2019, in my university's internal facebook group, for some reasons that I'm not gonna mention here.  
+> The language and tone I've used here requires me to give some context.  
+This was written in first quarter of 2019, in my university's internal facebook group, for some reasons that I'm not gonna mention here.  
 Some of my opinions might have changed since then. I'm keeping this here for historical reasons, and also because some of the resources are still relevant. I'll write a new one when I get time.
 
 ফার্স্ট সেমিস্টার থেকে ক্লাসমেট বা জুনিয়রদের ভার্সিটি সিলেবাসের বাইরে কিছু শিখার জন্যে ঘুতাইতেছি। দুয়েকজন শুনতেছে যারা তাদের যতদূর সম্ভব হেল্প করার চেষ্টা করি। ৮ বছর ধরে নিজে যে সেক্টরে কাজ করে আসতেছি সেখানে অন্যদের আগ্রহ দেখতে ভালো লাগে আরকি।
