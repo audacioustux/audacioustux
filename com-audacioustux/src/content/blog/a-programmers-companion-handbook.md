@@ -10,7 +10,7 @@ tags:
   - opinion
   - beginner
   - guide
-  - f&q
+  - faq
   - ama
   - kickstart
   - resources
