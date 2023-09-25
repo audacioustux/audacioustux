@@ -44,11 +44,11 @@ _**একগাদা রিসোর্স...**_
 
 ## Computer Fundamental
 
-### শুরু: <https://www.youtube.com/watch?v=tpIctyqH29Q&list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo>
+শুরু: <https://www.youtube.com/watch?v=tpIctyqH29Q&list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo>
 
 ## Computer Architecture: (skip if u want)
 
-### শুরু: <https://www.amazon.com/Computer-Systems-Programmers-Perspective-3rd/dp/013409266X> (this book is freaking awesome <3 ) বই কিনার টাকা না থাকলে <http://gen.lib.rus.ec/> টাকা হলে কিনিয়েন 🙂
+শুরু: <https://www.amazon.com/Computer-Systems-Programmers-Perspective-3rd/dp/013409266X> (this book is freaking awesome <3 ) বই কিনার টাকা না থাকলে <http://gen.lib.rus.ec/> টাকা হলে কিনিয়েন 🙂
 
 ## Programming Fundamental
 
@@ -56,7 +56,7 @@ _**একগাদা রিসোর্স...**_
 
 ### C++
 
-#### শুরু: <https://www.youtube.com/watch?v=vLnPwxZdW4Y>
+শুরু: <https://www.youtube.com/watch?v=vLnPwxZdW4Y>
 
 - better: <https://www.youtube.com/watch?v=18c3MTX0PK0&list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb>
 - advance: <https://www.youtube.com/watch?v=mUQZ1qmKlLY&t=8113s>
@@ -65,21 +65,20 @@ _**একগাদা রিসোর্স...**_
 
 ### Python
 
-#### শুরু: <https://www.youtube.com/watch?v=rfscVS0vtbw>
-
+শুরু: <https://www.youtube.com/watch?v=rfscVS0vtbw>
 or: <https://docs.python-guide.org/>
 
 বই: python 101 and 201 by mike driscoll
 
 ### Algorithms
 
-#### শুরু: <https://www.youtube.com/watch?v=0IAPZzGSbME&list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O>
-
-or: <https://www.geeksforgeeks.org>
-
+শুরু: <https://www.youtube.com/watch?v=0IAPZzGSbME&list=PLDN4rrl48XKpZkf03iYFl-O29szjTrs_O>  
+or: <https://www.geeksforgeeks.org>  
 বই: CLRS or grokking
 
-- Tools & IDEs: vscode, github
+#### Tools & IDEs
+
+vscode, github
 
 ## Web Development
 
@@ -89,26 +88,29 @@ or: <https://www.geeksforgeeks.org>
 
 #### HTML
 
-#### শুরু: <https://www.codecademy.com/learn/learn-html>
-
-বা <https://www.youtube.com/watch?v=pQN-pnXPaVg>
+শুরু: <https://www.codecademy.com/learn/learn-html>  
+বা <https://www.youtube.com/watch?v=pQN-pnXPaVg>  
 বাংলায়: <https://www.youtube.com/watch?v=gjVvFd0bv6s>
 
 #### CSS
 
-#### শুরু: <https://www.youtube.com/watch?v=ieTHC78giGQ>
+শুরু: <https://www.youtube.com/watch?v=ieTHC78giGQ>
 
 #### javascript
 
-#### শুরু: <https://www.youtube.com/watch?v=PkZNo7MFNFg>
+শুরু: <https://www.youtube.com/watch?v=PkZNo7MFNFg>
 
-#### react or vue: (কনফিউশন থাকলে রিয়েক্ট)
+> react or vue: (কনফিউশন থাকলে রিয়েক্ট)
 
-#### react শুরু: <https://reactjs.org/tutorial/tutorial.html>
+#### react
+
+শুরু: <https://reactjs.org/tutorial/tutorial.html>
 
 - then: <https://nextjs.org/learn/basics/getting-started>
 
-#### vue শুরু: <https://vuejs.org/v2/guide/>
+#### vue
+
+শুরু: <https://vuejs.org/v2/guide/>
 
 - then: <https://nuxtjs.org/guide/installation>
 
@@ -116,42 +118,44 @@ or: <https://www.geeksforgeeks.org>
 
 খাতা-পেনসিল(মেকানিকাল), ভেক্টর গ্রাফিক্স/svg(illustrator/inkscape/gravit)
 
-#### শুরু: <https://www.youtube.com/watch?v=_Hp_dI0DzY4>
+শুরু: <https://www.youtube.com/watch?v=_Hp_dI0DzY4>
 
 বই: <https://refactoringui.com/book/>
 
-##### Libraries & Tools: bulma, babel, typescript
+#### Libraries & Tools: bulma, babel, typescript
 
 ### Backend
 
-#### - python/django or nodejs/express or php/laravel
+> python/django or nodejs/express or php/laravel
 
 #### django
 
-#### শুরু: <https://www.youtube.com/watch?v=rfscVS0vtbw>
+শুরু: <https://www.youtube.com/watch?v=rfscVS0vtbw>
 
 - then: <https://www.youtube.com/watch?v=F5mRW0jo-U4>
 - then: <https://docs.djangoproject.com/en/2.2/intro/tutorial01/>
 
 #### laravel
 
-#### শুরু: <https://www.youtube.com/watch?v=OK_JCtrrv-c>
+শুরু: <https://www.youtube.com/watch?v=OK_JCtrrv-c>
 
 - then: <https://www.youtube.com/watch?v=EU7PRmCpx-0&list=PLillGF-RfqbYhQsN5WMXy6VsDMKGadrJ->
 
 #### express
 
-#### শুরু: <https://www.youtube.com/watch?v=L72fhGm1tfE>
+শুরু: <https://www.youtube.com/watch?v=L72fhGm1tfE>
 
 - then MERN(MongoDB, Express, React, Node.js): <https://www.youtube.com/playlist?list=PLillGF-RfqbbiTGgA77tGO426V3hRF9iE>
   or sequelize with postgres: <http://docs.sequelizejs.com/>
   or knex + objectionJS
 
-##### Tools & Stack: redis, docker, postgresql, nginx, linux
+#### Tools & Stack
+
+redis, docker, postgresql, nginx, linux
 
 ## mobile application development
 
-### শুরু: <https://flutter.dev/docs/get-started/install>
+শুরু: <https://flutter.dev/docs/get-started/install>
 
 ## graphics programming (native)
 
@@ -169,6 +173,6 @@ or (advance): threejs, whitestormjs
 
 ## computer security/hacking/cracking
 
-### শুরু: <https://www.youtube.com/watch?v=iyAyN3GFM7A&list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN>
+শুরু: <https://www.youtube.com/watch?v=iyAyN3GFM7A&list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN>
 
 `#KTHXBYE` 🙂
