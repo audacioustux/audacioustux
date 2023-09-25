@@ -15,7 +15,7 @@ tags:
   - kickstart
   - resources
 ogImage: "assets/diataxis.png"
-description: A comprehensive guide for beginner programmers to kickstart their career.
+description: A comprehensive guide for beginner programmers to kickstart their exploration of the vast world of Computer Science.
 ---
 
 ## It's a draft
