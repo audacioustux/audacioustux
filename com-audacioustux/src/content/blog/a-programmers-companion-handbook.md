@@ -3,8 +3,8 @@ author: Tanjim Hossain
 pubDatetime: 2023-09-24T10:40:49Z
 title: A Programmer's Companion Handbook
 postSlug: a-programmers-companion-handbook
-featured: false
-draft: false
+featured: true
+draft: true
 tags:
   - tips
   - opinion
