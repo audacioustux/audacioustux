@@ -1,6 +1,6 @@
-# [Audacious Tux](https://audacioustux.com) 🐧
+# @AudaciousTux🐧
 
-**I'm Tanjim / @audacioustux, Researcher [@ĀloLabs](https://alo.dev/)**
+**I'm Tanjim Hossain, Researcher [@ĀloLabs](https://alo.dev/)**
 
 > Currently working on: [**CompaaS**](https://github.com/audacioustux/CompaaS) & [**ZeroSDP**](https://github.com/audacioustux/ZeroSDP)
 
