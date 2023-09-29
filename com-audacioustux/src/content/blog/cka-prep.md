@@ -79,11 +79,11 @@ But again, CKA exam needs hands-on experience. So, just reading and watching vid
 
 If your local machine is not powerful enough to run a cluster, you may try [Github Codespaces](https://github.com/codespaces) with `docker-in-docker` and `kubectl-helm-minikube` features enabled. Also, cloud providers and some platforms gives free credits for students. You may use those to practice. [More on Codespaces & DevContainers](https://audacioustux.com/posts/getting-started-devcontainer/)
 
-I've been using linux for 10+ years, and docker, kubernetes for 6+ years. So, I didn't have to spend much time on the basics. But if you're new to linux, docker, and kubernetes, you may need to spend some time on those, and build intuition + muscle memory.
+I've been using linux for 10+ years, and docker, kubernetes for 6+ years. So, I didn't have to spend much time on the basics. But if you're new to linux, docker, and kubernetes - you may want to follow a complete learning path, like [KodeKloud CKA Learning Path](https://kodekloud.com/learning-path/cka/), [Roadmap.sh DevOps](https://roadmap.sh/devops), or any other similar learning path.
 
 If anyone would ask me, which is the most intimidating topic in CKA, I'd say it's `Networking`. Although interesting, it's just difficult to troubleshoot.
 
 ## Extra Links
 
 - [Curriculum - CNCF](https://github.com/cncf/curriculum/tree/master)
-- [KodeKloud CKA Learning Path](https://kodekloud.com/learning-path/cka/)
+-
