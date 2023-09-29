@@ -14,6 +14,8 @@ tags:
   - ama
   - kickstart
   - resources
+  - roadmap
+  - english
 ogImage: "assets/pexels-cottonbro-studio-4709290.jpg"
 description: A comprehensive guide for beginner programmers to kickstart their exploration of the vast world of Computer Science.
 ---
