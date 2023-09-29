@@ -24,7 +24,7 @@ Certified Kubernetes Administrator (CKA) is a certification program by the Cloud
 
 [Certified Kubernetes Administrator (CKA) - Linux Foundation](https://www.cncf.io/certification/cka/)
 
-This is kind of a brain-dump of my CKA exam preparation. Instead of writing down every definition, description, and re-itereating the same things that are already have been written & said by others, I'll just point to them (, and use AI help to fill the voids 😅).
+This is kind of a brain-dump of my CKA exam preparation. Instead of writing down every definition, description, and re-iterating the same things that are already have been written & said by others, I'll just point to them (, and use AI help to fill the voids 😅).
 
 ## Prerequisites
 
@@ -56,6 +56,7 @@ This is kind of a brain-dump of my CKA exam preparation. Instead of writing down
   - _**openssl**_: OpenSSL command line tool
   - _**ssh**_: OpenSSH SSH client (remote login program)
   - _**scp**_: secure copy (remote file copy program)
+  - _**systemctl**_: control the systemd system and service manager
   - _**vim**_: Vi IMproved, a programmer's text editor
   - _**tmux**_ (optional): terminal multiplexer
 
@@ -77,6 +78,10 @@ I've seen many posts on reddit and linkedin just like this one I'm writing now..
 But again, CKA exam needs hands-on experience. So, just reading and watching videos won't help. You need to practice. Not necessarily on a real cluster, but at-least on a local cluster.
 
 If your local machine is not powerful enough to run a cluster, you may try [Github Codespaces](https://github.com/codespaces) with `docker-in-docker` and `kubectl-helm-minikube` features enabled. Also, cloud providers and some platforms gives free credits for students. You may use those to practice. [More on Codespaces & DevContainers](https://audacioustux.com/posts/getting-started-devcontainer/)
+
+I've been using linux for 10+ years, and docker, kubernetes for 6+ years. So, I didn't have to spend much time on the basics. But if you're new to linux, docker, and kubernetes, you may need to spend some time on those, and build intuition + muscle memory.
+
+If anyone would ask me, which is the most intimidating topic in CKA, I'd say it's `Networking`. Although interesting, it's just difficult to troubleshoot.
 
 ## Extra Links
 
