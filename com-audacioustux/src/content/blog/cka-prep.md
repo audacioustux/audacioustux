@@ -65,12 +65,12 @@ This is kind of a brain-dump of my CKA exam preparation. Instead of writing down
 
 - _**Docker**_: Kodekloud and kunal kushwaha both have good docker courses. Although it's not required for CKA, it's a good idea to have a good understanding of docker before starting with kubernetes. At-least some familiarity with docker commands, files, images, networking, volumes, docker-compose, etc. is recommended. Those can certainly help to grasp kubernetes concepts faster.
 
-- _**Kubernetes**_: You may want to have a high level understanding of kubernetes. CKA is not a beginner level exam. It's not a good idea to start with CKA as your first kubernetes experience. Get familiar with the basic concepts of kubernetes, like pods, deployments, services, volumes, etc. before starting with CKA. Start with Minikube or K3s on your laptop / desktop, and have some hands-on experience following online tutorials and resources.
+- _**Kubernetes**_: You may want to have a high level understanding of kubernetes. CKA is not a beginner level exam. It's not a good idea to start with CKA as your first kubernetes experience. Get familiar with the basic concepts of kubernetes, like pods, deployments, services, volumes, etc. before starting with CKA. Start with Minikube or K3s on your laptop / desktop, and have some hands-on experience following online tutorials and resources. Free youtube courses are good enough for this.
 
 ## Preparation
 
 Personally I followed the [CKA Certification](https://kodekloud.com/courses/certified-kubernetes-administrator-cka/), and the [Ultimate CKA Mock Exam](https://kodekloud.com/courses/ultimate-certified-kubernetes-administrator-cka-mock-exam/) course on Kodekloud.  
-[KoudKloud Community FAQ](https://github.com/kodekloudhub/community-faq) repo is a nice resource to get an idea about the exam - from people who have already taken the exam.  
+[KoudKloud Community FAQ](https://github.com/kodekloudhub/community-faq) repo is a nice resource to get answers to common questions around the exam.  
 
 That's all...  
 I've seen many posts on reddit and linkedin just like this one I'm writing now.., but i think most of them just boils down to what's said and shared above.
@@ -84,3 +84,6 @@ If your local machine is not powerful enough to run a cluster, you may try [Gith
 ## Extra Links
 
 - [Curriculum - CNCF](https://github.com/cncf/curriculum/tree/master)
+- [@TechWorldwithNana](https://www.youtube.com/@TechWorldwithNana)
+- [@KodeKloud](https://www.youtube.com/@KodeKloud)
+- [@Kunal Kushwaha](https://www.youtube.com/@KunalKushwaha)
