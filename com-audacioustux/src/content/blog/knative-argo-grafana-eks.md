@@ -306,7 +306,7 @@ The relevant manifests are:
 - [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)
     The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
     here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
-    ![activator_request_count](https://audacioustux/assets/promql-activator_request_count.png)
+    ![activator_request_count](https://audacioustux.com/assets/promql-activator_request_count.png)
 - [k8s/kustomize/knative-serving/serving.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-yaml)
 
 then run `./up.sh` again, or just apply the apps/knative-operator.yaml and apps/knative-serving.yaml manifests with kubectl
