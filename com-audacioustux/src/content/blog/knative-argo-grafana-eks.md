@@ -542,6 +542,18 @@ then run `./up.sh` again, or just apply the apps/cloudflared.yaml manifest with 
 
 Or, you can use [ngrok](https://ngrok.com/) to expose the webhook endpoint to the internet. Useful if you don't have a domain name registered.
 
+### ArgoCD apps not syncing
+
+Ummm, have you pushed the manifests to the repo? If yes, there might be some issue. Try to pinpoint which resource is failing to sync, then read the logs or events of that resource - that may give you some clue.
+There's just so many things that can go wrong, so I can't really give a generic solution. But here are some of the issues I faced:
+
+- Volumes not created: a CSI driver may not be installed, or the CSI driver may not have the required permissions. In case of EKS, you may install the ebs-csi driver.
+- Service selector not matching: the labels on pods might not be consistent with the label selector of the service. The official knative manifests have this issue.
+- Architecture mismatch: the image architecture may not match with the node architecture. For example, if you're using a node with arm64 architecture, and the image is built for amd64 architecture, then the image won't run on the node. If you want the knative servings to be multi-arch, then configure kaniko accordingly.
+- Secrets not created: You must create the required secrets that are already mentioned above.
+
+that's all I can remember for now.
+
 ## Extra
 
 ### Taskfile
