@@ -29,6 +29,7 @@ This is kind of a brain-dump of my CKA exam preparation. Instead of writing down
 ## Prerequisites
 
 - _**Linux**_: or more precisely, the common builtin command line tools like (in no particular order):
+
   - _**grep**_: search for patterns in files
   - _**sed**_: stream editor for filtering and transforming text
   - _**awk**_: pattern scanning and processing language
@@ -70,7 +71,7 @@ This is kind of a brain-dump of my CKA exam preparation. Instead of writing down
 ## Preparation
 
 Personally I followed the [CKA Certification](https://kodekloud.com/courses/certified-kubernetes-administrator-cka/), and the [Ultimate CKA Mock Exam](https://kodekloud.com/courses/ultimate-certified-kubernetes-administrator-cka-mock-exam/) course on Kodekloud.  
-[KoudKloud Community FAQ](https://github.com/kodekloudhub/community-faq) repo is a nice resource to get answers to common questions around the exam.  
+[KoudKloud Community FAQ](https://github.com/kodekloudhub/community-faq) repo is a nice resource to get answers to common questions around the exam.
 
 That's all...  
 I've seen many posts on reddit and linkedin just like this one I'm writing now.., but i think most of them just boils down to what's said and shared above.

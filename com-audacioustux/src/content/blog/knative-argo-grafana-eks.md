@@ -72,7 +72,7 @@ deploy-argocd(){
     echo "Deploying argocd..."
     # create argocd namespace declaratively, so the script can be run multiple times without any error
     kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
-    
+
     kubectl apply -k k8s/kustomize/argocd -n argocd
     # wait for all argocd pods to be ready. this may take a while.
     echo "Waiting for all argocd pods to be ready..."
@@ -128,7 +128,7 @@ login-argocd
 add-private-repos
 deploy-argocd-apps
 
-# ebort - is a script that re-tries a command until it succeeds. This is useful as some of the namespaces are created by argocd apps, and it may take a while for the namespaces to be created. 
+# ebort - is a script that re-tries a command until it succeeds. This is useful as some of the namespaces are created by argocd apps, and it may take a while for the namespaces to be created.
 # 2> /dev/null is used to suppress the error messages.
 ebort -- deploy-secrets 2> /dev/null
 
@@ -147,10 +147,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argocd
 resources:
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
 patches:
-- path: configmap-patch.yaml
+  - path: configmap-patch.yaml
 ```
 
 and `k8s/kustomize/argocd/configmap-patch.yaml` with the following content:
@@ -190,10 +190,10 @@ spec:
   project: default
   destination:
     namespace: argo
-    server: 'https://kubernetes.default.svc'
+    server: "https://kubernetes.default.svc"
   source:
     path: k8s/kustomize/argo-workflows
-    repoURL: '<your-repo-url>'
+    repoURL: "<your-repo-url>"
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -214,8 +214,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: argo
 resources:
-- https://github.com/argoproj/argo-workflows/releases/download/v3.4.11/install.yaml
-- rbac.yaml
+  - https://github.com/argoproj/argo-workflows/releases/download/v3.4.11/install.yaml
+  - rbac.yaml
 ```
 
 and `k8s/kustomize/argo-workflows/rbac.yaml` with the following content:
@@ -250,10 +250,10 @@ The `rbac.yaml` just creates a cluster-admin binding for the default service acc
 At this point, we'll ignore everything else, and test if the up.sh script we created earlier works as expected. Do the following:
 
 - make sure the script is executable: `chmod +x up.sh`
-- $GIT_USERNAME, $GIT_TOKEN environment variables are set. You can find / create your git token from [Profile -> Developer settings -> Personal access tokens](https://github.com/settings/tokens).  
+- $GIT_USERNAME, $GIT_TOKEN environment variables are set. You can find / create your git token from [Profile -> Developer settings -> Personal access tokens](https://github.com/settings/tokens).
 - ~/.docker/config.json is created with docker login credentials. You can create it by running `docker login` command.
-then, run the script: `./up.sh`  
-It should end with no error (except some port-forward errors, which is probably a bug in argocd cli).
+  then, run the script: `./up.sh`  
+  It should end with no error (except some port-forward errors, which is probably a bug in argocd cli).
 
 #### ArgoCD UI
 
@@ -304,9 +304,9 @@ The relevant manifests are:
 - [k8s/kustomize/knative-serving/default-domain.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-default-domain-yaml)
 - [k8s/kustomize/knative-serving/service-monitors.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-service-monitors-yaml)
 - [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)  
-    The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
-    here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
-    ![activator_request_count](https://audacioustux.com/assets/promql-activator_request_count.png)
+   The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
+  here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
+  ![activator_request_count](https://audacioustux.com/assets/promql-activator_request_count.png)
 - [k8s/kustomize/knative-serving/serving.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-yaml)
 
 then run `./up.sh` again, or just apply the apps/knative-operator.yaml and apps/knative-serving.yaml manifests with kubectl
@@ -326,7 +326,7 @@ spec:
   template:
     metadata:
       annotations:
-        autoscaling.knative.dev/target: "10"  
+        autoscaling.knative.dev/target: "10"
     spec:
       containers:
           - image: docker.io/tanjim/helloworld-go
