@@ -23,7 +23,7 @@ tags:
   - devops
   - english
 ogImage: "assets/knative-argo-grafana-eks.png"
-description: A walkthrough of setting up Knative, Argo (CD + Workflow + Events), Grafana, Prometheus on EKS - including debugging tips.
+description: A walkthrough of setting up Knative, Argo (CD + Workflow + Events), Grafana, Prometheus on EKS.
 ---
 
 ## Introduction / Context
@@ -330,6 +330,16 @@ EOF
 
 Then run `kubectl get pod -w`, a new pod should be created, and it should be in `Running` state. Then run `kubectl get ksvc helloworld-go`, you should see the URL of the service. Open the URL in your browser, you should see `Hello World!` message.
 
+You can also see autoscaling in action by using [Vegeta](https://github.com/tsenart/vegeta)
+
+```bash
+echo "GET https://helloworld-go.knative-serving.127.0.0.1.sslip.io" | vegeta attack -insecure -workers 20 -rate 200 | vegeta report
+```
+
+and watch the pod count with `kubectl get pod -w`.
+
+The `autoscaling.knative.dev/target: "10"` annotation in the manifest tells Knative Serving to scale up pods if the request rate is more than 10 active requests per second.
+
 ### CI / CD with Argo Workflows
 
 Now, let's create a CI / CD pipeline with Argo Workflows. We'll use [Kaniko](https://github.com/GoogleContainerTools/kaniko) to build the docker image, and [Argo Events](https://argoproj.github.io/argo-events/) to trigger the pipeline on git push.
@@ -382,6 +392,132 @@ kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 
 open `localhost:3000`. The username is `admin` and password is `prom-operator`.
 
+![grafana-dashboards](https://audacioustux.com/assets/knative-argo-grafana-eks.png)
+
+### Elastic Kubernetes Service (EKS)
+
+Now let's create an EKS cluster. We'll use [Terraform](https://www.terraform.io/) to create the cluster.
+
+```HCL
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5"
+    }
+  }
+  required_version = "~> 1"
+}
+
+provider "aws" {
+  region = var.region
+}
+
+data "aws_availability_zones" "available" {
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
+
+locals {
+  cluster_name = "ec-eks"
+}
+
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "ec-vpc"
+
+  cidr = "10.0.0.0/16"
+  azs  = slice(data.aws_availability_zones.available.names, 0, 3)
+
+  private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  public_subnets  = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                      = 1
+  }
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"             = 1
+  }
+}
+
+module "eks" {
+  source = "terraform-aws-modules/eks/aws"
+
+  cluster_name    = local.cluster_name
+  cluster_version = "1.27"
+
+  vpc_id                         = module.vpc.vpc_id
+  subnet_ids                     = module.vpc.private_subnets
+  cluster_endpoint_public_access = true
+
+  eks_managed_node_groups = {
+    AL2_x86_64 = {
+      name = "node-group-al2-x86-64"
+
+      ami_type       = "AL2_x86_64"
+      instance_types = ["m5.large"]
+      capacity_type  = "SPOT"
+
+      min_size     = 2
+      max_size     = 5
+      desired_size = 3
+    }
+  }
+}
+
+data "aws_iam_policy" "ebs_csi_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+}
+
+module "irsa-ebs-csi" {
+  source = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+
+  create_role                   = true
+  role_name                     = "AmazonEKSTFEBSCSIRole-${module.eks.cluster_name}"
+  provider_url                  = module.eks.oidc_provider
+  role_policy_arns              = [data.aws_iam_policy.ebs_csi_policy.arn]
+  oidc_fully_qualified_subjects = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+}
+
+resource "aws_eks_addon" "ebs-csi" {
+  cluster_name             = module.eks.cluster_name
+  addon_name               = "aws-ebs-csi-driver"
+  service_account_role_arn = module.irsa-ebs-csi.iam_role_arn
+  tags = {
+    "eks_addon" = "ebs-csi"
+    "terraform" = "true"
+  }
+}
+
+variable "region" {
+  type         = string
+  default      = "us-east-1"
+}
+
+output "cluster_endpoint" {
+  value       = module.eks.cluster_endpoint
+}
+
+output "cluster_security_group_id" {
+  value       = module.eks.cluster_security_group_id
+}
+
+output "cluster_name" {
+  value       = module.eks.cluster_name
+}
+```
+
 ## Troubleshooting
 
 ### Webhook endpoint is not accessible from outside (Local machine)
@@ -389,7 +525,7 @@ open `localhost:3000`. The username is `admin` and password is `prom-operator`.
 If you're using Kubernetes on your local machine, and don't have a public IP, then you may want to use [Cloudflare Zero Trust Access Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) to expose the webhook endpoint to the internet.  
 We can deploy cloudflared as a deployment in the cluster, and then add public hostname:
 
-![cloudflare-tunnel-webhook-config](https://audacioustux.com/assets/cloudflare-tunnel-webhook-config.pngpexels-tim-gouw-52608.jpg)
+![cloudflare-tunnel-webhook-config](https://audacioustux.com/assets/cloudflare-tunnel-webhook-config.png)
 
 Relevet manifests:
 
@@ -398,3 +534,36 @@ Relevet manifests:
 - [k8s/kustomize/cloudflared/deployment.yaml](https://gist.github.com/audacioustux/5f8ab1cf4ec6810d0ab4a5af5b1d1b58#file-cloudflared-deployment-yaml)
 
 then run `./up.sh` again, or just apply the apps/cloudflared.yaml manifest with kubectl.
+
+## Extra
+
+### Taskfile
+
+I used [Task](https://taskfile.dev/#/) as an alternative to Makefile.
+
+```yaml
+# https://taskfile.dev/
+version: "3"
+
+tasks:
+  default: task --list-all
+  up: bin/up.sh
+  cf-tunnel:
+    vars:
+      NS: cloudflared
+    cmds:
+      - kubectl create ns {{.NS}} --dry-run=client -o yaml | kubectl apply -f -
+      - kubectl apply -k k8s/kustomize/cloudflared -n {{.NS}}
+      - kubectl create secret generic cloudflare-config --from-literal=TUNNEL_TOKEN=$CLOUDFLARE_TUNNEL_TOKEN --dry-run=client -o yaml | kubectl apply -n {{.NS}} -f -
+  argo-password: echo "Bearer $(kubectl get secret -n argo default.service-account-token -o=jsonpath='{.data.token}' | base64 --decode)"
+  argocd-password: echo "$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)"
+  traffic-simulate: echo "GET https://ec-helloworld-go.knative-serving.127.0.0.1.sslip.io" | vegeta attack -insecure -workers 20 -rate 200 | vegeta report
+  grafana-port-forward: ebort -- kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80 2> /dev/null
+  update-kubeconfig:
+    dir: terraform
+    cmd: aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+```
+
+## Epilogue
+
+This was done as a part of a bigger project, and I had to do a lot of debugging to get everything working. I hope this post will help someone in the future. If you have any questions, feel free to ask in the comments section below. Thanks for reading `(˵ ͡° ͜ʖ ͡°˵)`
