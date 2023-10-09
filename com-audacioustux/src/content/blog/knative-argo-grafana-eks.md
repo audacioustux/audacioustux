@@ -303,7 +303,7 @@ The relevant manifests are:
 - [k8s/kustomize/knative-serving/kustomization.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-kustomization-yaml)
 - [k8s/kustomize/knative-serving/default-domain.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-default-domain-yaml)
 - [k8s/kustomize/knative-serving/service-monitors.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-service-monitors-yaml)
-- [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)
+- [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)  
     The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
     here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
     ![activator_request_count](https://audacioustux.com/assets/promql-activator_request_count.png)
@@ -573,4 +573,4 @@ tasks:
 
 ## Epilogue
 
-This was done as a part of a bigger project, and I had to do a lot of debugging to get everything working. I hope this post will help someone in the future. If you have any questions, feel free to ask in the comments section below. Thanks for reading `(˵ ͡° ͜ʖ ͡°˵)`
+This was done as a part of a bigger project, and I had to do a lot of debugging to get everything working. I hope this post will help someone in the future. If you have any questions, feel free to ask in the comments section below. Thanks for reading `(ღ˘⌣˘ღ)`
