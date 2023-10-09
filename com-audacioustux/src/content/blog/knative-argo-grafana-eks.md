@@ -202,6 +202,8 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      # why ServerSideApply?
+      # https://github.com/prometheus-community/helm-charts/issues/3435
       - ServerSideApply=true
 ```
 
@@ -534,6 +536,8 @@ Relevet manifests:
 - [k8s/kustomize/cloudflared/deployment.yaml](https://gist.github.com/audacioustux/5f8ab1cf4ec6810d0ab4a5af5b1d1b58#file-cloudflared-deployment-yaml)
 
 then run `./up.sh` again, or just apply the apps/cloudflared.yaml manifest with kubectl.
+
+Or, you can use [ngrok](https://ngrok.com/) to expose the webhook endpoint to the internet. Useful if you don't have a domain name registered.
 
 ## Extra
 
