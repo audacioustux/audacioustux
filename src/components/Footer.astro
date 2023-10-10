@@ -1,5 +1,4 @@
 ---
-import Comments from "./Comments";
 import Hr from "./Hr.astro";
 import Socials from "./Socials.astro";
 
@@ -13,7 +12,6 @@ const { noMarginTop = false } = Astro.props;
 ---
 
 <footer class={`${noMarginTop ? "" : "mt-auto"}`}>
-  <Comments client:idle />
   <Hr noPadding />
   <div class="footer-wrapper">
     <Socials centered />

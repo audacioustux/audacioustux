@@ -65,5 +65,5 @@ export default function Comments() {
     };
   });
 
-  return <div className="giscus mb-8" />;
+  return <div className="giscus" />;
 }
