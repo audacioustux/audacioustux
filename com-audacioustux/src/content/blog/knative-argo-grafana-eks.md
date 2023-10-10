@@ -403,7 +403,7 @@ open `localhost:3000`. The username is `admin` and password is `prom-operator`.
 
 Now let's create an EKS cluster. We'll use [Terraform](https://www.terraform.io/) to create the cluster.
 
-```HCL
+```hcl
 terraform {
   required_providers {
     aws = {
