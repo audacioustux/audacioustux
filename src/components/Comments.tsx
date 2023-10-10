@@ -25,7 +25,7 @@ export default function Comments() {
     }
 
     const observer = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
+      mutations.forEach(_ => {
         updateGiscusTheme(currentTheme());
       });
     });
