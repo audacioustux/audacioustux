@@ -11,7 +11,7 @@
     "format:check": "prettier --plugin-search-dir=. --check .",
     "format": "prettier --plugin-search-dir=. --write .",
     "cz": "cz",
-    "prepare": "cd .. && husky install com-audacioustux/.husky",
+    "prepare": "husky install",
     "lint": "eslint ."
   },
   "dependencies": {
