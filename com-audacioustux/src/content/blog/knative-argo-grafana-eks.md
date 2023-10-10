@@ -22,7 +22,7 @@ tags:
   - vegeta
   - devops
   - english
-ogImage: "assets/knative-argo-grafana-eks.png"
+ogImage: "assets/random/knative-argo-grafana-eks.png"
 description: A walkthrough of setting up Knative, Argo (CD + Workflow + Events), Grafana, Prometheus on EKS.
 ---
 
@@ -306,7 +306,7 @@ The relevant manifests are:
 - [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)  
    The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
   here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
-  ![activator_request_count](https://audacioustux.com/assets/promql-activator_request_count.png)
+  ![activator_request_count](https://audacioustux.com/assets/random/promql-activator_request_count.png)
 - [k8s/kustomize/knative-serving/serving.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-yaml)
 
 then run `./up.sh` again, or just apply the apps/knative-operator.yaml and apps/knative-serving.yaml manifests with kubectl
@@ -397,7 +397,7 @@ kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 3000:80
 
 open `localhost:3000`. The username is `admin` and password is `prom-operator`.
 
-![grafana-dashboards](https://audacioustux.com/assets/knative-argo-grafana-eks.png)
+![grafana-dashboards](https://audacioustux.com/assets/random/knative-argo-grafana-eks.png)
 
 ### Elastic Kubernetes Service (EKS)
 
@@ -530,7 +530,7 @@ output "cluster_name" {
 If you're using Kubernetes on your local machine, and don't have a public IP, then you may want to use [Cloudflare Zero Trust Access Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) to expose the webhook endpoint to the internet.  
 We can deploy cloudflared as a deployment in the cluster, and then add public hostname:
 
-![cloudflare-tunnel-webhook-config](https://audacioustux.com/assets/cloudflare-tunnel-webhook-config.png)
+![cloudflare-tunnel-webhook-config](https://audacioustux.com/assets/random/cloudflare-tunnel-webhook-config.png)
 
 Relevet manifests:
 

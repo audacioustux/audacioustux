@@ -14,7 +14,7 @@ tags:
   - monkeys
   - piet
   - bangla
-ogImage: "assets/piet.jpg"
+ogImage: "assets/random/piet.jpg"
 description: The Bizarre World of Esoteric Programming Languages
 ---
 

@@ -16,7 +16,7 @@ tags:
   - codespaces
   - github
   - english
-ogImage: "assets/dev-container-stages.png"
+ogImage: "assets/random/dev-container-stages.png"
 description: A step-by-step guide to get started with devcontainer in vscode and github codespaces. Including secrets management, feature development, and more.
 ---
 

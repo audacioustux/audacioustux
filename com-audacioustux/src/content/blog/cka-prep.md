@@ -14,7 +14,7 @@ tags:
   - roadmap
   - tips
   - english
-ogImage: "assets/nature-2129493_1280.jpg"
+ogImage: "assets/random/nature-2129493_1280.jpg"
 description: A collection of resources and tips, that helped me prepare for the Certified Kubernetes Administrator (CKA) exam.
 ---
 

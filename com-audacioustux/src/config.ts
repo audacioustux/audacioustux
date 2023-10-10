@@ -7,10 +7,10 @@ export const SITE: Site = {
   title: "Tanjim @AudaciousTux",
   ogImage: "audacioustux_workspace.jpg",
   lightAndDarkMode: true,
-  postPerPage: 50,
+  postPerPage: 5,
 };
 
-export const LOCALE = ["en-EN", "bn-BD"]; // set to [] to use the environment default
+export const LOCALE = ["en-EN"]; // set to [] to use the environment default
 
 export const LOGO_IMAGE = {
   enable: false,
@@ -133,11 +133,5 @@ export const SOCIALS: SocialObjects = [
     href: "https://t.me/audacioustux",
     linkTitle: `${SITE.title} on Telegram`,
     active: true,
-  },
-  {
-    name: "Mastodon",
-    href: "https://github.com/satnaing/astro-paper",
-    linkTitle: `${SITE.title} on Mastodon`,
-    active: false,
   },
 ];

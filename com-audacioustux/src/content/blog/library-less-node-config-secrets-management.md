@@ -14,7 +14,7 @@ tags:
   - tips
   - env
   - english
-ogImage: "assets/library-less-node-config-secrets-management.png"
+ogImage: "assets/random/library-less-node-config-secrets-management.png"
 description: A simple way to manage secrets and configs in nodejs without using any library.
 ---
 
