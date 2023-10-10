@@ -32,9 +32,15 @@ export default defineConfig({
     },
   },
   vite: {
+    build: {
+      assetsInlineLimit: 1024,
+    },
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],
     },
+  },
+  build: {
+    inlineStylesheets: "always",
   },
   scopedStyleStrategy: "where",
 });
