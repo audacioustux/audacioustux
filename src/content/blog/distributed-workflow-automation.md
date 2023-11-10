@@ -117,3 +117,9 @@ EFS is a network file system, so it can be mounted to multiple nodes at the same
 Argo CD, Workflow, and Events is a great trio. I had already used to in the past for few other projects. So, I was already familiar with it. Also, Argo Workflow has a lot of built-in features. The retry menchanism, for example, is helpful in the situation where AWS spot instances are used. If a spot instance is terminated, the workflow will be retried on another node.  
 Argo Event helped with not having to give the API server access to the Kubernetes cluster. The API server just triggers a webhook, and the workflow engine takes over from there.  
 Argo CD is used to help with GitOps - as usual.
+
+## End Notes
+
+AWS has some problem if used with Terraform, as it doesn't delete some resources (e.g., load balancers). Terraform destroy will fail if those resources are not deleted. So, I had to manually delete those resources from the AWS console.
+
+If you have any questions, feel free to ask in the comments below.
