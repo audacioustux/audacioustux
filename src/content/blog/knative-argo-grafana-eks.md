@@ -3,7 +3,7 @@ author: Tanjim Hossain
 pubDatetime: 2023-10-9T11:14:00Z
 title: Knative + Argo (CD + Workflow + Events) + Grafana on EKS
 postSlug: knative-argo-grafana-eks
-featured: false
+featured: true
 draft: false
 tags:
   - kubernetes

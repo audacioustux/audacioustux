@@ -3,7 +3,7 @@ author: Tanjim Hossain
 pubDatetime: 2023-09-18T15:34:00Z
 title: Getting Started with Devcontainer
 postSlug: getting-started-devcontainer
-featured: false
+featured: true
 draft: false
 tags:
   - devcontainer

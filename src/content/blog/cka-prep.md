@@ -3,7 +3,7 @@ author: Tanjim Hossain
 pubDatetime: 2023-9-29T10:32:40Z
 title: Certified Kubernetes Administrator (CKA) Exam Preparation
 postSlug: cka-prep
-featured: false
+featured: true
 draft: false
 tags:
   - kubernetes
