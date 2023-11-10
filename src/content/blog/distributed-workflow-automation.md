@@ -2,7 +2,7 @@
 author: Tanjim Hossain
 pubDatetime: 2023-10-9T11:14:00Z
 title: Distributed Workflow Automation with Argo, on top of EKS (EFS, Autoscaler)
-postSlug: knative-argo-grafana-eks
+postSlug: distributed-workflow-automation
 featured: true
 draft: false
 tags:
