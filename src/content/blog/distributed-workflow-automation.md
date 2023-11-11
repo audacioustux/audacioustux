@@ -21,6 +21,7 @@ tags:
   - lettre
   - smtp
   - pandoc
+  - buildpacks
   - english
 description: A glancethrough of how to use Argo tools to automate workflows (e.g., CI/CD, Security Scanning, etc.) in a distributed fashion, on top of EKS (with EFS CSI and Autoscaler) provisioned with Terraform.
 ---
@@ -66,6 +67,8 @@ It's written in Rust, with:
 - `jsonwebtoken` for generating JWT tokens
 - `clap` for parsing command line arguments (or from environment variables)
 - `reqwest` for making HTTP requests to the webhook endpoint.
+
+and compiled to a container image with `buildpacks` ([using pack](https://github.com/audacioustux/scan-automate/blob/main/scan-automate/Taskfile.yml#L22))
 
 ### Workflow Engine
 
