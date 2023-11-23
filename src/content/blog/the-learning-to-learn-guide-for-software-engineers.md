@@ -3,8 +3,8 @@ author: Tanjim Hossain
 pubDatetime: 2023-09-24T10:40:49Z
 title: The Learning to Learn Guide for Software Engineers
 postSlug: the-learning-to-learn-guide-for-software-engineers
-featured: true
-draft: true
+featured: false
+draft: false
 tags:
   - tips
   - opinion
@@ -18,6 +18,8 @@ tags:
   - english
 description: A chunked down first-principles based guide to learn anything in general, and software engineering in particular.
 ---
+
+> It's DRAFT!
 
 I think we take our mindset for granted. We point our finger at people and question their beliefs, actions, and decisions... "Why don't do this? Why don't you do that? Why don't you think like this? Why don't you think like that?" - We tend to scrutinize the actions and beliefs of others more intensely than we do our own. This can be tied to a variety of psychological tendencies, such as the self-serving bias, which is the tendency to see oneself in a more favorable light, or the fundamental attribution error, where one attributes others' actions to their character rather than to situational factors, while giving oneself more leeway due to circumstance. The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow) by Daniel Kahneman is a great read on this topic.
 
