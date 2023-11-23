@@ -25,7 +25,7 @@ I think we take our mindset for granted. We point our finger at people and quest
 
 The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow) by Daniel Kahneman is a great read on this topic.
 
-But, before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and made up stories?
+But, before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and scientific sounding words, and a bunch of resources to read?
 
 Well... ummm... yes, but...  
 No, there's no punchline.
@@ -61,6 +61,8 @@ Yah, such ingenuity to copy-paste from Wikipedia. But I think it's a good defini
 ## Don't get lost in the woods
 
 ## Things are complex
+
+## It's not all binary
 -->
 ## Everything is connected, except when it's not
 
