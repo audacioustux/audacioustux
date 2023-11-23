@@ -21,12 +21,18 @@ description: A chunked down first-principles based guide to learn anything in ge
 
 > It's DRAFT!
 
-I think we take our mindset for granted. We point our finger at people and question their beliefs, actions, and decisions... "Why don't do this? Why don't you do that? Why don't you think like this? Why don't you think like that?" - We tend to scrutinize the actions and beliefs of others more intensely than we do our own. This can be tied to a variety of psychological tendencies, such as the self-serving bias, which is the tendency to see oneself in a more favorable light, or the fundamental attribution error, where one attributes others' actions to their character rather than to situational factors, while giving oneself more leeway due to circumstance. The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow) by Daniel Kahneman is a great read on this topic.
+I think we take our mindset for granted. We point our finger at people and question their beliefs, actions, and decisions... "Why don't do this? Why don't you do that? Why don't you think like this? Why don't you think like that?" - We tend to scrutinize the actions and beliefs of others more intensely than we do our own. This can be tied to a variety of psychological tendencies, such as the self-serving bias, which is the tendency to see oneself in a more favorable light, or the fundamental attribution error, where one attributes others' actions to their character rather than to situational factors, while giving oneself more leeway due to circumstance.
 
-But wait! Before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and made up stories?  
-Well... ummm... yes, but... no, there's no punchline.  
-Let me give you an analogy instead - suppose you want to improve your communication skills. I'd highly recommend you to talk to people... But that sounds so naive, right? What if I recommended some books on communication skills? Or some online courses? Or some YouTube videos? Or some podcasts? Or some blogs? Or some... and you end up with a list of 100+ resources, and you don't know where to start.  
-You know what could be a better approach? Neither do I... no, there's no punchline here either. What else could I help you with? You could ask your question to ChatGPT and get maybe even better response. But what I've learned by now is - It's not only the resources that matter, but also the mindset. And that mindset is something we should strive to develop.  
+The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow) by Daniel Kahneman is a great read on this topic.
+
+But, before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and made up stories?
+
+Well... ummm... yes, but... no, there's no punchline.
+
+Let me give you an analogy instead - suppose you want to improve your communication skills. I'd highly recommend you to talk to people... But that sounds so naive, right? What if I recommended some books on communication skills? Or some online courses? Or some YouTube videos? Or some podcasts? Or some blogs? Or some... and you end up with a list of 100+ resources, and you don't know where to start.
+
+You know what could be a better approach? Neither do I... no, there's no punchline here either. What else could I help you with? You could ask your question to ChatGPT and get maybe even better response. But what I've learned by now is - It's not only the resources that matter, but also the mindset. And that mindset is something we should strive to develop.
+
 But... wait a minute... it's not like I can just sit down, and think about stuffs all day long, and develop a mindset. Neither it makes sense to read a book on mindset... I mean, you'd need a mindset to read a book on mindset, right? So, how do I break this circular dependency?  
 
 Let's start with a simple question - What is a mindset?
