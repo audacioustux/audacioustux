@@ -20,17 +20,11 @@ ogImage: "assets/pexels-cottonbro-studio-4709290.jpg"
 description: A comprehensive guide for beginner programmers to kickstart their exploration of the vast world of Computer Science.
 ---
 
-## It's a draft
+## Everything is connected, except when it's not
 
-## Resources
+![Knowledge Graph](https://audacioustux.com/assets/A-detailed-illustration-of-a-network-graph-with-a-mix-of-connected-and-disconnected-nodes-representing-various-academic-subjects-Nodes-labeled-with.png)
 
-- [Untools](https://untools.co/) - A collection of thinking tools and frameworks to help you solve problems, make decisions and understand systems.
-- [Philosophize This](https://www.philosophizethis.org/podcast) - A podcast about philosophy.
-- [Thinking, Fast and Slow](https://en.wikipedia.org/wiki/Thinking,_Fast_and_Slow) - A book by Daniel Kahneman.
-- [Crash Course Computer Science](https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo) - A youtube playlist by Crash Course.
-- [The Cherno C++](https://www.youtube.com/playlist?list=PLlrATfBNZ98dudnM48yfGUldqGD0S4FFb) - A youtube playlist by The Cherno.
-- [Roadmap.sh](https://roadmap.sh/) - A curated list of roadmaps to become a web developer, machine learning engineer, frontend, backend, devops, etc.
-- ...
+## QnA - List of questions
 
 - how should I maintain my grade and learn out of curriculum in parallel?
 
