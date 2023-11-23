@@ -27,7 +27,8 @@ The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-
 
 But, before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and made up stories?
 
-Well... ummm... yes, but... no, there's no punchline.
+Well... ummm... yes, but...  
+No, there's no punchline.
 
 Let me give you an analogy instead - suppose you want to improve your communication skills. I'd highly recommend you to talk to people... But that sounds so naive, right? What if I recommended some books on communication skills? Or some online courses? Or some YouTube videos? Or some podcasts? Or some blogs? Or some... and you end up with a list of 100+ resources, and you don't know where to start.
 
@@ -49,7 +50,7 @@ Let's start with a simple question - What is a mindset?
 
 Yah, such ingenuity to copy-paste from Wikipedia. But I think it's a good definition to start with.
 
-## Utilize the Learning Mediums
+<!-- ## Utilize the Learning Mediums
 
 ## Respect is a Currency
 
@@ -60,12 +61,12 @@ Yah, such ingenuity to copy-paste from Wikipedia. But I think it's a good defini
 ## Don't get lost in the woods
 
 ## Things are complex
-
+-->
 ## Everything is connected, except when it's not
 
 ![Knowledge Graph](https://audacioustux.com/assets/dall-e/A-detailed-illustration-of-a-network-graph-with-a-mix-of-connected-and-disconnected-nodes-representing-various-academic-subjects-Nodes-labeled-with.png)
 
-## Concepts
+<!-- ## Concepts
 
 - First Principles Thinking
 - Dunnings-Kruger Effect
@@ -79,9 +80,31 @@ Yah, such ingenuity to copy-paste from Wikipedia. But I think it's a good defini
 - The Law of Large Numbers
 - The Law of Small Numbers
 - The Law of Averages
-- The Dialectical Method
+- Alianation Effect
+- Imposter Syndrome
+- The Peter Principle
+- The Hawthorne Effect
+- The Pygmalion Effect
+- The Golem Effect
+- The Halo Effect
+- The Horn Effect
+- The Dunning-Kruger Effect
+- The Spotlight Effect
+- The Bystander Effect
+- The Bandwagon Effect
+- The IKEA Effect
+- The Baader-Meinhof Phenomenon
+- The Benjamin Franklin Effect
+- The Zeigarnik Effect
+- The Endowment Effect
+- The Framing Effect
+- The Anchoring Effect
+- The Availability Heuristic
+- The Representativeness Heuristic
+- The Affect Heuristic
+- The Dialectical Method -->
 
-## QnA - List of questions
+## QnA - List of questions I've been asked
 
 - how should I maintain my grade and learn out of curriculum in parallel?
 
