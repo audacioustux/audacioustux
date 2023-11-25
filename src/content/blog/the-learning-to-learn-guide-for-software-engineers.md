@@ -83,9 +83,12 @@ Again, a reminder, whether you have the state of mind to do something is also pa
 
 ## Set your Homeostasis
 
+WIP
+
+<!-- 
 ## Everything is connected, except when it's not
 
-![Knowledge Graph](https://audacioustux.com/assets/dall-e/A-detailed-illustration-of-a-network-graph-with-a-mix-of-connected-and-disconnected-nodes-representing-various-academic-subjects-Nodes-labeled-with.png)
+![Knowledge Graph](https://audacioustux.com/assets/dall-e/A-detailed-illustration-of-a-network-graph-with-a-mix-of-connected-and-disconnected-nodes-representing-various-academic-subjects-Nodes-labeled-with.png) -->
 
 <!-- ## Acknowledge You're a Biological Machine -->
 
