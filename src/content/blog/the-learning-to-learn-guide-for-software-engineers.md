@@ -4,7 +4,7 @@ pubDatetime: 2023-09-24T10:40:49Z
 title: The Learning to Learn Guide for Software Engineers
 postSlug: the-learning-to-learn-guide-for-software-engineers
 featured: false
-draft: false
+draft: true
 tags:
   - beginner
   - mindset
@@ -56,7 +56,7 @@ But the goal of "Learning" is also vague. What "exactly" you "want" to learn?
 I've quoted "exactly" because we're almost always not sure what we want to learn. Maybe you're very certain that you want to learn Software Engineering... hmmm, not precise enough. How 'bout Web Development, a subset of Software Engineering? Still not precise enough. How 'bout ReactJS...  
 At this point, have you jumped into the [bandwagon](https://en.wikipedia.org/wiki/Bandwagon_effect)? Is that what you really "want" to learn? Can you explain your decision making process clearly to yourself?
 
-I think, it's not always necessary to know your next step, to take your next step. But it's always necessary to keep track of your steps, or you'll end up in an [live-lock](https://en.wikipedia.org/wiki/Deadlock#Livelock).
+It's not always necessary to know your next step, to take your next step. But it's always necessary to keep track of your steps, or you'll end up in an [live-lock](https://en.wikipedia.org/wiki/Deadlock#Livelock).
 
 You may have a few long-term Goals - that changes less frequently,  
 some short-term Goals - that aligns with those long-term ones,  
@@ -72,7 +72,7 @@ That's how most of our decisions are made, right!? You either:
 It should be clear by now that, I'm not referring to any specific set of attitudes and calling it THE mindset. It's just a [Umbrella term](https://en.wikipedia.org/wiki/Umbrella_term) that refers to what you should possess to reach your own goals. The key point is - your goals should be aligned with your mindset.  
 There're constraints and consequences. We only have 24 hours a day, a brain that can't hold infinite amount of information, and a body that needs rest. So, we need to prioritize.  
 
-Our expectations should be educated, and our decisions should be informed... But most importantly, we need to make progress. I've seen some people who are so obsessed with making the right decision, that they end up making no decision at all. It's like running an recursive function with no base case - you have to get back to the base case and return some value at some point, or you'll end up with a [stack overflow](https://en.wikipedia.org/wiki/Stack_overflow).  
+Our expectations should be educated, and our decisions should be informed... But most importantly, we need to make progress. I've seen some people who are so obsessed with making the right decision, that they end up making no action at all. It's like running an recursive function with no base case - you have to get back to the base case and return some value at some point, or you'll end up with a [stack overflow](https://en.wikipedia.org/wiki/Stack_overflow).  
 Watching / Reading / Listening to a bunch of resources, or in other words "Hoarder's mindset" is not necessarily an inherently bad thing, but we need to keep the balance. There're some experiences that can only be gained by doing.
 
 Make a leap of faith, and then adjust your course as you go. Strive to make better decisions, as a on-going process. Also, enjoy that process, and constantly re-evaluate where you are, and where you want to be.
