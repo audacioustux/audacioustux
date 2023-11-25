@@ -4,7 +4,7 @@ pubDatetime: 2023-09-24T10:40:49Z
 title: The Learning to Learn Guide for Software Engineers
 postSlug: the-learning-to-learn-guide-for-software-engineers
 featured: false
-draft: true
+draft: false
 tags:
   - beginner
   - mindset
