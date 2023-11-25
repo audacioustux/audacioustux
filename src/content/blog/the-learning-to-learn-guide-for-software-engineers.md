@@ -88,19 +88,19 @@ WIP
 
 ![Knowledge Graph](https://audacioustux.com/assets/dall-e/A-detailed-illustration-of-a-network-graph-with-a-mix-of-connected-and-disconnected-nodes-representing-various-academic-subjects-Nodes-labeled-with.png)
 
-<!-- ## Acknowledge You're a Biological Machine -->
+## Acknowledge You're a Biological Machine
 
-<!-- ## First Principles Thinking -->
+## First Principles Thinking
 
-<!-- ## Utilize the Learning Mediums -->
+## Utilize the Learning Mediums
 
-<!-- ## Respect is a Currency -->
+## Respect is a Currency
 
-<!-- ## Study the People -->
+## Study the People
 
-<!-- ## Going Back to the Future -->
+## Going Back to the Future
 
-<!-- ## It's not all binary -->
+## It's not all binary
 
 <!-- ## Concepts
 
