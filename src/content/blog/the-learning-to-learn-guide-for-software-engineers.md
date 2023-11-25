@@ -4,7 +4,7 @@ pubDatetime: 2023-09-24T10:40:49Z
 title: The Learning to Learn Guide for Software Engineers
 postSlug: the-learning-to-learn-guide-for-software-engineers
 featured: false
-draft: true
+draft: false
 tags:
   - beginner
   - mindset
@@ -17,8 +17,10 @@ description: A chunked down first-principles based guide to learn anything in ge
 ---
 
 > It's DRAFT!
+> It's DRAFT!
+> It's DRAFT!
 
-I think we take our mindset for granted. We point our finger at people and question their beliefs, actions, and decisions... "Why don't do this? Why don't you do that? Why don't you think like this? Why don't you think like that?" - We tend to scrutinize the actions and beliefs of others more intensely than we do our own. This can be tied to a variety of psychological tendencies, such as the self-serving bias, which is the tendency to see oneself in a more favorable light, or the fundamental attribution error, where one attributes others' actions to their character rather than to situational factors, while giving oneself more leeway due to circumstance.  
+I think we take our mindset for granted. We tend to scrutinize the actions and beliefs of others more intensely than we do our own. This can be tied to a variety of psychological tendencies, such as the self-serving bias, which is the tendency to see oneself in a more favorable light, or the fundamental attribution error, where one attributes others' actions to their character rather than to situational factors, while giving oneself more leeway due to circumstance.  
 The book [Thinking, Fast and Slow](https://www.goodreads.com/book/show/11468377-thinking-fast-and-slow) by Daniel Kahneman is a great read on this topic.
 
 But, before going more philosophical - Is this a typical "Self-Development" article, with some pretty obvious facts and scientific sounding words, and a bunch of resources to read?
@@ -46,11 +48,11 @@ Let's start with a simple question - What is a mindset?
 >
 > -- [Wikipedia](https://en.wikipedia.org/wiki/Mindset)
 
-Yah, such ingenuity to copy-paste from Wikipedia. But I think it's a good definition to start with.
+Yah, such ingenuity to copy-paste from Wikipedia.
 
-But personal subjective beliefs on what is ideal, right, or wrong - are not always consciously accessible, often hidden behind layers of cognitive biases and logical fallacies, not always possible to be expressed in human language, constantly changing, and often inconsistent with our other beliefs and actions.
+From the above definition, we may procede to label ourselves of having a "growth mindset" or a "fixed mindset", or etc. However, personal subjective beliefs on what is ideal, right, or wrong - are not always consciously accessible, often hidden behind layers of cognitive biases and logical fallacies, not always possible to be expressed in human language, constantly changing, and often inconsistent with our other beliefs and actions.
 
-So, the word "Mindset" vaguely refers to a set of beliefs, attitudes, and assumptions that we hold, and that influences our behavior. What I mean by "Developing a mindset" in this context is - to embrace a set of beliefs, attitudes, and assumptions that I believe are conducive to learning.  
+So, the word "Mindset" vaguely refers to a set of beliefs, attitudes, and assumptions that we appearently hold, and influences our behavior. What I mean by "Developing a mindset" in this context is - to embrace a set of beliefs, attitudes, and assumptions that I believe are conducive to learning.  
 
 But the goal of "Learning" is also vague. What "exactly" you "want" to learn?  
 I've quoted "exactly" because we're almost always not sure what we want to learn. Maybe you're very certain that you want to learn Software Engineering... hmmm, not precise enough. How 'bout Web Development, a subset of Software Engineering? Still not precise enough. How 'bout ReactJS...  
@@ -58,12 +60,13 @@ At this point, have you jumped into the [bandwagon](https://en.wikipedia.org/wik
 
 It's not always necessary to know your next step, to take your next step. But it's always necessary to keep track of your steps, or you'll end up in an [live-lock](https://en.wikipedia.org/wiki/Deadlock#Livelock).
 
-You may have a few long-term Goals - that changes less frequently,  
-some short-term Goals - that aligns with those long-term ones,  
-and, Steps are the actions you take to achieve your goals.
+You may have a few Interests, that you'd like to do, or want to happen,  
+That may require some long-term Goals - that you try to persevere,  
+some short-term Goals - that makes you feel like you're making progress,  
+and, Steps to reify those Goals - that you can take action on.
 
-But, how do you know them?  
-Maybe you heard good things about Software Engineering, like - good pay, good work-life balance, good job security, etc. Apart from that, you may have some coding experience, and have enjoyed it. So, why not pursue a career in Software Engineering?  
+But, do you have any Interests? Maybe none in particular, or maybe too many.  
+For example, you may heard good things about Software Engineering, like - good pay, good work-life balance, good job security, etc. Apart from that, you may have some coding experience, and have enjoyed it. So, why not pursue a career in Software Engineering?  
 That's how most of our decisions are made, right!? You either:
 
 1. Have experienced something by chance (without a deliberate intention).
@@ -73,9 +76,10 @@ It should be clear by now that, I'm not referring to any specific set of attitud
 There're constraints and consequences. We only have 24 hours a day, a brain that can't hold infinite amount of information, and a body that needs rest. So, we need to prioritize.  
 
 Our expectations should be educated, and our decisions should be informed... But most importantly, we need to make progress. I've seen some people who are so obsessed with making the right decision, that they end up making no action at all. It's like running an recursive function with no base case - you have to get back to the base case and return some value at some point, or you'll end up with a [stack overflow](https://en.wikipedia.org/wiki/Stack_overflow).  
-Watching / Reading / Listening to a bunch of resources, or in other words "Hoarder's mindset" is not necessarily an inherently bad thing, but we need to keep the balance. There're some experiences that can only be gained by doing.
 
-Make a leap of faith, and then adjust your course as you go. Strive to make better decisions, as a on-going process. Also, enjoy that process, and constantly re-evaluate where you are, and where you want to be.
+Make a leap of faith, and then adjust your course as you go. Strive to make better decisions, as a on-going process, and enjoy that process. Constantly re-evaluate where you are, and where you want to be. There're some experiences that can only be gained by doing, but we also need to gather new information via reading, listening, watching, etc. to expose ourselves to new ideas and form new perspectives. But be aware of [Knowledge Hoarding](https://en.wikipedia.org/wiki/Counterproductive_work_behavior). It's enjoyable to learn new things, but remember you have some goals in your bucket list? You need to make progress towards them.
+
+Again, a reminder, whether you have the state of mind to do something is also part of your mindset. If you're addicted to social media, or something that wastes too much of your time, that contradicts to saying you've productivity mindset. If you're failing to sleep on time, that contradicts to saying you've a healthy mindset, and so on. But don't worry...
 
 ## Set your Homeostasis
 
