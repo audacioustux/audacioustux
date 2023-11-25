@@ -28,17 +28,17 @@ description: A walkthrough of setting up Knative, Argo (CD + Workflow + Events),
 
 ## Introduction / Context
 
-Recently I had an interesting opportunity to work on building a self-service platform with Knative in center. [Knative](https://knative.dev/) is a Kubernetes-based platform to build, deploy, and manage modern serverless workloads. It provides a set of middleware components that are essential to build modern, source-centric, and container-based applications that can run anywhere: on-premises, in the cloud, or even in a third-party data center. It is a platform that is built on top of Kubernetes and is designed to be portable across different cloud providers.
+Recently I had an interesting opportunity to work on building a self-service platform with Knative in center. [Knative](https://knative.dev/) is a Kubernetes-based platform to build, deploy, and manage modern serverless workloads. It provides a set of middleware components that are essential to building modern, source-centric, and container-based applications that can run anywhere: on-premises, in the cloud, or even in a third-party data center. It is a platform that is built on top of Kubernetes and is designed to be portable across different cloud providers.
 
-In this post, I'll basically document the whole process, so that someone from the future (potentially me) may find it useful. I'll also try to include some debugging tips, that I found useful while working on this project. The official documentation of Knative is good, but not great. The official manifests are too inconsistent, and the documentation is not always up-to-date. So here it goes.
+In this post, I'll document the whole process, so that someone from the future (potentially me) may find it useful. I'll also try to include some debugging tips, that I found useful while working on this project. The official documentation of Knative is good, but not great. The official manifests are too inconsistent, and the documentation is not always up-to-date. So here it goes.
 
 > _**Caution**_: The point of this project was to have a basic setup up and running, so I didn't bother with some ideal best practices - like using proper RBAC, bootstrapping with EKS Blueprints, or parameterizing the Terrafrom + K8s manifests, using a secret store / vault, etc.
 
 ## Prerequisites
 
-Before diving into an managed Kubernetes solution like [EKS](https://aws.amazon.com/eks/), that may cost you a lot of money along the way, I'd recommend using [Minikube](https://minikube.sigs.k8s.io/docs/) with --driver=docker. And I'm a big fan of DevContainers, you may find detail about it from my previous post: [https://audacioustux.com/posts/getting-started-devcontainer/](https://audacioustux.com/posts/getting-started-devcontainer/) - it's totally optional though.
+Before diving into a managed Kubernetes solution like [EKS](https://aws.amazon.com/eks/), that may cost you a lot of money along the way, I'd recommend using [Minikube](https://minikube.sigs.k8s.io/docs/) with --driver=docker. I'm a big fan of DevContainers, you may find detail about it in my previous post: [https://audacioustux.com/posts/getting-started-devcontainer/](https://audacioustux.com/posts/getting-started-devcontainer/) - it's optional though.
 
-The whole setup may require at-least 4 vCPUs and 8GB of RAM. On my EKS setup, I used 3 nodes of m5.large (2 vCPU, 8GB RAM, AL2_x86_64).
+The whole setup may require at least 4 vCPUs and 8GB of RAM. On my EKS setup, I used 3 nodes of m5.large (2 vCPU, 8GB RAM, AL2_x86_64).
 
 Also, you'll need to have the following tools installed:
 
@@ -138,7 +138,7 @@ Okay, this script will fail, because we don't have the manifests yet. Let's crea
 
 ### ArgoCD
 
-[ArgoCD](https://argo-cd.readthedocs.io/en/stable/) is a declarative, GitOps continuous delivery tool for Kubernetes. Or in other words, it listens to changes in your Git repository, and deploys the manifests to your Kubernetes cluster. It also provides a nice UI to visualize the state of your cluster, and the applications running on it.
+[ArgoCD](https://argo-cd.readthedocs.io/en/stable/) is a declarative, GitOps continuous delivery tool for Kubernetes. Or in other words, it listens to changes in your Git repository and deploys the manifests to your Kubernetes cluster. It also provides a nice UI to visualize the state of your cluster, and the applications running on it.
 
 Let's create a [Kustomize](https://kustomize.io/) base for ArgoCD. Create a file named `k8s/kustomize/argocd/kustomization.yaml` with the following content:
 
@@ -166,13 +166,13 @@ data:
     ignoreAggregatedRoles: true
 ```
 
-Why the patch? hmmm it's out of scope for this post. But you can find more about it from [here](https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#ignoring-rbac-changes-made-by-aggregateroles).
+Why the patch? Hmm, it's out of scope for this post. But you can find out more about it from [here](https://argo-cd.readthedocs.io/en/stable/user-guide/diffing/#ignoring-rbac-changes-made-by-aggregateroles).
 
 Now, let's create the ArgoCD application manifests. Start with Argo Workflows.
 
 ### Argo Workflows
 
-[Argo Workflows](https://argoproj.github.io/argo-workflows/) is an open source container-native workflow engine for orchestrating parallel jobs on Kubernetes. In this project, we'll use Argo Workflows to run CI/CD pipelines, instead of the other alternatives (e.g. Github Actions, Tekton, etc.). The reason is simple - Argo Workflows is a Kubernetes native solution, and it's very easy to integrate with other Kubernetes native tools like ArgoCD, Argo Events, etc.
+[Argo Workflows](https://argoproj.github.io/argo-workflows/) is an open-source container-native workflow engine for orchestrating parallel jobs on Kubernetes. In this project, we'll use Argo Workflows to run CI/CD pipelines, instead of the other alternatives (e.g. GitHub Actions, Tekton, etc.). The reason is simple - Argo Workflows is a Kubernetes native solution, and it's very easy to integrate with other Kubernetes native tools like ArgoCD, Argo Events, etc.
 
 Create a file named `k8s/apps/argo-workflow.yaml` with the following content:
 
@@ -207,7 +207,7 @@ spec:
       - ServerSideApply=true
 ```
 
-replace `<your-repo-url>` with your repo url. Now, create the directory `k8s/kustomize/argo-workflows` and create a file named `k8s/kustomize/argo-workflows/kustomization.yaml` with the following content:
+replace `<your-repo-url>` with your repo URL. Now, create the directory `k8s/kustomize/argo-workflows` and create a file named `k8s/kustomize/argo-workflows/kustomization.yaml` with the following content:
 
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -263,13 +263,13 @@ Let's check if ArgoCD UI is accessible. Run the following command:
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-open `localhost:8080`. The username is `admin` and for password - open another terminal, run the following command:
+open `localhost:8080`. The username is `admin` and for password - open another terminal, and run the following command:
 
 ```bash
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
 ```
 
-If the ArgoCD works as expected, you should see Argo Workflows application in the UI, and it's status should be `Synced`. If not, try to debug the issue.
+If the ArgoCD works as expected, you should see the Argo Workflows application in the UI, and its status should be `Synced`. If not, try to debug the issue.
 
 #### Argo Workflows UI
 
@@ -289,11 +289,11 @@ echo "Bearer $(kubectl get secret -n argo default.service-account-token -o=jsonp
 
 ### Knative
 
-Knative has a few components, and each of them can be installed separately. We'll use Knative Operator to install the components.
+Knative has a few components, and each of them can be installed separately. We'll use the Knative Operator to install the components.
 
-[Knative Serving](https://knative.dev/docs/serving/) is the component that provides request-driven compute that can scale to zero.
+[Knative Serving](https://knative.dev/docs/serving/) is the component that provides request-driven computing that can scale to zero.
 
-We'll use kourier as the ingress controller for Knative Serving, and sslip.io as the DNS provider.
+We'll use Kourier as the ingress controller for Knative Serving, and sslip.io as the DNS provider.
 
 The relevant manifests are:
 
@@ -304,7 +304,7 @@ The relevant manifests are:
 - [k8s/kustomize/knative-serving/default-domain.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-default-domain-yaml)
 - [k8s/kustomize/knative-serving/service-monitors.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-service-monitors-yaml)
 - [k8s/kustomize/knative-serving/dashboards.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-dashboards-yaml)  
-   The total count of request served is calculated with: `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
+   The total count of requests served is calculated with `sum(max_over_time(activator_request_count{configuration_name="$configuration"}[7d]))`
   here, `max_over_time` is used to get the max value of multiple series (one series for every scale-up from 0 to 1 pod), and `sum` is used to sum the values of all the series.
   ![activator_request_count](https://audacioustux.com/assets/random/promql-activator_request_count.png)
 - [k8s/kustomize/knative-serving/serving.yaml](https://gist.github.com/audacioustux/08165349c5527b90ada709a81a3400d3#file-serving-yaml)
@@ -351,7 +351,7 @@ Now, let's create a CI / CD pipeline with Argo Workflows. We'll use [Kaniko](htt
 
 [Kpack](https://github.com/buildpacks-community/kpack) is another alternative, but let's use Kaniko for now.
 
-First, we need to deploy [Argo Events](https://argoproj.github.io/argo-events/). This will allow us to create a `EventSource` - that will listen to events comming from Github on a specific webhook url (provided by Argo Events), and `Sensor` - that will sense git push events, and trigger the Argo Workflow.
+First, we need to deploy [Argo Events](https://argoproj.github.io/argo-events/). This will allow us to create a `EventSource` - that will listen to events coming from Github on a specific webhook URL (provided by Argo Events), and `Sensor` - that will sense git push events, and trigger the Argo Workflow.
 
 Just like Argo Workflows and Knative, We'll use ArgoCD to deploy Argo Events. The relevant manifests are:
 
@@ -367,9 +367,9 @@ and for EventSource and Sensor:
 
 then run `./up.sh` again, or just apply the apps/argo-events.yaml and apps/ci-workflow.yaml manifests with kubectl.
 
-Remember to replace the `<...>` placeholders with your own values.
+Remember to replace the `<...>` placeholders with your values.
 
-The webhooks could be created automatically by Argo Events if a api-key with webhooks permission is specified in EventSource manifest - but for this project, we'll create the webhooks manually. Just go to the Github repo -> Settings -> Webhooks -> Add webhook.
+The webhooks could be created automatically by Argo Events if an API  key with webhooks permission is specified in EventSource manifest - but for this project, we'll create the webhooks manually. Just go to the Github repo -> Settings -> Webhooks -> Add webhook.
 
 #### Test CI / CD
 
@@ -525,10 +525,10 @@ output "cluster_name" {
 
 ## Troubleshooting
 
-### Webhook endpoint is not accessible from outside (Local machine)
+### The Webhook endpoint is not accessible from outside (Local machine)
 
 If you're using Kubernetes on your local machine, and don't have a public IP, then you may want to use [Cloudflare Zero Trust Access Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) to expose the webhook endpoint to the internet.  
-We can deploy cloudflared as a deployment in the cluster, and then add public hostname:
+We can deploy cloudflared as a deployment in the cluster, and then add a public hostname:
 
 ![cloudflare-tunnel-webhook-config](https://audacioustux.com/assets/random/cloudflare-tunnel-webhook-config.png)
 
