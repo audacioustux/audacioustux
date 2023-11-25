@@ -52,11 +52,11 @@ Yeah, such ingenuity to copy-paste from Wikipedia.
 
 From the above definition, we may proceed to label ourselves as having a "growth mindset" or a "fixed mindset", etc. However, personal subjective beliefs on what is ideal, right, or wrong - are not always consciously accessible, often hidden behind layers of cognitive biases and logical fallacies, not always possible to be expressed in human language, constantly changing, and often inconsistent with our other beliefs and actions.
 
-So, the word "Mindset" vaguely refers to a set of beliefs, attitudes, and assumptions that we hold, and influence our behavior. What I mean by "Developing a mindset" in this context is - to embrace a set of beliefs, attitudes, and assumptions that I believe are conducive to learning.  
+So, the word "Mindset" vaguely refers to a set of beliefs, attitudes, and assumptions that we hold, and influence our behavior. What I mean by "Developing a mindset" in this post's context is - to embrace a set of beliefs, attitudes, and assumptions that I believe are conducive to learning.  
 
 But the goal of "Learning" is also vague. What "exactly" do you "want" to learn?  
 I've quoted "exactly" because we're almost always not sure what we want to learn. Maybe you're very certain that you want to learn Software Engineering... hmmm, not precise enough. How 'bout Web Development, a subset of Software Engineering? Still not precise enough. How 'bout ReactJS...  
-At this point, have you jumped onto the [bandwagon](https://en.wikipedia.org/wiki/Bandwagon_effect)? Is that what you really "want" to learn? Can you explain your decision-making process clearly to yourself?
+At this point, have you jumped onto the [bandwagon](https://en.wikipedia.org/wiki/Bandwagon_effect)? Is that what you really "want" to learn? I mean, is that consistent with your values and priorities in your life? Can you explain your decision-making process clearly to yourself?
 
 It's not always necessary to know your next step, to take your next step. But it's always necessary to keep track of your steps, or you'll end up in a [live lock](https://en.wikipedia.org/wiki/Deadlock#Livelock).
 
