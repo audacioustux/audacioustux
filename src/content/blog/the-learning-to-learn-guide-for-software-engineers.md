@@ -26,13 +26,13 @@ But, before going more philosophical - Is this a typical "Self-Development" arti
 Well... ummm... yes, but...  
 No, there's no punchline.
 
-## Mindset
-
 Let me give you an analogy instead - suppose you want to improve your communication skills. I'd highly recommend you to talk to people... But that sounds so naive, right? What if I recommended some books on communication skills? Or some online courses? Or some YouTube videos? Or some podcasts? Or some blogs? Or some... and you end up with a list of 100+ resources, and you don't know where to start.
 
 You know what could be a better approach? Neither do I... no, there's no punchline here either. What else could I help you with? You could ask your question to ChatGPT and get maybe even better response. But what I've learned by now is - It's not only the resources that matter, but also the mindset. And that mindset is something we should strive to develop.
 
 But... wait a minute... it's not like I can just sit down, and think about stuffs all day long, and develop a so-called "mindset". Neither it makes sense to read a book on mindset... I mean, you'd need a mindset to read a book on mindset, right? So, how do I break this circular dependency?
+
+## Mindset
 
 Let's start with a simple question - What is a mindset?
 
