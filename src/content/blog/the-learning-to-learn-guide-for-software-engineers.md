@@ -20,9 +20,18 @@ description: A chunked-down first-principles-based guide to learning anything in
 > It's DRAFT!
 > It's DRAFT!
 
-## Set your Homeostasis
+## Context
 
-<!-- ![Career Path for those who study all kinds of stuff](https://audacioustux.com/assets/random/there-isnt-really-a-career-path-for-people.jpg) -->
+I've been learning programming since 2012 from my high school days. But my journey started in a very passive way. I mean, it was not in my academic curriculum, wasn't a career path I was aware of, and I didn't have any mentor to guide me. I was just a curious kid who used to spend a lot of time on the computer for 6 years by then and recently got exposed to the internet. I had lost all my interest in academics, results were getting worse... But, Programming was something that I found interesting. I could instantly see a few real-life use cases of my HTML, CSS, and PHP knowledge, and I could learn things on my own without any external help. There was no Competition or Comparison with others. I was just doing it for fun.., or maybe because that was the only thing I could do at that time and got some recognition for it.
+
+So learning programming was not an active goal for me in the beginning, nor something I had a clear idea about before I got exposed to it. But it's far more likely that whoever ever reading this text is already determined to learn programming, and knows about the career path and the opportunities it brings. So, I'm not going to talk about the motivation part of learning programming. I'm going to talk about the learning part, and how to learn programming in particular.
+
+![Career Path for those who study all kinds of stuff](https://audacioustux.com/assets/random/there-isnt-really-a-career-path-for-people.jpg)
+
+I've tried to help many on their journey of learning programming, and seen some common patterns people struggle, get stuck, and in some cases, give up. But I also face problems when I try to think of the right plan for them. People have different values and priorities in their lives, and prejudices about the world. So, it's very hard to give a general roadmap or guideline, and harder for me particularly because I care more about learning and experimenting with things, that may not have any direct impact on my career or have any monetary value. But the thing is, I do have goals, and whatever I do, I try to align it with those goals.  
+I think that's the key to learning anything, and as a common ground, almost all of us want to improve our approach to learning.
+
+## Set your Homeostasis
 
 ## Everything is connected, except when it's not
 
