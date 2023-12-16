@@ -4,7 +4,7 @@ export const SITE: Site = {
   website: "https://audacioustux.com/",
   author: "Tanjim Hossain",
   desc: "A place where I write about my thoughts and experiences.",
-  title: "Tanjim @AudaciousTux",
+  title: "@AudaciousTux",
   ogImage: "audacioustux_workspace.jpg",
   lightAndDarkMode: true,
   postPerPage: 5,
