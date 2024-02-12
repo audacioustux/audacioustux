@@ -1,10 +1,16 @@
-# [@AudaciousTux](https://audacioustux.com) 🐧
+# Tanjim Hossain
 
-**I'm Tanjim Hossain, Researcher [@ĀloLabs](https://alo.dev/)**
+**Researcher [@ĀloLabs](https://alo.dev/) & DevOps [@CodersTrust](https://www.coderstrust.net/)**
 
-> Currently working on: [**CompaaS**](https://github.com/audacioustux/CompaaS) & [**ZeroSDP**](https://github.com/audacioustux/ZeroSDP)
+Exploring Computer Science since 2012
 
-(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧ **Aiming to find better Truth** ✧ﾟ・:*ヽ(◕ヮ◕ヽ)
+```
+Interests      ~?   Systems Science, Philosophy, Distributed Computing
+Fav. PL.       ~?   Rust, Scala, Elixir
+Theo. View     ~?   Agnostic Atheist
+Ideo. View     ~?   Least Aggression
+Life Goal      ~?   To find better "Truth"
+```
 
 [![Website](https://img.shields.io/badge/%20-audacioustux.com-black?color=222244&labelColor=000000&logo=linux&logoColor=f5f7fe)](https://audacioustux.com)
 [![LinkedIn](https://img.shields.io/badge/%20-Connect-black?color=222244&labelColor=000000&logo=linkedin&logoColor=f5f7fe)](https://linkedin.com/in/audacioustux)
