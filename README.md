@@ -8,7 +8,7 @@ Exploring Computer Science since 2012
 Interests      ~?   Systems Science, Philosophy, Distributed Computing
 Fav. PL.       ~?   Rust, Scala, Elixir
 Theo. View     ~?   Agnostic Atheist
-Ideo. View     ~?   Least Aggression
+Ideo. View     ~?   Nil (mostly)
 Life Goal      ~?   To find better "Truth"
 ```
 
