@@ -1,6 +1,6 @@
 # Tanjim Hossain
 
-**Researcher [@ĀloLabs](https://alo.dev/) & DevOps [@CodersTrust](https://www.coderstrust.net/)**
+**Researcher [@ĀloLabs](https://alolabs.dev/) & DevOps [@CodersTrust](https://www.coderstrust.net/)**
 
 Exploring Computer Science since 2012
 
