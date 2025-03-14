@@ -1,6 +1,6 @@
 # Tanjim Hossain
 
-**Researcher [@ĀloLabs](https://alolabs.dev/)
+**Researcher [@ĀloLabs](https://alolabs.dev/)**
 
 Exploring Computer Science since 2012
 
