@@ -1,0 +1,13 @@
+write-kubeconfig-mode: "0644"
+cni: none
+cluster-cidr: "10.42.0.0/16,2001:cafe:42::/56"
+service-cidr: "10.43.0.0/16,2001:cafe:43::/112"
+disable-kube-proxy: true
+disable:
+  - rke2-ingress-nginx
+kube-apiserver-arg:
+  - "feature-gates=InPlacePodVerticalScaling=true,PodLevelResources=true"
+node-taint:
+  - "node.cilium.io/agent-not-ready=true:NoExecute"
+kubelet-arg:
+  - "max-pods=200"
