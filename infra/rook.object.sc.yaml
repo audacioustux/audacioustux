@@ -1,0 +1,80 @@
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: rgw-root
+  namespace: rook-ceph # namespace:cluster
+spec:
+  name: .rgw.root
+  failureDomain: host
+  replicated:
+    size: 1
+    requireSafeReplicaSize: false
+  parameters:
+    pg_num: "8"
+  application: rgw
+---
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: rgw-meta-pool
+  namespace: rook-ceph # namespace:cluster
+spec:
+  failureDomain: host
+  replicated:
+    size: 1
+    requireSafeReplicaSize: false
+  parameters:
+    pg_num: "8"
+  application: rgw
+# ---
+# apiVersion: ceph.rook.io/v1
+# kind: CephBlockPool
+# metadata:
+#   name: rgw-data-pool
+#   namespace: rook-ceph # namespace:cluster
+# spec:
+#   failureDomain: osd
+#   erasureCoded:
+#     # For production it is recommended to use more chunks, such as 4+2 or 8+4
+#     dataChunks: 2
+#     codingChunks: 1
+#   parameters:
+#     bulk: "true"
+#   application: rgw
+---
+apiVersion: ceph.rook.io/v1
+kind: CephBlockPool
+metadata:
+  name: rgw-data-pool
+  namespace: rook-ceph # namespace:cluster
+spec:
+  failureDomain: osd
+  replicated:
+    size: 1
+    requireSafeReplicaSize: false
+  application: rgw
+---
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStore
+metadata:
+  name: shared-store
+  namespace: rook-ceph # namespace:cluster
+spec:
+  sharedPools:
+    metadataPoolName: rgw-meta-pool
+    dataPoolName: rgw-data-pool
+    preserveRadosNamespaceDataOnDelete: true
+  gateway:
+    port: 80
+    instances: 1
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: rook-ceph-bucket
+# Change "rook-ceph" provisioner prefix to match the operator namespace if needed
+provisioner: rook-ceph.ceph.rook.io/bucket
+reclaimPolicy: Delete
+parameters:
+  objectStoreName: shared-store
+  objectStoreNamespace: rook-ceph

@@ -1,0 +1,57 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:kubeplane-scale-vpa
+  labels:
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+rules:
+- apiGroups:
+  - autoscaling.k8s.io
+  resources:
+  - verticalpodautoscalers
+  verbs: 
+  - "*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: kubeplane-scale-vpa
+spec:
+  generateExisting: true
+  useServerSideApply: true
+  rules:
+    - name: generate-vpa
+      match:
+        resources:
+          kinds:
+            - Deployment
+            - StatefulSet
+            - DaemonSet
+          annotations:
+            scale.kubeplane/vpa: "true"
+      generate:
+        apiVersion: autoscaling.k8s.io/v1
+        kind: VerticalPodAutoscaler
+        name: "{{request.object.metadata.name}}"
+        namespace: "{{request.object.metadata.namespace}}"
+        synchronize: true
+        data:
+          spec:
+            targetRef:
+              apiVersion: apps/v1
+              kind: "{{request.object.kind}}"
+              name: "{{request.object.metadata.name}}"
+            updatePolicy:
+              updateMode: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-updateMode') || 'Auto' }}"
+              minReplicas: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minReplicas') || '2' | to_number(@) }}"
+            resourcePolicy:
+              containerPolicies:
+                - containerName: "*"
+                  maxAllowed:
+                    cpu: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-maxCPU') || '2' }}"
+                    memory: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-maxMemory') || '4Gi' }}"
+                  minAllowed:
+                    cpu: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minCPU') || '0m' }}"
+                    memory: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minMemory') || '0Mi' }}"
+
