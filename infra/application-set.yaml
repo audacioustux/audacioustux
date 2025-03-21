@@ -123,12 +123,9 @@ spec:
                         - secretName: grafana-tls
                           hosts:
                             - grafana.audacioustux.com
-                    persistence:
-                      enabled: true
                     sidecar:
                       dashboards:
                         enabled: true
-                        defaultFolderName: "General"
                         label: grafana_dashboard
                         labelValue: "1"
                         folderAnnotation: grafana_folder
@@ -142,6 +139,24 @@ spec:
                           - name: Mimir
                             type: prometheus
                             url: http://mimir-nginx.monitoring.svc.cluster.local/prometheus
+                    dashboardProviders:
+                      dashboardproviders.yaml:
+                        apiVersion: 1
+                        providers:
+                          - name: default
+                            orgId: 1
+                            folder: ""
+                            type: file
+                            disableDeletion: false
+                            editable: true
+                            options:
+                              path: /var/lib/grafana/dashboards/default
+                    dashboards:
+                      default:
+                        argo-cd:
+                          url: https://raw.githubusercontent.com/argoproj/argo-cd/master/examples/dashboard.json
+                          datasource: Mimir
+                    
               destination:
                 namespace: monitoring
           
@@ -219,6 +234,11 @@ spec:
                 repoURL: https://kyverno.github.io/kyverno
                 chart: kyverno
                 targetRevision: ~3.3.0
+                helm:
+                  valuesObject:
+                    webhooksCleanup:
+                      autoDeleteWebhooks:
+                        enabled: true
               destination:
                 namespace: kyverno
           
@@ -266,22 +286,15 @@ spec:
               destination:
                 namespace: scylla-operator
           
-          - metadata:
-              name: rancher
-            spec:
-              source:
-                repoURL: https://releases.rancher.com/server-charts/stable
-                chart: rancher
-                targetRevision: ~2.10.0
-                helm:
-                  kubeVersion: 1.31.0
-                  valuesObject:
-                    replicas: 1
-                    hostname: dash.audacioustux.com
-                    ingress:
-                      pathType: Prefix
-              destination:
-                namespace: cattle-system
+          # - metadata:
+          #     name: rancher
+          #   spec:
+          #     source:
+          #       repoURL: https://releases.rancher.com/server-charts/stable
+          #       chart: rancher
+          #       targetRevision: ~2.10.0
+          #     destination:
+          #       namespace: cattle-system
           
           - metadata:
               name: rook-ceph

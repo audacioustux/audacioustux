@@ -7,9 +7,24 @@ configs:
     server.insecure: true
 global:
   domain: cd.audacioustux.com
+  addPrometheusAnnotations: true
 server:
   ingress:
     enabled: true
     annotations:
       cert-manager.io/cluster-issuer: selfsigned
     tls: true
+  metrics:
+    enabled: true
+controller:
+  metrics:
+    enabled: true
+repoServer:
+  metrics:
+    enabled: true
+redis:
+  metrics:
+    enabled: true
+applicationSet:
+  metrics:
+    enabled: true
