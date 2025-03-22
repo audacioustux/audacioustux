@@ -404,7 +404,7 @@ spec:
       syncPolicy:
         syncOptions:
           - Validate=true
-          - CreateNamespace=true
+          # - CreateNamespace=true
           - PruneLast=true
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true

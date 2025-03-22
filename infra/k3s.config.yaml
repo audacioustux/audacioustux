@@ -1,0 +1,23 @@
+cluster-init: true
+kube-apiserver-arg:
+  - "feature-gates=InPlacePodVerticalScaling=true"
+kubelet-arg:
+  - "max-pods=250"
+disable:
+  - coredns
+  - servicelb
+  - traefik
+  - local-storage
+  - metrics-server
+  - runtimes
+flannel-backend: "none"
+disable-network-policy: true
+disable-kube-proxy: true
+disable-cloud-controller: true
+disable-helm-controller: true
+cluster-cidr: "10.42.0.0/16,2001:cafe:42::/56"
+service-cidr: "10.43.0.0/16,2001:cafe:43::/112"
+node-taint:
+  - "node.cilium.io/agent-not-ready=true:NoExecute"
+secrets-encryption: true
+embedded-registry: true
