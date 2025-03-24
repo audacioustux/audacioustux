@@ -2,7 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: kubeplane
-  namespace: argocd
 spec:
   clusterResourceWhitelist:
     - group: "*"

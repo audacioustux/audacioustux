@@ -19,7 +19,7 @@ spec:
                 helm:
                   valuesObject:
                     global:
-                      dnsService: "rke2-coredns-rke2-coredns"
+                      dnsService: "coredns"
                       extraEnv:
                         # Blocks Bucket
                         - name: BLOCKS_BUCKET_NAME
@@ -286,16 +286,6 @@ spec:
               destination:
                 namespace: scylla-operator
           
-          # - metadata:
-          #     name: rancher
-          #   spec:
-          #     source:
-          #       repoURL: https://releases.rancher.com/server-charts/stable
-          #       chart: rancher
-          #       targetRevision: ~2.10.0
-          #     destination:
-          #       namespace: cattle-system
-          
           - metadata:
               name: rook-ceph
             spec:
@@ -404,7 +394,7 @@ spec:
       syncPolicy:
         syncOptions:
           - Validate=true
-          # - CreateNamespace=true
+          - CreateNamespace=true
           - PruneLast=true
           - ApplyOutOfSyncOnly=true
           - ServerSideApply=true
