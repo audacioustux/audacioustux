@@ -173,6 +173,7 @@ spec:
       - ServerSideApply=true
       - FailOnSharedResource=true
       - RespectIgnoreDifferences=true
+      - CreateNamespace=true
     automated:
       prune: true
       selfHeal: true

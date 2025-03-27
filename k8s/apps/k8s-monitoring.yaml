@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: k8s-monitoring
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: kubeplane
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: k8s-monitoring
+    targetRevision: ~2.0.0
+    helm:
+      valuesObject:
+        cluster:
+          name: kubeplane
+        destinations:
+          - name: mimir
+            type: prometheus
+            url: http://mimir-nginx.monitoring.svc.cluster.local/api/v1/push
+        clusterMetrics:
+          enabled: true
+        annotationAutodiscovery:
+          enabled: true
+          annotations:
+            scrape: prometheus.io/scrape
+            metricsPath: prometheus.io/path
+            metricsPortNumber: prometheus.io/port
+            metricsScheme: prometheus.io/scheme
+        prometheusOperatorObjects:
+          enabled: true
+          crds:
+            deploy: true
+        alloy-metrics:
+          enabled: true
+  destination:
+    namespace: monitoring
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      - Validate=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - FailOnSharedResource=true
+      - RespectIgnoreDifferences=true
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+

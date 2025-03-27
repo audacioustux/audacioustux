@@ -1,0 +1,29 @@
+version: "3"
+
+tasks:
+  default:
+    desc: Show all available tasks
+    cmd: task --list-all
+
+  list-mem-req: |
+    kubectl get pods --all-namespaces -o json | jq -r '
+      def memToGi:
+        if test("Gi$") then
+          (.[:-2] | tonumber)
+        elif test("Mi$") then
+          ((.[0:-2] | tonumber) / 1024)
+        elif test("Ki$") then
+          ((.[0:-2] | tonumber) / (1024*1024))
+        else
+          tonumber
+        end;
+      .items[] |
+      {
+        namespace: .metadata.namespace,
+        name: .metadata.name,
+        totalMemGi: ( .spec.containers 
+                        | map((.resources.requests.memory // "0") | memToGi)
+                        | add )
+      } |
+      "\(.namespace)\t\(.name)\t\(.totalMemGi)Gi"
+    ' | sort -k3 -nr
