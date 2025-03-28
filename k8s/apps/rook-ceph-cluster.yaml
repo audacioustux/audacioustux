@@ -18,8 +18,15 @@ spec:
         toolbox:
           enabled: true
         monitoring:
-          enabled: false
+          enabled: true
         cephClusterSpec:
+          resources:
+            osd:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 1Gi
           cephVersion:
             image: quay.io/ceph/ceph:v19.2.1
             allowUnsupported: false

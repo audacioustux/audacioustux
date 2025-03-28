@@ -1,4 +1,3 @@
-debug: true
 write-kubeconfig-mode: "0644"
 secrets-encryption: true
 cni: none

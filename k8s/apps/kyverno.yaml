@@ -40,12 +40,18 @@ spec:
               rbac.kyverno.io/aggregate-to-admission-controller: "true"
               rbac.kyverno.io/aggregate-to-background-controller: "true"
           rules:
-          - apiGroups:
-            - autoscaling.k8s.io
-            resources:
+          - resources:
             - verticalpodautoscalers
+            apiGroups:
+            - autoscaling.k8s.io
             verbs: 
             - "*"
+          - resources:
+            - namespaces
+            apiGroups:
+            - ""
+            verbs:
+            - update
   destination:
     namespace: kyverno
     server: https://kubernetes.default.svc

@@ -1,6 +1,7 @@
 global:
   domain: cd.audacioustux.com
   addPrometheusAnnotations: true
+  priorityClassName: system-cluster-critical
 server:
   ingress:
     enabled: true

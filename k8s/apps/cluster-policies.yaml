@@ -47,16 +47,79 @@ spec:
                           name: "{{request.object.metadata.name}}"
                         updatePolicy:
                           updateMode: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-updateMode') || 'Auto' }}"
-                          minReplicas: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minReplicas') || '2' | to_number(@) }}"
+                          minReplicas: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minReplicas') || '1' | to_number(@) }}"
                         resourcePolicy:
                           containerPolicies:
                             - containerName: "*"
                               maxAllowed:
-                                cpu: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-maxCPU') || '4' }}"
+                                cpu: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-maxCPU') || '0.1' }}"
                                 memory: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-maxMemory') || '8Gi' }}"
                               minAllowed:
                                 cpu: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minCPU') || '0m' }}"
                                 memory: "{{ lookup(request.object.metadata.annotations, 'scale.kubeplane/vpa-minMemory') || '0Mi' }}"
+          kubeplane-global-scale-vpa:
+            apiVersion: kyverno.io/v1
+            kind: ClusterPolicy
+            spec:
+              rules:
+                - name: mutate-namespaces
+                  match:
+                    any:
+                    - resources:
+                        kinds:
+                          - Namespace
+                  exclude:
+                    any:
+                    - resources:
+                        annotations:
+                          ns.scale.kubeplane/vpa.disabled: "true"
+                  mutate:
+                    patchStrategicMerge:
+                      metadata:
+                        annotations:
+                          ns.scale.kubeplane/vpa: "true"
+          kubeplane-ns-scale-vpa:
+            apiVersion: kyverno.io/v1
+            kind: ClusterPolicy
+            spec:
+              generateExisting: true
+              useServerSideApply: true
+              rules:
+                - name: mutate-namespaces
+                  match:
+                    any:
+                    - resources:
+                        kinds:
+                          - Namespace
+                        annotations:
+                          ns.scale.kubeplane/vpa: "true"
+                  generate:
+                    apiVersion: kyverno.io/v1
+                    kind: Policy
+                    name: kubeplane-ns-scale-vpa
+                    namespace: "{{request.object.metadata.name}}"
+                    synchronize: true
+                    data:
+                      spec:
+                        rules:
+                          - name: mutate-workloads
+                            match:
+                              any:
+                              - resources:
+                                  kinds:
+                                    - Deployment
+                                    - StatefulSet
+                                    - DaemonSet
+                            exclude:
+                              any:
+                              - resources:
+                                  annotations:
+                                    scale.kubeplane/vpa.disabled: "true"
+                            mutate:
+                              patchStrategicMerge:
+                                metadata:
+                                  annotations:
+                                    scale.kubeplane/vpa: "true"
   destination:
     namespace: kyverno
     server: https://kubernetes.default.svc

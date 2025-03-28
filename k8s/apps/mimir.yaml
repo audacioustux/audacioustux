@@ -98,8 +98,6 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY
           podAnnotations:
             bucketSecretVersion: "0"
-        ingester:
-          replicas: 1
         metaMonitoring:
           serviceMonitor:
             enabled: true
