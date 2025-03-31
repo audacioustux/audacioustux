@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vertical-pod-autoscaler
+  name: gateway-api
   namespace: argocd
   annotations:
     argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
@@ -10,14 +10,11 @@ metadata:
 spec:
   project: kubeplane
   source:
-    repoURL: https://charts.fairwinds.com/stable
-    chart: vpa
-    targetRevision: ~4.7.2
-    helm:
-      valuesObject:
-        priorityClassName: system-cluster-critical
+    repoURL: https://github.com/kubernetes-sigs/gateway-api
+    path: config/crd
+    targetRevision: ~1.2.1
   destination:
-    namespace: vpa
+    namespace: kube-system
     server: https://kubernetes.default.svc
   syncPolicy:
     syncOptions:
@@ -31,4 +28,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

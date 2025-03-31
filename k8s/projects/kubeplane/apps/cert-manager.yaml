@@ -28,6 +28,32 @@ spec:
             kind: ClusterIssuer
             spec:
               selfSigned: {}
+          letsencrypt-prod:
+            apiVersion: cert-manager.io/v1
+            kind: ClusterIssuer
+            spec:
+              acme:
+                email: "cert@audacioustux.com"
+                server: https://acme-v02.api.letsencrypt.org/directory
+                privateKeySecretRef:
+                  name: letsencrypt-prod
+                solvers:
+                  - http01:
+                      ingress:
+                        ingressClassName: cilium
+          letsencrypt-stage:
+            apiVersion: cert-manager.io/v1
+            kind: ClusterIssuer
+            spec:
+              acme:
+                email: "cert@audacioustux.com"
+                server: https://acme-staging-v02.api.letsencrypt.org/directory
+                privateKeySecretRef:
+                  name: letsencrypt-stage
+                solvers:
+                  - http01:
+                      ingress:
+                        ingressClassName: cilium
   destination:
     namespace: cert-manager
     server: https://kubernetes.default.svc
@@ -43,3 +69,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

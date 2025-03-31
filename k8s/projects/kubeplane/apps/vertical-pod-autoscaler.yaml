@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vertical-pod-autoscaler
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: kubeplane
+  source:
+    repoURL: ghcr.io/stevehipwell/helm-charts
+    chart: vertical-pod-autoscaler
+    targetRevision: ~1.8.0
+    helm:
+      valuesObject:
+        admissionController:
+          priorityClassName: system-cluster-critical
+        updater:
+          priorityClassName: system-cluster-critical
+        recommender:
+          priorityClassName: system-cluster-critical
+          extraArgs:
+            - --cpu-integer-post-processor-enabled
+            - --storage=prometheus
+            - --prometheus-address=http://mimir-nginx.monitoring.svc.cluster.local/prometheus
+        serviceMonitor:
+          enabled: true
+  destination:
+    namespace: vpa
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    syncOptions:
+      - Validate=true
+      - PruneLast=true
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - FailOnSharedResource=true
+      - RespectIgnoreDifferences=true
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

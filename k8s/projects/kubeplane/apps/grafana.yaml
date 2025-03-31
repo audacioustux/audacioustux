@@ -15,8 +15,6 @@ spec:
     targetRevision: ~8.10.0
     helm:
       valuesObject:
-        persistence:
-          enabled: true
         adminPassword: "admin"
         ingress:
           enabled: true
@@ -38,39 +36,28 @@ spec:
         sidecar:
           dashboards:
             enabled: true
-            label: grafana_dashboard
-            labelValue: "1"
-            folderAnnotation: grafana_folder
             searchNamespace: ALL
-            provider:
-              foldersFromFilesStructure: true
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1
             providers:
-              - name: default
+              - name: ceph
                 orgId: 1
-                folder: ""
+                folder: ceph
                 type: file
                 disableDeletion: false
                 editable: true
                 options:
-                  path: /var/lib/grafana/dashboards/default
+                  path: /var/lib/grafana/dashboards/ceph
         dashboards:
-          default:
-            argo-cd:
-              url: https://raw.githubusercontent.com/argoproj/argo-cd/master/examples/dashboard.json
-              datasource: Mimir
-            k8s-prom-dash:
-              gnetId: 15661
-              datasource: Mimir
-            ceph-cluster:
+          ceph:
+            cluster:
               gnetId: 2842
               datasource: Mimir
-            ceph-osd:
+            osd:
               gnetId: 5336
               datasource: Mimir
-            ceph-pool:
+            pool:
               gnetId: 5342
               datasource: Mimir
   destination:
@@ -88,3 +75,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

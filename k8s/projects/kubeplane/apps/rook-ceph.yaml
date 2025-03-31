@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metric-server
+  name: rook-ceph
   namespace: argocd
   annotations:
     argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
@@ -10,11 +10,14 @@ metadata:
 spec:
   project: kubeplane
   source:
-    repoURL: https://kubernetes-sigs.github.io/metrics-server
-    chart: metrics-server
-    targetRevision: ~3.12.0
+    repoURL: https://charts.rook.io/release
+    chart: rook-ceph
+    targetRevision: "~1.16.0"
+    helm:
+      valuesObject:
+        priorityClassName: system-cluster-critical
   destination:
-    namespace: monitoring
+    namespace: rook-ceph
     server: https://kubernetes.default.svc
   syncPolicy:
     syncOptions:
@@ -28,3 +31,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

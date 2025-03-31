@@ -1,7 +1,0 @@
-service:
-  clusterIP: 10.43.0.10
-  clusterIPs:
-  - 10.43.0.10
-  - 2001:cafe:43::a
-  ipFamilyPolicy: PreferDualStack
-priorityClassName: system-cluster-critical

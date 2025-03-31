@@ -24,9 +24,9 @@ spec:
             osd:
               requests:
                 cpu: 100m
-                memory: 1Gi
+                memory: 2Gi
               limits:
-                memory: 1Gi
+                memory: 2Gi
           cephVersion:
             image: quay.io/ceph/ceph:v19.2.1
             allowUnsupported: false
@@ -184,3 +184,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

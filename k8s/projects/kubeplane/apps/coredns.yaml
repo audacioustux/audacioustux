@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: rook-ceph
+  name: coredns
   namespace: argocd
   annotations:
     argocd.argoproj.io/compare-options: ServerSideDiff=true,IncludeMutationWebhook=true
@@ -10,14 +10,20 @@ metadata:
 spec:
   project: kubeplane
   source:
-    repoURL: https://charts.rook.io/release
-    chart: rook-ceph
-    targetRevision: "~1.16.0"
+    repoURL: https://coredns.github.io/helm
+    chart: coredns
+    targetRevision: ~1.39.0
     helm:
       valuesObject:
+        service:
+          clusterIP: 10.43.0.10
+          clusterIPs:
+            - 10.43.0.10
+            - 2001:cafe:43::a
+          ipFamilyPolicy: PreferDualStack
         priorityClassName: system-cluster-critical
   destination:
-    namespace: rook-ceph
+    namespace: kube-system
     server: https://kubernetes.default.svc
   syncPolicy:
     syncOptions:
@@ -31,3 +37,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
