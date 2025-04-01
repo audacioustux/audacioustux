@@ -4,3 +4,5 @@ tasks:
   default:
     desc: Show all available tasks
     cmd: task --list-all
+
+  up:projects: kubectl apply -f k8s/projects/ --recursive --server-side
