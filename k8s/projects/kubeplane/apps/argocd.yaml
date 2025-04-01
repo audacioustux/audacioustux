@@ -16,7 +16,7 @@ spec:
     helm:
       valuesObject:
         global:
-          domain: cd.audacioustux.com
+          domain: argocd.audacioustux.com
           addPrometheusAnnotations: true
           priorityClassName: system-cluster-critical
         server:

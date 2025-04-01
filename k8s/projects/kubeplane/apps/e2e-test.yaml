@@ -79,56 +79,6 @@ spec:
                             name: http-echo
                             port:
                               name: http
-
-          # - apiVersion: gateway.networking.k8s.io/v1
-          #   kind: Gateway
-          #   metadata:
-          #     name: http-echo-gateway
-          #   spec:
-          #     gatewayClassName: istio
-          #     listeners:
-          #       - name: http
-          #         protocol: HTTP
-          #         port: 80
-          #       - name: https
-          #         protocol: HTTPS
-          #         port: 443
-          #         tls:
-          #           certificateRefs:
-          #             - kind: Secret
-          #               name: http-echo-gateway-tls
-
-          # - apiVersion: gateway.networking.k8s.io/v1
-          #   kind: HTTPRoute
-          #   metadata:
-          #     name: http-echo-route
-          #   spec:
-          #     parentRefs:
-          #       - name: http-echo-gateway
-          #     hostnames:
-          #       - d-gw.audacioustux.com
-          #     rules:
-          #       - matches:
-          #           - path:
-          #               type: PathPrefix
-          #               value: /
-          #         backendRefs:
-          #           - name: http-echo
-          #             port: http
-
-          # - apiVersion: gateway.networking.k8s.io/v1
-          #   kind: TLSRoute
-          #   metadata:
-          #     name: http-echo-tls-route
-          #   spec:
-          #     parentRefs:
-          #       - name: http-echo-gateway
-          #     hostnames:
-          #       - d-gw.audacioustux.com
-          #     rules:
-          #       - backendRefs:
-          #           - name: http-echo
-          #             port: https
   destination:
     namespace: dbg
     server: https://kubernetes.default.svc

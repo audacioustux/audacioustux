@@ -12,10 +12,12 @@ spec:
   source:
     repoURL: https://grafana.github.io/helm-charts
     chart: grafana
-    targetRevision: ~8.10.0
+    targetRevision: ~8.11.0
     helm:
       valuesObject:
         adminPassword: "admin"
+        persistence:
+          enabled: true
         ingress:
           enabled: true
           hosts:
@@ -33,10 +35,16 @@ spec:
               - name: Mimir
                 type: prometheus
                 url: http://mimir-nginx.monitoring.svc.cluster.local/prometheus
+                access: proxy
+                isDefault: true
         sidecar:
           dashboards:
             enabled: true
             searchNamespace: ALL
+            provider:
+              disableDelete: true
+              allowUiUpdates: false
+              folder: "discovered"
         dashboardProviders:
           dashboardproviders.yaml:
             apiVersion: 1
@@ -46,7 +54,7 @@ spec:
                 folder: ceph
                 type: file
                 disableDeletion: false
-                editable: true
+                editable: false
                 options:
                   path: /var/lib/grafana/dashboards/ceph
         dashboards:
