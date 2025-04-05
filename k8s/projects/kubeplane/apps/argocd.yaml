@@ -19,6 +19,8 @@ spec:
           domain: argocd.audacioustux.com
           addPrometheusAnnotations: true
           priorityClassName: system-cluster-critical
+          networkPolicy:
+            create: true
         server:
           ingress:
             enabled: true
