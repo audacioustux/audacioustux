@@ -21,7 +21,6 @@ spec:
           enabled: true
         hubble:
           enabled: true
-          redact: true
           metrics:
             enableOpenMetrics: true
             enabled:
