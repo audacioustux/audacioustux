@@ -1,9 +1,5 @@
 # Tanjim Hossain
 
-**Researcher [@ĀloLabs](https://alolabs.dev/)**
-
-Exploring Computer Science since 2012
-
 ```
 Interests      ~?   Systems Science, Philosophy, Distributed Computing
 Fav. PL.       ~?   Rust, Scala, Elixir
