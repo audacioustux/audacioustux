@@ -1,8 +1,35 @@
-version: "3"
+version: '3'
 
 tasks:
-  default:
-    desc: Show all available tasks
-    cmd: task --list-all
+  dev:setup:
+    desc: "Main setup hook (Runs on postCreate)"
+    cmds:
+      - task: dev:shell
+      - task: dev:git
 
-  up:projects: kubectl apply -f k8s/projects/ --recursive --server-side
+  dev:start:
+    desc: "Startup hook (Runs on postStart)"
+    cmd: git submodule update --init --recursive
+
+  dev:shell:
+    desc: "Apply clean shell configuration"
+    cmds:
+      # 1. Copy our clean .zshrc to the user home
+      - cp .devcontainer/.zshrc ~/.zshrc
+      # 2. Trust the .envrc so direnv loads the flake environment immediately
+      - direnv allow .
+
+  dev:git:
+    desc: "Rewrite Git URLs to use Token (Codespaces Only)"
+    # Skip this task entirely if we are not in Codespaces
+    status:
+      - '[ "$CODESPACES" != "true" ]'
+    vars:
+      # Construct the authenticated URL using the environment token
+      AuthURL: "https://x-access-token:{{.GITHUB_TOKEN}}@github.com/"
+    cmds:
+      - for: 
+          - "ssh://git@github.com/"
+          - "git@github.com/"
+          - "git@github.com:"
+        cmd: git config --global --add url.{{.AuthURL}}.insteadOf {{.ITEM}}

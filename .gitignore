@@ -1,0 +1,24 @@
+# Nix
+result/
+.direnv/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/.history/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+target/

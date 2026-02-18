@@ -41,7 +41,7 @@
 
           # Nix Tooling
           nixd
-          nixfmt-rfc-style
+          nixfmt
 
           # Languages (uncomment as needed)
           # nodejs_22

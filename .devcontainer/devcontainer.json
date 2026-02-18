@@ -1,0 +1,57 @@
+{
+    "name": "Dev Environment",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "remoteUser": "vscode",
+    "runArgs": [
+        "--init"
+    ],
+    "hostRequirements": {
+        "cpus": 4
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "upgradePackages": true,
+            "username": "vscode"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "nix.formatterPath": "nixfmt",
+                "nix.enableLanguageServer": true,
+                "nix.serverPath": "nixd",
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "editor.formatOnSave": true,
+                "github.copilot.chat.codeGeneration.useInstructionFiles": true
+            },
+            "extensions": [
+                "jnoortheen.nix-ide",
+                "redhat.vscode-yaml",
+                "github.copilot",
+                "mhutchie.git-graph",
+                "Gruntfuggly.todo-tree",
+                "mutantdino.resourcemonitor",
+                "tamasfe.even-better-toml"
+            ]
+        },
+        "codespaces": {
+            "repositories": {
+                "*": {
+                    "permissions": {
+                        "contents": "write",
+                        "pull_requests": "write",
+                        "issues": "write",
+                        "workflows": "write"
+                    }
+                }
+            }
+        }
+    },
+    "postCreateCommand": "task dev:setup",
+    "postStartCommand": "task dev:start"
+}
