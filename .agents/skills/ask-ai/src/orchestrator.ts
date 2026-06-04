@@ -255,8 +255,6 @@ export async function runAskAi(args: RunCliArgs, deps: AskAiDeps): Promise<numbe
     name: agent.sessionName({ mode: args.mode, stamp }),
     newSessionId: selected ? undefined : deps.randomUUID(),
     cwd: repoRoot,
-    sandbox: args.sandbox,
-    noSandbox: args.noSandbox,
     forkSession: true,
   });
 

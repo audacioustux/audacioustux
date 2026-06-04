@@ -33,6 +33,27 @@ Deno.test("parseCliArgs rejects resume and fresh together", () => {
   );
 });
 
+Deno.test("parseCliArgs rejects unsupported sandbox flags", () => {
+  assertThrows(
+    () => parseCliArgs(["agy", "ask", "q", "--sandbox"]),
+    Error,
+    "--sandbox is not supported",
+  );
+  assertThrows(
+    () => parseCliArgs(["agy", "ask", "q", "--no-sandbox"]),
+    Error,
+    "--no-sandbox is not supported",
+  );
+});
+
+Deno.test("parseCliArgs rejects git refs that look like options", () => {
+  assertThrows(
+    () => parseCliArgs(["claude", "review", "--base=--output=/tmp/pwn", "--head", "HEAD"]),
+    Error,
+    "--base must be a git ref, not an option",
+  );
+});
+
 Deno.test("parseCliArgs parses review refs and cwd", () => {
   const parsed = parseCliArgs([
     "claude",

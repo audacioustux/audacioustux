@@ -21,8 +21,6 @@ export type ParsedCliArgs =
     model?: string;
     configFile?: string;
     resume?: string;
-    sandbox: boolean;
-    noSandbox: boolean;
     extra: string;
     cwd?: string;
     dryRun: boolean;
@@ -44,6 +42,14 @@ function stringValue(value: unknown, flag: string): string | undefined {
   return value.trim();
 }
 
+function gitRefValue(value: unknown, flag: string): string | undefined {
+  const ref = stringValue(value, flag);
+  if (ref && ref.startsWith("-")) {
+    throw new Error(`${flag} must be a git ref, not an option`);
+  }
+  return ref;
+}
+
 function help(error?: string): ParsedCliArgs {
   return { kind: "help", error };
 }
@@ -59,15 +65,24 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
     return help(`Unknown mode: ${modeRaw}. Known: ${MODES.join(", ")}`);
   }
 
+  for (const arg of rest) {
+    if (arg === "--sandbox" || arg.startsWith("--sandbox=")) {
+      throw new Error(
+        "--sandbox is not supported by ask-ai; child CLI sandbox behavior is not reliable",
+      );
+    }
+    if (arg === "--no-sandbox" || arg.startsWith("--no-sandbox=")) {
+      throw new Error("--no-sandbox is not supported by ask-ai; no sandbox is enabled by default");
+    }
+  }
+
   const parsed = parseArgs(rest, {
-    boolean: ["fresh", "sandbox", "no-sandbox", "dry-run", "help"],
+    boolean: ["fresh", "dry-run", "help"],
     string: ["resume", "threshold", "model", "config", "base", "head", "extra", "cwd"],
     default: {
       base: "HEAD~1",
       head: "HEAD",
       fresh: false,
-      sandbox: false,
-      "no-sandbox": false,
       "dry-run": false,
       help: false,
     },
@@ -91,15 +106,13 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
     agent: agentRaw,
     mode: modeRaw,
     positional: parsed._.map(String),
-    base: stringValue(parsed.base, "--base") ?? "HEAD~1",
-    head: stringValue(parsed.head, "--head") ?? "HEAD",
+    base: gitRefValue(parsed.base, "--base") ?? "HEAD~1",
+    head: gitRefValue(parsed.head, "--head") ?? "HEAD",
     fresh,
     threshold,
     model: stringValue(parsed.model, "--model"),
     configFile: stringValue(parsed.config, "--config"),
     resume,
-    sandbox: parsed.sandbox === true,
-    noSandbox: parsed["no-sandbox"] === true,
     extra: stringValue(parsed.extra, "--extra") ?? "",
     cwd: stringValue(parsed.cwd, "--cwd"),
     dryRun: parsed["dry-run"] === true,
