@@ -174,20 +174,23 @@ async function promptForSubject({
   const displaySubject = subjectFile.resolvedPath
     ? `${subject} (${subjectFile.resolvedPath})`
     : subject;
+  const subjectText = subjectFile.truncated
+    ? `${subjectFile.text}\n\n[ask-ai: target file content truncated]`
+    : subjectFile.text;
   const promptMode = args.mode === "sessions" ? "ask" : args.mode;
   const identity = agent.promptIdentity(modelInfo);
   return {
     prompt: buildPrompt({
       mode: promptMode,
       subject: displaySubject,
-      subjectText: subjectFile.text,
+      subjectText,
       extra: args.extra,
       identity,
     }),
     query: buildSearchQuery({
       mode: args.mode,
       subject,
-      subjectText: subjectFile.text,
+      subjectText,
       extra: args.extra,
     }),
   };
@@ -284,10 +287,6 @@ export async function runAskAi(args: RunCliArgs, deps: AskAiDeps): Promise<numbe
       `ask-ai: note — requested model "${modelInfo.preferred}" differs from agy's configured model "${modelInfo.actual}" (source: settings.json). ` +
         `agy will use "${modelInfo.actual}". To change it, edit ~/.gemini/antigravity-cli/settings.json.\n`,
     );
-  }
-
-  if (agent.id === "claude" && typeof sessionOpts.sessionsDir === "string") {
-    await deps.mkdir(sessionOpts.sessionsDir);
   }
 
   const modelLabel = modelInfo.preferred ?? modelInfo.actual ?? "(CLI default)";

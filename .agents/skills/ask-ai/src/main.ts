@@ -29,8 +29,6 @@ Options:
   --resume <id>        Force a specific session/conversation id.
   --fresh              Skip session scan; start a new thread.
   --threshold <n>      Minimum relevance score for reuse.
-  --sandbox            Accepted for compatibility; agy may not mechanically enforce it.
-  --no-sandbox         Explicitly disable sandbox preference where an agent supports it.
   --base <ref>         Base ref for review mode (default: HEAD~1).
   --head <ref>         Head ref for review mode (default: HEAD).
   --extra "..."        Additional focus instructions for the reviewer.

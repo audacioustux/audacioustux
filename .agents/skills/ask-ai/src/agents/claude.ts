@@ -9,7 +9,7 @@ import type {
 } from "../agent.ts";
 import { resolvePreferredModel } from "../core/model.ts";
 import { scoreSession, type SessionCandidate } from "../core/scoring.ts";
-import { SESSION_TEXT_BYTE_LIMIT } from "../core/limits.ts";
+import { MAX_SESSION_FILES, SESSION_TEXT_BYTE_LIMIT } from "../core/limits.ts";
 import { readJsonLines } from "../sys/files.ts";
 import { encodeClaudeProjectPath, homeDir } from "../sys/paths.ts";
 import type { ChildCommand } from "../sys/process.ts";
@@ -127,8 +127,17 @@ export async function rankSessions(
 
   const candidates: SessionCandidate[] = [];
   const warnings = [];
+  let scanned = 0;
   for await (const entry of Deno.readDir(sessionsDir)) {
     if (!entry.isFile || !entry.name.endsWith(".jsonl")) continue;
+    if (scanned >= MAX_SESSION_FILES) {
+      warnings.push({
+        source: sessionsDir,
+        message: `Session scan capped at ${MAX_SESSION_FILES} files`,
+      });
+      break;
+    }
+    scanned += 1;
     const filePath = join(sessionsDir, entry.name);
     const summary = await summarizeSession(filePath);
     warnings.push(...summary.warnings.map((message) => ({ source: filePath, message })));

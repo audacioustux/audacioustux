@@ -195,3 +195,25 @@ Deno.test("runAskAi subject mode reads bounded file content", async () => {
   assertEquals(readSubject, "plan.md");
   assertStringIncludes(summary.command.at(-1), "file body");
 });
+
+Deno.test("runAskAi includes a truncation note for bounded subject files", async () => {
+  const d = deps({
+    readSubjectFile: () =>
+      Promise.resolve({ text: "file body", resolvedPath: "/repo/plan.md", truncated: true }),
+  });
+  await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
+  const summary = JSON.parse(d.stdout.join(""));
+  assertStringIncludes(summary.command.at(-1), "[ask-ai: target file content truncated]");
+});
+
+Deno.test("runAskAi does not require Deno write permission before invoking claude", async () => {
+  let mkdirCalled = false;
+  const d = deps({
+    mkdir: () => {
+      mkdirCalled = true;
+      return Promise.resolve();
+    },
+  });
+  await runAskAi(runArgs(["claude", "ask", "q", "--fresh"]), d);
+  assertEquals(mkdirCalled, false);
+});

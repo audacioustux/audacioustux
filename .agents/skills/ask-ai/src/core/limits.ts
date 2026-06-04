@@ -6,3 +6,4 @@ export const SEARCH_TERM_LIMIT = 80;
 export const DIFF_STAT_BYTE_LIMIT = 64_000;
 export const DIFF_BODY_BYTE_LIMIT = 1_000_000;
 export const MAX_SESSION_FILES = 1_000;
+export const JSON_LINE_BYTE_LIMIT = 1_000_000;

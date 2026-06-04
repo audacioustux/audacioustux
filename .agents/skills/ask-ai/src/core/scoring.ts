@@ -111,11 +111,11 @@ export function selectSession(
     minMatchedTerms?: number;
   } = {},
 ): SessionCandidate | undefined {
-  const best = ranked[0];
-  if (!best || best.score < threshold) return undefined;
-  if ((best.matchedTerms ?? 0) < minMatchedTerms) return undefined;
-  if (best.trusted === false) return undefined;
-  return best;
+  return ranked.find((candidate) =>
+    candidate.score >= threshold &&
+    (candidate.matchedTerms ?? 0) >= minMatchedTerms &&
+    candidate.trusted !== false
+  );
 }
 
 export function serializeCandidate(candidate: SessionCandidate): {

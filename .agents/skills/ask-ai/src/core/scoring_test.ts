@@ -49,6 +49,16 @@ Deno.test("selectSession enforces threshold and matched terms", () => {
   );
 });
 
+Deno.test("selectSession skips untrusted top candidate and selects trusted runner-up", () => {
+  assertEquals(
+    selectSession([
+      { id: "untrusted", score: 99, matchedTerms: 5, lastTimestamp: new Date(), trusted: false },
+      { id: "trusted", score: 20, matchedTerms: 3, lastTimestamp: new Date(), trusted: true },
+    ])?.id,
+    "trusted",
+  );
+});
+
 Deno.test("serializeCandidate redacts raw text and serializes Date", () => {
   assertEquals(
     serializeCandidate({

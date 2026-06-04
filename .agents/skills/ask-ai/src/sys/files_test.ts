@@ -40,3 +40,19 @@ Deno.test("readJsonLines streams valid values and reports corrupt lines", async 
     await Deno.remove(dir, { recursive: true });
   }
 });
+
+Deno.test("readJsonLines reports oversized lines without parsing them", async () => {
+  const dir = await Deno.makeTempDir();
+  try {
+    const file = join(dir, "x.jsonl");
+    await Deno.writeTextFile(file, '{"big":"abcdef"}\n{"ok":true}\n');
+    const out = [];
+    for await (const entry of readJsonLines(file, { maxLineBytes: 8 })) out.push(entry);
+    assertEquals(out, [
+      { line: 1, error: "Line exceeds 8 bytes" },
+      { line: 2, error: "Line exceeds 8 bytes" },
+    ]);
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
+});
