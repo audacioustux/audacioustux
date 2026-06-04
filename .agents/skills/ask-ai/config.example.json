@@ -1,6 +1,7 @@
 {
   "agents": {
     "claude": { "model": "opus" },
-    "agy":    { "model": "Gemini 3.1 Pro (High)" }
+    "agy": { "model": "Gemini 3.1 Pro (High)" },
+    "pi": { "model": "zai/glm-5.1:xhigh" }
   }
 }
