@@ -1,0 +1,8 @@
+export const DEFAULT_THRESHOLD = 12;
+export const DEFAULT_MIN_MATCHED_TERMS = 2;
+export const SUBJECT_FILE_BYTE_LIMIT = 20_000;
+export const SESSION_TEXT_BYTE_LIMIT = 250_000;
+export const SEARCH_TERM_LIMIT = 80;
+export const DIFF_STAT_BYTE_LIMIT = 64_000;
+export const DIFF_BODY_BYTE_LIMIT = 1_000_000;
+export const MAX_SESSION_FILES = 1_000;
