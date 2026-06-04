@@ -39,6 +39,18 @@ deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git
 
 Expected result: all checks pass and all Deno tests pass.
 
+### Installed inside another Deno workspace
+
+Some host repos define a root `deno.json` workspace. In that case, Deno rejects nested `deno task` configs that are not workspace members. The `ask-ai` wrapper is already protected by `--no-config`, so runtime use still works. For installed-copy checks inside such a host repo, run:
+
+```bash
+deno lint --no-config src
+deno check --no-config src/main.ts
+deno test --no-config src --allow-read --allow-write=/tmp --allow-env --allow-run=git
+```
+
+Use the standalone source repo for `deno task verify` and configured formatting checks.
+
 ## Dry-Run Smoke Tests
 
 These do not invoke child CLIs beyond constructing dry-run command JSON:
