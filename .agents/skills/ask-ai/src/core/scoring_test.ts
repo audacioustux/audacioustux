@@ -1,4 +1,4 @@
-import { assert, assertEquals } from "@std/assert";
+import { assert, assertEquals } from "jsr:@std/assert@1";
 import { scoreSession, selectSession, serializeCandidate, tokenize } from "./scoring.ts";
 
 Deno.test("tokenize dedupes, drops stop words, and splits path punctuation", () => {

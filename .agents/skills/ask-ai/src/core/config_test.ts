@@ -1,5 +1,5 @@
-import { assertEquals } from "@std/assert";
-import { join } from "@std/path";
+import { assertEquals } from "jsr:@std/assert@1";
+import { join } from "jsr:@std/path@1";
 import { defaultConfigFile, loadConfig } from "./config.ts";
 
 Deno.test("defaultConfigFile resolves to the skill root for src/main.ts", () => {

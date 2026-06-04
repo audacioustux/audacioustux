@@ -1,4 +1,4 @@
-import { basename, dirname, fromFileUrl, join } from "@std/path";
+import { basename, dirname, fromFileUrl, join } from "jsr:@std/path@1";
 
 export type AskAiConfig = {
   agents: Record<string, { model: string }>;

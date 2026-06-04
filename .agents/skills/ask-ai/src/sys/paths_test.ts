@@ -1,5 +1,5 @@
-import { assertEquals } from "@std/assert";
-import { join } from "@std/path";
+import { assertEquals } from "jsr:@std/assert@1";
+import { join } from "jsr:@std/path@1";
 import { encodeClaudeProjectPath, encodePiProjectPath, expandHome, findRepoRoot } from "./paths.ts";
 
 Deno.test("encodePiProjectPath mirrors Pi SessionManager", () => {

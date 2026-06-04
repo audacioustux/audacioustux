@@ -1,5 +1,5 @@
-import { assertEquals } from "@std/assert";
-import { join, resolve } from "@std/path";
+import { assertEquals } from "jsr:@std/assert@1";
+import { join, resolve } from "jsr:@std/path@1";
 import { loadHistoryByConversation, loadProjectMap } from "./agy.ts";
 
 Deno.test("loadHistoryByConversation keeps latest display per conversation", async () => {

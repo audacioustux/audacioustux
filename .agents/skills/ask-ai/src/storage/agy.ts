@@ -1,4 +1,4 @@
-import { resolve } from "@std/path";
+import { resolve } from "jsr:@std/path@1";
 import { readJsonLines } from "../sys/files.ts";
 
 export type AgyHistoryEntry = {

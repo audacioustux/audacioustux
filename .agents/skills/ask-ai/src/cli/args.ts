@@ -1,4 +1,4 @@
-import { parseArgs } from "@std/cli/parse-args";
+import { parseArgs } from "jsr:@std/cli@1/parse-args";
 import { DEFAULT_THRESHOLD } from "../core/limits.ts";
 
 export const AGENT_IDS = ["claude", "agy", "pi"] as const;

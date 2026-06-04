@@ -1,4 +1,4 @@
-import { assertEquals, assertMatch } from "@std/assert";
+import { assertEquals, assertMatch } from "jsr:@std/assert@1";
 import { buildPrompt, buildSearchQuery } from "./prompts.ts";
 
 Deno.test("buildPrompt produces ask prompt with identity, rules, subject, and extra", () => {

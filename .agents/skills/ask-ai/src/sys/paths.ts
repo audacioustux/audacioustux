@@ -1,4 +1,4 @@
-import { dirname, join, normalize, resolve, SEPARATOR } from "@std/path";
+import { dirname, join, normalize, resolve, SEPARATOR } from "jsr:@std/path@1";
 
 export function homeDir(
   env: Record<string, string | undefined> = {

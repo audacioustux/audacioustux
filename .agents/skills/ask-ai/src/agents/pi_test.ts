@@ -1,5 +1,5 @@
-import { assertEquals, assertGreater } from "@std/assert";
-import { join } from "@std/path";
+import { assertEquals, assertGreater } from "jsr:@std/assert@1";
+import { join } from "jsr:@std/path@1";
 import {
   buildCommand,
   loadSettings,

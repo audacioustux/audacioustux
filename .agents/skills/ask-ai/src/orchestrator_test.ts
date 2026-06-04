@@ -1,4 +1,4 @@
-import { assertEquals, assertStringIncludes } from "@std/assert";
+import { assertEquals, assertStringIncludes } from "jsr:@std/assert@1";
 import type { Agent, ModelInfo, RankSessionsInput, ResolveModelInput } from "./agent.ts";
 import { type AgentId, type Mode, parseCliArgs } from "./cli/args.ts";
 import { type AskAiDeps, runAskAi } from "./orchestrator.ts";

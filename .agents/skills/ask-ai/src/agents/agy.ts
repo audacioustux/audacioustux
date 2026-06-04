@@ -1,4 +1,4 @@
-import { join, resolve } from "@std/path";
+import { join, resolve } from "jsr:@std/path@1";
 import type {
   BuildCommandInput,
   ModelInfo,

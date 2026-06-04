@@ -1,4 +1,4 @@
-import { resolve } from "@std/path";
+import { resolve } from "jsr:@std/path@1";
 import type { Agent, AskAiConfig, ModelInfo } from "./agent.ts";
 import type { ParsedCliArgs } from "./cli/args.ts";
 import { defaultConfigFile, loadConfig as loadConfigDefault } from "./core/config.ts";
