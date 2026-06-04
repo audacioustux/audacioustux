@@ -29,7 +29,7 @@ function fakeAgent(
     resolveModel: (_input: ResolveModelInput) => Promise.resolve(modelInfo),
     promptIdentity: ({ actual, preferred }) => `You are ${actual ?? preferred ?? agentId}.`,
     sessionName: ({ mode, stamp }: { mode: Mode; stamp: string }) =>
-      `ask-ai-${agentId}-${mode}-${stamp}`,
+      `ask-cli-${agentId}-${mode}-${stamp}`,
     rankSessions: (_input: RankSessionsInput) =>
       Promise.resolve({ ok: true, candidates, warnings: [] }),
     buildCommand: ({ prompt, sessionId, model, name, newSessionId, cwd }) => ({
@@ -203,7 +203,7 @@ Deno.test("runAskAi includes a truncation note for bounded subject files", async
   });
   await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
   const summary = JSON.parse(d.stdout.join(""));
-  assertStringIncludes(summary.command.at(-1), "[ask-ai: target file content truncated]");
+  assertStringIncludes(summary.command.at(-1), "[ask-cli: target file content truncated]");
 });
 
 Deno.test("runAskAi does not require Deno write permission before invoking claude", async () => {

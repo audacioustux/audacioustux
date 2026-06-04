@@ -55,7 +55,7 @@ Deno.test("agy promptIdentity/sessionName are stable", () => {
     promptIdentity({ preferred: "hint", actual: "Gemini 3.1 Pro (High)", source: "cli" }),
     "You are Gemini 3.1 Pro (High) acting as an independent second brain.",
   );
-  assertEquals(sessionName({ mode: "plan", stamp: "stamp" }), "ask-ai-agy-plan-stamp");
+  assertEquals(sessionName({ mode: "plan", stamp: "stamp" }), "ask-cli-agy-plan-stamp");
 });
 
 Deno.test("agy buildCommand never includes model and uses conversation reuse", () => {

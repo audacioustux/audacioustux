@@ -90,7 +90,7 @@ Deno.test("pi promptIdentity and sessionName are stable", () => {
     }),
     "You are openai-codex/gpt-5.5:xhigh acting as an independent second brain.",
   );
-  assertEquals(sessionName({ mode: "ask", stamp: "stamp" }), "ask-ai-pi-ask-stamp");
+  assertEquals(sessionName({ mode: "ask", stamp: "stamp" }), "ask-cli-pi-ask-stamp");
 });
 
 Deno.test("pi buildCommand uses read-only tool allowlist and session flags", () => {
@@ -98,7 +98,7 @@ Deno.test("pi buildCommand uses read-only tool allowlist and session flags", () 
     buildCommand({
       prompt: "hello",
       model: "zai/glm-5.1:xhigh",
-      name: "ask-ai-pi",
+      name: "ask-cli-pi",
       newSessionId: "new-id",
       cwd: "/repo",
     }),
@@ -112,7 +112,7 @@ Deno.test("pi buildCommand uses read-only tool allowlist and session flags", () 
         "--model",
         "zai/glm-5.1:xhigh",
         "--name",
-        "ask-ai-pi",
+        "ask-cli-pi",
         "--session-id",
         "new-id",
         "hello",

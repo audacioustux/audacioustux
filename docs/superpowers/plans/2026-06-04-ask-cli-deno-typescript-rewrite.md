@@ -1,10 +1,10 @@
-# ask-cli Deno/TypeScript Rewrite Implementation Plan
+# ask-ai Deno/TypeScript Rewrite Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rewrite `.agents/skills/ask-cli` from Node `.mjs` to Deno-native TypeScript while preserving existing behavior and hardening reliability, safety, and testability.
+**Goal:** Rewrite `.agents/skills/ask-ai` from Node `.mjs` to Deno-native TypeScript while preserving existing behavior and hardening reliability, safety, and testability.
 
-**Architecture:** Build a typed Deno implementation under `src/`, with a shell wrapper `ask-cli`, explicit agent contracts, streaming/bounded I/O, validated external JSON boundaries, and orchestration tests before deleting Node files. Port behavior module-by-module and keep every checkpoint green.
+**Architecture:** Build a typed Deno implementation under `src/`, with a shell wrapper `ask-ai`, explicit agent contracts, streaming/bounded I/O, validated external JSON boundaries, and orchestration tests before deleting Node files. Port behavior module-by-module and keep every checkpoint green.
 
 **Tech Stack:** Deno 2.6.10+, TypeScript, `deno test`, `deno fmt`, `deno lint`, `deno check`, JSR `@std/cli/parse-args`, JSR `@std/path`, JSR `@std/assert`.
 
@@ -15,8 +15,8 @@
 Create and modify these files:
 
 ```text
-.agents/skills/ask-cli/
-  ask-cli
+.agents/skills/ask-ai/
+  ask-ai
   deno.json
   src/main.ts
   src/orchestrator.ts
@@ -60,12 +60,12 @@ Create and modify these files:
 Remove only after all Deno tests and dry-runs pass:
 
 ```text
-.agents/skills/ask-cli/ask-cli.mjs
-.agents/skills/ask-cli/shared.mjs
-.agents/skills/ask-cli/shared.test.mjs
-.agents/skills/ask-cli/ask-cli.test.mjs
-.agents/skills/ask-cli/agents/*.mjs
-.agents/skills/ask-cli/agents/*.test.mjs
+.agents/skills/ask-ai/ask-ai.mjs
+.agents/skills/ask-ai/shared.mjs
+.agents/skills/ask-ai/shared.test.mjs
+.agents/skills/ask-ai/ask-ai.test.mjs
+.agents/skills/ask-ai/agents/*.mjs
+.agents/skills/ask-ai/agents/*.test.mjs
 ```
 
 ---
@@ -73,15 +73,15 @@ Remove only after all Deno tests and dry-runs pass:
 ### Task 1: Add Deno scaffold and CLI argument parser
 
 **Files:**
-- Create: `.agents/skills/ask-cli/deno.json`
-- Create: `.agents/skills/ask-cli/ask-cli`
-- Create: `.agents/skills/ask-cli/src/cli/args.ts`
-- Create: `.agents/skills/ask-cli/src/cli/args_test.ts`
-- Create: `.agents/skills/ask-cli/src/core/limits.ts`
+- Create: `.agents/skills/ask-ai/deno.json`
+- Create: `.agents/skills/ask-ai/ask-ai`
+- Create: `.agents/skills/ask-ai/src/cli/args.ts`
+- Create: `.agents/skills/ask-ai/src/cli/args_test.ts`
+- Create: `.agents/skills/ask-ai/src/core/limits.ts`
 
 - [ ] **Step 1: Write failing CLI parser tests**
 
-Create `.agents/skills/ask-cli/src/cli/args_test.ts`:
+Create `.agents/skills/ask-ai/src/cli/args_test.ts`:
 
 ```ts
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
@@ -143,7 +143,7 @@ Deno.test("parseCliArgs parses review refs and cwd", () => {
 Run:
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/cli/args_test.ts
 ```
 
@@ -151,7 +151,7 @@ Expected: FAIL with module not found for `src/cli/args.ts`.
 
 - [ ] **Step 3: Add Deno config and parser implementation**
 
-Create `.agents/skills/ask-cli/deno.json`:
+Create `.agents/skills/ask-ai/deno.json`:
 
 ```json
 {
@@ -180,7 +180,7 @@ Create `.agents/skills/ask-cli/deno.json`:
 }
 ```
 
-Create `.agents/skills/ask-cli/src/core/limits.ts`:
+Create `.agents/skills/ask-ai/src/core/limits.ts`:
 
 ```ts
 export const DEFAULT_THRESHOLD = 12;
@@ -193,7 +193,7 @@ export const DIFF_BODY_BYTE_LIMIT = 1_000_000;
 export const MAX_SESSION_FILES = 1_000;
 ```
 
-Create `.agents/skills/ask-cli/src/cli/args.ts`:
+Create `.agents/skills/ask-ai/src/cli/args.ts`:
 
 ```ts
 import { parseArgs } from "@std/cli/parse-args";
@@ -301,7 +301,7 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
 }
 ```
 
-Create `.agents/skills/ask-cli/ask-cli`:
+Create `.agents/skills/ask-ai/ask-ai`:
 
 ```sh
 #!/usr/bin/env sh
@@ -319,7 +319,7 @@ exec deno run \
 Run:
 
 ```bash
-chmod +x /tmp/audacioustux/.agents/skills/ask-cli/ask-cli
+chmod +x /tmp/audacioustux/.agents/skills/ask-ai/ask-ai
 ```
 
 - [ ] **Step 4: Run tests to verify green**
@@ -327,7 +327,7 @@ chmod +x /tmp/audacioustux/.agents/skills/ask-cli/ask-cli
 Run:
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/cli/args_test.ts
 ```
 
@@ -337,8 +337,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/deno.json .agents/skills/ask-cli/ask-cli .agents/skills/ask-cli/src/cli/args.ts .agents/skills/ask-cli/src/cli/args_test.ts .agents/skills/ask-cli/src/core/limits.ts
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: scaffold ask-cli deno cli'
+git add .agents/skills/ask-ai/deno.json .agents/skills/ask-ai/ask-ai .agents/skills/ask-ai/src/cli/args.ts .agents/skills/ask-ai/src/cli/args_test.ts .agents/skills/ask-ai/src/core/limits.ts
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: scaffold ask-ai deno cli'
 ```
 
 ---
@@ -346,14 +346,14 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 2: Port pure core behavior with tests
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/core/model.ts`
-- Create: `.agents/skills/ask-cli/src/core/model_test.ts`
-- Create: `.agents/skills/ask-cli/src/core/scoring.ts`
-- Create: `.agents/skills/ask-cli/src/core/scoring_test.ts`
-- Create: `.agents/skills/ask-cli/src/core/prompts.ts`
-- Create: `.agents/skills/ask-cli/src/core/prompts_test.ts`
-- Create: `.agents/skills/ask-cli/src/core/config.ts`
-- Create: `.agents/skills/ask-cli/src/core/config_test.ts`
+- Create: `.agents/skills/ask-ai/src/core/model.ts`
+- Create: `.agents/skills/ask-ai/src/core/model_test.ts`
+- Create: `.agents/skills/ask-ai/src/core/scoring.ts`
+- Create: `.agents/skills/ask-ai/src/core/scoring_test.ts`
+- Create: `.agents/skills/ask-ai/src/core/prompts.ts`
+- Create: `.agents/skills/ask-ai/src/core/prompts_test.ts`
+- Create: `.agents/skills/ask-ai/src/core/config.ts`
+- Create: `.agents/skills/ask-ai/src/core/config_test.ts`
 
 - [ ] **Step 1: Write failing model/scoring tests**
 
@@ -395,7 +395,7 @@ Deno.test("selectSession enforces threshold and matched terms", () => {
 - [ ] **Step 2: Run tests to verify red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/core/model_test.ts src/core/scoring_test.ts
 ```
 
@@ -437,8 +437,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/core
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port ask-cli core logic to deno'
+git add .agents/skills/ask-ai/src/core
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port ask-ai core logic to deno'
 ```
 
 ---
@@ -446,13 +446,13 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 3: Add system boundaries for paths, files, git, and process execution
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/sys/paths.ts`
-- Create: `.agents/skills/ask-cli/src/sys/paths_test.ts`
-- Create: `.agents/skills/ask-cli/src/sys/files.ts`
-- Create: `.agents/skills/ask-cli/src/sys/files_test.ts`
-- Create: `.agents/skills/ask-cli/src/sys/git.ts`
-- Create: `.agents/skills/ask-cli/src/sys/git_test.ts`
-- Create: `.agents/skills/ask-cli/src/sys/process.ts`
+- Create: `.agents/skills/ask-ai/src/sys/paths.ts`
+- Create: `.agents/skills/ask-ai/src/sys/paths_test.ts`
+- Create: `.agents/skills/ask-ai/src/sys/files.ts`
+- Create: `.agents/skills/ask-ai/src/sys/files_test.ts`
+- Create: `.agents/skills/ask-ai/src/sys/git.ts`
+- Create: `.agents/skills/ask-ai/src/sys/git_test.ts`
+- Create: `.agents/skills/ask-ai/src/sys/process.ts`
 
 - [ ] **Step 1: Write failing path/file tests**
 
@@ -478,7 +478,7 @@ Deno.test("encodePiProjectPath mirrors Pi SessionManager", () => {
 - [ ] **Step 2: Run tests to verify red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read --allow-run=git src/sys/paths_test.ts src/sys/files_test.ts src/sys/git_test.ts
 ```
 
@@ -520,7 +520,7 @@ export const runChildInherit: CommandRunner;
 - [ ] **Step 4: Verify sys tests green**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read --allow-write=/tmp --allow-run=git src/sys
 ```
 
@@ -530,8 +530,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/sys
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: add deno system boundaries for ask-cli'
+git add .agents/skills/ask-ai/src/sys
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: add deno system boundaries for ask-ai'
 ```
 
 ---
@@ -539,10 +539,10 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 4: Port typed agent contract and Claude agent
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/agent.ts`
-- Create: `.agents/skills/ask-cli/src/agents/claude.ts`
-- Create: `.agents/skills/ask-cli/src/agents/claude_test.ts`
-- Create: `.agents/skills/ask-cli/fixtures/claude-session.jsonl`
+- Create: `.agents/skills/ask-ai/src/agent.ts`
+- Create: `.agents/skills/ask-ai/src/agents/claude.ts`
+- Create: `.agents/skills/ask-ai/src/agents/claude_test.ts`
+- Create: `.agents/skills/ask-ai/fixtures/claude-session.jsonl`
 
 - [ ] **Step 1: Add Claude fixture and failing tests**
 
@@ -564,7 +564,7 @@ Test required behavior:
 - [ ] **Step 2: Run Claude tests red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/agents/claude_test.ts
 ```
 
@@ -586,8 +586,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/agent.ts .agents/skills/ask-cli/src/agents/claude.ts .agents/skills/ask-cli/src/agents/claude_test.ts .agents/skills/ask-cli/fixtures/claude-session.jsonl
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port claude ask-cli agent to deno'
+git add .agents/skills/ask-ai/src/agent.ts .agents/skills/ask-ai/src/agents/claude.ts .agents/skills/ask-ai/src/agents/claude_test.ts .agents/skills/ask-ai/fixtures/claude-session.jsonl
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port claude ask-ai agent to deno'
 ```
 
 ---
@@ -595,9 +595,9 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 5: Port Pi agent
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/agents/pi.ts`
-- Create: `.agents/skills/ask-cli/src/agents/pi_test.ts`
-- Create: `.agents/skills/ask-cli/fixtures/pi-session.jsonl`
+- Create: `.agents/skills/ask-ai/src/agents/pi.ts`
+- Create: `.agents/skills/ask-ai/src/agents/pi_test.ts`
+- Create: `.agents/skills/ask-ai/fixtures/pi-session.jsonl`
 
 - [ ] **Step 1: Write failing Pi tests**
 
@@ -614,7 +614,7 @@ Use a fixture with user/assistant/toolResult messages.
 - [ ] **Step 2: Run Pi tests red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/agents/pi_test.ts
 ```
 
@@ -642,8 +642,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/agents/pi.ts .agents/skills/ask-cli/src/agents/pi_test.ts .agents/skills/ask-cli/fixtures/pi-session.jsonl
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port pi ask-cli agent to deno'
+git add .agents/skills/ask-ai/src/agents/pi.ts .agents/skills/ask-ai/src/agents/pi_test.ts .agents/skills/ask-ai/fixtures/pi-session.jsonl
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port pi ask-ai agent to deno'
 ```
 
 ---
@@ -651,12 +651,12 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 6: Port safe agy metadata support
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/storage/agy.ts`
-- Create: `.agents/skills/ask-cli/src/storage/agy_test.ts`
-- Create: `.agents/skills/ask-cli/src/agents/agy.ts`
-- Create: `.agents/skills/ask-cli/src/agents/agy_test.ts`
-- Create: `.agents/skills/ask-cli/fixtures/agy-history.jsonl`
-- Create: `.agents/skills/ask-cli/fixtures/agy-projects.json`
+- Create: `.agents/skills/ask-ai/src/storage/agy.ts`
+- Create: `.agents/skills/ask-ai/src/storage/agy_test.ts`
+- Create: `.agents/skills/ask-ai/src/agents/agy.ts`
+- Create: `.agents/skills/ask-ai/src/agents/agy_test.ts`
+- Create: `.agents/skills/ask-ai/fixtures/agy-history.jsonl`
+- Create: `.agents/skills/ask-ai/fixtures/agy-projects.json`
 
 - [ ] **Step 1: Write failing agy storage tests**
 
@@ -684,7 +684,7 @@ Tests must assert:
 - [ ] **Step 2: Run agy tests red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/storage/agy_test.ts src/agents/agy_test.ts
 ```
 
@@ -712,8 +712,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/storage/agy.ts .agents/skills/ask-cli/src/storage/agy_test.ts .agents/skills/ask-cli/src/agents/agy.ts .agents/skills/ask-cli/src/agents/agy_test.ts .agents/skills/ask-cli/fixtures/agy-history.jsonl .agents/skills/ask-cli/fixtures/agy-projects.json
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port safe agy ask-cli metadata support'
+git add .agents/skills/ask-ai/src/storage/agy.ts .agents/skills/ask-ai/src/storage/agy_test.ts .agents/skills/ask-ai/src/agents/agy.ts .agents/skills/ask-ai/src/agents/agy_test.ts .agents/skills/ask-ai/fixtures/agy-history.jsonl .agents/skills/ask-ai/fixtures/agy-projects.json
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: port safe agy ask-ai metadata support'
 ```
 
 ---
@@ -721,9 +721,9 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 7: Implement orchestrator with dependency injection
 
 **Files:**
-- Create: `.agents/skills/ask-cli/src/orchestrator.ts`
-- Create: `.agents/skills/ask-cli/src/orchestrator_test.ts`
-- Create: `.agents/skills/ask-cli/src/main.ts`
+- Create: `.agents/skills/ask-ai/src/orchestrator.ts`
+- Create: `.agents/skills/ask-ai/src/orchestrator_test.ts`
+- Create: `.agents/skills/ask-ai/src/main.ts`
 
 - [ ] **Step 1: Write failing orchestrator tests**
 
@@ -739,7 +739,7 @@ Tests must use fake dependencies and cover:
 - [ ] **Step 2: Run orchestrator tests red**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno test --allow-read src/orchestrator_test.ts
 ```
 
@@ -782,8 +782,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/src/orchestrator.ts .agents/skills/ask-cli/src/orchestrator_test.ts .agents/skills/ask-cli/src/main.ts
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: add deno ask-cli orchestrator'
+git add .agents/skills/ask-ai/src/orchestrator.ts .agents/skills/ask-ai/src/orchestrator_test.ts .agents/skills/ask-ai/src/main.ts
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: add deno ask-ai orchestrator'
 ```
 
 ---
@@ -791,12 +791,12 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 8: End-to-end dry-run smoke tests through wrapper
 
 **Files:**
-- Modify: `.agents/skills/ask-cli/TESTING.md`
+- Modify: `.agents/skills/ask-ai/TESTING.md`
 
 - [ ] **Step 1: Run full Deno verification**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno task verify
 ```
 
@@ -805,11 +805,11 @@ Expected: PASS for fmt, lint, check, and tests.
 - [ ] **Step 2: Run wrapper dry-runs**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
-./ask-cli claude ask "dry run?" --fresh --dry-run
-./ask-cli agy ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
+cd /tmp/audacioustux/.agents/skills/ask-ai
+./ask-ai claude ask "dry run?" --fresh --dry-run
+./ask-ai agy ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
 ```
 
 Expected:
@@ -824,8 +824,8 @@ Expected:
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli/TESTING.md
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'docs: document deno ask-cli verification'
+git add .agents/skills/ask-ai/TESTING.md
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'docs: document deno ask-ai verification'
 ```
 
 ---
@@ -833,8 +833,8 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 ### Task 9: Update skill documentation and remove Node implementation
 
 **Files:**
-- Modify: `.agents/skills/ask-cli/SKILL.md`
-- Modify: `.agents/skills/ask-cli/config.example.json`
+- Modify: `.agents/skills/ask-ai/SKILL.md`
+- Modify: `.agents/skills/ask-ai/config.example.json`
 - Delete: Node `.mjs` implementation and `.mjs` tests listed in File Structure.
 
 - [ ] **Step 1: Update SKILL.md**
@@ -842,7 +842,7 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 Document:
 
 - Deno requirement.
-- `./ask-cli` wrapper usage.
+- `./ask-ai` wrapper usage.
 - Three agents and model behavior.
 - Deno permission rationale.
 - Honest safety language: child CLIs are not sandboxed by Deno.
@@ -853,7 +853,7 @@ Document:
 Run before deleting:
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno task verify
 ```
 
@@ -862,17 +862,17 @@ Expected: PASS.
 Then remove:
 
 ```bash
-rm ask-cli.mjs shared.mjs shared.test.mjs ask-cli.test.mjs agents/*.mjs agents/*.test.mjs
+rm ask-ai.mjs shared.mjs shared.test.mjs ask-ai.test.mjs agents/*.mjs agents/*.test.mjs
 ```
 
 - [ ] **Step 3: Run final Deno verification**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno task verify
-./ask-cli claude ask "dry run?" --fresh --dry-run
-./ask-cli agy ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --dry-run
+./ask-ai claude ask "dry run?" --fresh --dry-run
+./ask-ai agy ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --dry-run
 ```
 
 Expected: PASS.
@@ -881,8 +881,8 @@ Expected: PASS.
 
 ```bash
 cd /tmp/audacioustux
-git add .agents/skills/ask-cli
-git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: replace ask-cli node runtime with deno typescript'
+git add .agents/skills/ask-ai
+git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S -m 'feat: replace ask-ai node runtime with deno typescript'
 ```
 
 ---
@@ -895,11 +895,11 @@ git -c user.name='Tanjim H.' -c user.email='contact@audacioustux.com' commit -S 
 - [ ] **Step 1: Run final verification**
 
 ```bash
-cd /tmp/audacioustux/.agents/skills/ask-cli
+cd /tmp/audacioustux/.agents/skills/ask-ai
 deno task verify
-./ask-cli claude ask "dry run?" --fresh --dry-run
-./ask-cli agy ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --dry-run
+./ask-ai claude ask "dry run?" --fresh --dry-run
+./ask-ai agy ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --dry-run
 ```
 
 Expected: PASS.
@@ -930,7 +930,7 @@ For each accepted finding:
 ```bash
 cd /tmp/audacioustux
 git status --short
-npx skills add audacioustux/audacioustux -s ask-cli -y
+npx skills add audacioustux/audacioustux -s ask-ai -y
 ```
 
 Then run the installed helper path according to the skills installer output. Expected: installed dry-runs match source dry-runs.

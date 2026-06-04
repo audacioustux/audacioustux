@@ -5,11 +5,11 @@ import * as agy from "./agents/agy.ts";
 import * as pi from "./agents/pi.ts";
 import type { Agent } from "./agent.ts";
 
-const SKILL_NAME = "ask-ai";
+const SKILL_NAME = "ask-cli";
 
 export function usage(): string {
   return `Usage:
-  ask-ai <agent> <mode> [subject...]
+  ask-cli <agent> <mode> [subject...]
 
 Modes:
   ask          General second opinion or follow-up question

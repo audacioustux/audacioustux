@@ -34,7 +34,7 @@ Deno.test("claude promptIdentity and sessionName are stable", () => {
     promptIdentity({ preferred: undefined, actual: undefined, source: "default" }),
     "You are Claude acting as an independent second brain.",
   );
-  assertEquals(sessionName({ mode: "review", stamp: "stamp" }), "ask-ai-claude-review-stamp");
+  assertEquals(sessionName({ mode: "review", stamp: "stamp" }), "ask-cli-claude-review-stamp");
 });
 
 Deno.test("claude buildCommand handles model, resume, fork, new session, name", () => {
@@ -43,7 +43,7 @@ Deno.test("claude buildCommand handles model, resume, fork, new session, name", 
       prompt: "hello",
       sessionId: "existing",
       model: "opus",
-      name: "ask-ai-claude",
+      name: "ask-cli-claude",
       cwd: "/repo",
       forkSession: true,
     }),
@@ -57,7 +57,7 @@ Deno.test("claude buildCommand handles model, resume, fork, new session, name", 
         "--permission-mode",
         "plan",
         "--name",
-        "ask-ai-claude",
+        "ask-cli-claude",
         "--resume",
         "existing",
         "--fork-session",

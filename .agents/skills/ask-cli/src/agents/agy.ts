@@ -65,7 +65,7 @@ export function promptIdentity({ preferred, actual }: ModelInfo): string {
 }
 
 export function sessionName({ mode, stamp }: { mode: string; stamp: string }): string {
-  return `ask-ai-agy-${mode}-${stamp}`;
+  return `ask-cli-agy-${mode}-${stamp}`;
 }
 
 export async function rankSessions({

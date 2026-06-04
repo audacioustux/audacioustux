@@ -1,13 +1,13 @@
-# ask-ai Skill Testing
+# ask-cli Skill Testing
 
 ## Runtime
 
-`ask-ai` is a Deno-native TypeScript skill. Use Deno 2.6.10 or newer stable Deno 2.x.
+`ask-cli` is a Deno-native TypeScript skill. Use Deno 2.6.10 or newer stable Deno 2.x.
 
 ## Test Layout
 
 ```text
-ask-ai/
+ask-cli/
 ├── deno.json
 ├── src/
 │   ├── cli/args_test.ts          # CLI parsing
@@ -24,7 +24,7 @@ ask-ai/
 Run from the skill directory:
 
 ```bash
-cd .agents/skills/ask-ai
+cd .agents/skills/ask-cli
 deno task verify
 ```
 
@@ -41,7 +41,7 @@ Expected result: all checks pass and all Deno tests pass.
 
 ### Installed inside another Deno workspace
 
-Some host repos define a root `deno.json` workspace. In that case, Deno rejects nested `deno task` configs that are not workspace members. The `ask-ai` wrapper is already protected by `--no-config`, so runtime use still works. For installed-copy checks inside such a host repo, run:
+Some host repos define a root `deno.json` workspace. In that case, Deno rejects nested `deno task` configs that are not workspace members. The `ask-cli` wrapper is already protected by `--no-config`, so runtime use still works. For installed-copy checks inside such a host repo, run:
 
 ```bash
 deno lint --no-config src
@@ -56,10 +56,10 @@ Use the standalone source repo for `deno task verify` and configured formatting 
 These do not invoke child CLIs beyond constructing dry-run command JSON:
 
 ```bash
-./ask-ai claude ask "dry run?" --fresh --dry-run
-./ask-ai agy ask "dry run?" --fresh --dry-run
-./ask-ai pi ask "dry run?" --fresh --dry-run
-./ask-ai pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
+./ask-cli claude ask "dry run?" --fresh --dry-run
+./ask-cli agy ask "dry run?" --fresh --dry-run
+./ask-cli pi ask "dry run?" --fresh --dry-run
+./ask-cli pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
 ```
 
 Expected command shapes:

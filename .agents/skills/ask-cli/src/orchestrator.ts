@@ -130,8 +130,8 @@ async function promptForReview({
   );
   if (diff.status !== 0) throw new Error(`git diff failed: ${diff.stderr}`);
 
-  const statText = stat.stdout + (stat.truncated ? "\n[ask-ai: diff stat truncated]" : "");
-  const diffText = diff.stdout + (diff.truncated ? "\n[ask-ai: diff truncated]" : "");
+  const statText = stat.stdout + (stat.truncated ? "\n[ask-cli: diff stat truncated]" : "");
+  const diffText = diff.stdout + (diff.truncated ? "\n[ask-cli: diff truncated]" : "");
   const identity = agent.promptIdentity(modelInfo);
   return {
     prompt: buildPrompt({
@@ -175,7 +175,7 @@ async function promptForSubject({
     ? `${subject} (${subjectFile.resolvedPath})`
     : subject;
   const subjectText = subjectFile.truncated
-    ? `${subjectFile.text}\n\n[ask-ai: target file content truncated]`
+    ? `${subjectFile.text}\n\n[ask-cli: target file content truncated]`
     : subjectFile.text;
   const promptMode = args.mode === "sessions" ? "ask" : args.mode;
   const identity = agent.promptIdentity(modelInfo);
@@ -282,15 +282,15 @@ export async function runAskAi(args: RunCliArgs, deps: AskAiDeps): Promise<numbe
     modelInfo.preferred !== modelInfo.actual
   ) {
     deps.writeStderr(
-      `ask-ai: note — requested model "${modelInfo.preferred}" differs from agy's configured model "${modelInfo.actual}" (source: settings.json). ` +
+      `ask-cli: note — requested model "${modelInfo.preferred}" differs from agy's configured model "${modelInfo.actual}" (source: settings.json). ` +
         `agy will use "${modelInfo.actual}". To change it, edit ~/.gemini/antigravity-cli/settings.json.\n`,
     );
   }
 
   const modelLabel = modelInfo.preferred ?? modelInfo.actual ?? "(CLI default)";
-  deps.writeStderr(`ask-ai: model=${modelLabel} (source: ${modelInfo.source})\n`);
+  deps.writeStderr(`ask-cli: model=${modelLabel} (source: ${modelInfo.source})\n`);
   deps.writeStderr(
-    `ask-ai: ${
+    `ask-cli: ${
       selected ? `using session ${selected.id} (score ${selected.score})` : "creating a new session"
     }\n`,
   );

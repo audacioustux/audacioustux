@@ -7,105 +7,43 @@ import type {
   ResolveModelInput,
   SessionOptsInput,
 } from "../agent.ts";
-import { MAX_SESSION_FILES, SESSION_TEXT_BYTE_LIMIT } from "../core/limits.ts";
 import { resolvePreferredModel } from "../core/model.ts";
 import { scoreSession, type SessionCandidate } from "../core/scoring.ts";
+import { MAX_SESSION_FILES, SESSION_TEXT_BYTE_LIMIT } from "../core/limits.ts";
 import { readJsonLines } from "../sys/files.ts";
-import { encodePiProjectPath, homeDir } from "../sys/paths.ts";
+import { encodeClaudeProjectPath, homeDir } from "../sys/paths.ts";
 import type { ChildCommand } from "../sys/process.ts";
 
-export const id = "pi" as const;
-export const displayName = "Pi";
-export const cliBin = "pi";
-
-const READ_ONLY_TOOLS = "read,grep,find,ls";
+export const id = "claude" as const;
+export const displayName = "Claude";
+export const cliBin = "claude";
 
 type JsonObject = Record<string, unknown>;
-
-export type PiSettings = {
-  defaultProvider?: string;
-  defaultModel?: string;
-  defaultThinkingLevel?: string;
-  enabledModels: string[];
-};
 
 function isObject(value: unknown): value is JsonObject {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function nonBlank(value: unknown): string | undefined {
-  return typeof value === "string" && value.trim() ? value.trim() : undefined;
-}
-
 export function sessionOpts({ repoRoot, home = homeDir() }: SessionOptsInput) {
-  return {
-    sessionsDir: join(home, ".pi", "agent", "sessions", encodePiProjectPath(repoRoot)),
-    settingsFile: join(home, ".pi", "agent", "settings.json"),
-    repoRoot,
-  };
+  return { sessionsDir: join(home, ".claude", "projects", encodeClaudeProjectPath(repoRoot)) };
 }
 
-export async function loadSettings(settingsFile: string | undefined): Promise<PiSettings> {
-  if (!settingsFile) return { enabledModels: [] };
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(await Deno.readTextFile(settingsFile));
-  } catch {
-    return { enabledModels: [] };
-  }
-  if (!isObject(parsed)) return { enabledModels: [] };
-
-  return {
-    defaultProvider: nonBlank(parsed.defaultProvider),
-    defaultModel: nonBlank(parsed.defaultModel),
-    defaultThinkingLevel: nonBlank(parsed.defaultThinkingLevel),
-    enabledModels: Array.isArray(parsed.enabledModels)
-      ? parsed.enabledModels.filter((value): value is string =>
-        typeof value === "string" && value.trim() !== ""
-      )
-        .map((value) => value.trim())
-      : [],
-  };
-}
-
-function configuredDefaultModel(settings: PiSettings): string | undefined {
-  if (!settings.defaultModel) return undefined;
-  const base = settings.defaultModel.includes("/") || !settings.defaultProvider
-    ? settings.defaultModel
-    : `${settings.defaultProvider}/${settings.defaultModel}`;
-  return settings.defaultThinkingLevel ? `${base}:${settings.defaultThinkingLevel}` : base;
-}
-
-function modelBase(model: string): string {
-  return model.split(":")[0];
-}
-
-function knownModel(actual: string | undefined, enabledModels: string[]): boolean | undefined {
-  if (!actual || enabledModels.length === 0) return undefined;
-  return enabledModels.includes(actual) || enabledModels.includes(modelBase(actual));
-}
-
-export async function resolveModel({
-  cliModel,
-  env,
-  config,
-  settingsFile,
-}: ResolveModelInput = {}): Promise<ModelInfo> {
-  const settings = await loadSettings(settingsFile);
+export function resolveModel(
+  { cliModel, env, config }: ResolveModelInput = {},
+): Promise<ModelInfo> {
   const { preferred, source } = resolvePreferredModel({ agentId: id, cliModel, env, config });
-  const actual = preferred ?? configuredDefaultModel(settings);
-  return { preferred, actual, source, modelKnown: knownModel(actual, settings.enabledModels) };
+  return Promise.resolve({ preferred, actual: preferred, source, modelKnown: undefined });
 }
 
 export function promptIdentity({ preferred, actual }: ModelInfo): string {
-  const name = actual ?? preferred;
+  const name = preferred ?? actual;
   return name
     ? `You are ${name} acting as an independent second brain.`
-    : "You are Pi acting as an independent second brain.";
+    : "You are Claude acting as an independent second brain.";
 }
 
 export function sessionName({ mode, stamp }: { mode: string; stamp: string }): string {
-  return `ask-ai-pi-${mode}-${stamp}`;
+  return `ask-cli-claude-${mode}-${stamp}`;
 }
 
 function contentText(content: unknown): string {
@@ -115,12 +53,10 @@ function contentText(content: unknown): string {
 
   return content.map((part) => {
     if (!isObject(part)) return "";
+    if (part.type === "tool_result") return "";
     if (typeof part.text === "string") return part.text;
-    if (typeof part.thinking === "string") return part.thinking;
-    if (part.type === "toolCall") {
-      const name = typeof part.name === "string" ? part.name : "";
-      const args = isObject(part.arguments) ? JSON.stringify(part.arguments).slice(0, 2_000) : "";
-      return `${name}\n${args}`.trim();
+    if (part.type === "tool_use" && isObject(part.input)) {
+      return JSON.stringify(part.input).slice(0, 2_000);
     }
     return "";
   }).filter(Boolean).join("\n");
@@ -145,28 +81,19 @@ async function summarizeSession(filePath: string): Promise<{
     const entry = line.value;
     if (!isObject(entry)) continue;
 
+    if (typeof entry.sessionId === "string" && entry.sessionId.trim()) {
+      sessionId = entry.sessionId.trim();
+    }
     if (typeof entry.timestamp === "string") {
       const ts = new Date(entry.timestamp);
       if (!Number.isNaN(ts.valueOf()) && (!lastTimestamp || ts > lastTimestamp)) {
         lastTimestamp = ts;
       }
     }
-
-    if (entry.type === "session") {
-      const idValue = nonBlank(entry.id);
-      if (idValue) sessionId = idValue;
-      const cwd = nonBlank(entry.cwd);
-      const name = nonBlank(entry.name);
-      if (cwd) fragments.push(cwd);
-      if (name) fragments.push(name);
-    } else if (entry.type === "model_change") {
-      fragments.push(String(entry.provider ?? ""));
-      fragments.push(String(entry.modelId ?? ""));
-    } else if (entry.type === "thinking_level_change") {
-      fragments.push(String(entry.thinkingLevel ?? ""));
-    }
-
-    if (isObject(entry.message) && entry.message.role !== "toolResult") {
+    if (typeof entry.summary === "string") fragments.push(entry.summary);
+    if (typeof entry.gitBranch === "string") fragments.push(entry.gitBranch);
+    if (isObject(entry.message)) {
+      if (entry.message.role === "tool_result") continue;
       fragments.push(String(entry.message.role ?? ""));
       fragments.push(contentText(entry.message.content));
     }
@@ -236,12 +163,19 @@ export function buildCommand({
   name,
   newSessionId,
   cwd,
+  permissionMode = "plan",
+  forkSession = true,
 }: BuildCommandInput): ChildCommand {
-  const args = ["-p", "--tools", READ_ONLY_TOOLS];
+  const args = ["-p"];
   if (model) args.push("--model", model);
+  args.push("--permission-mode", permissionMode);
   if (name) args.push("--name", name);
-  if (sessionId) args.push("--session", sessionId);
-  else if (newSessionId) args.push("--session-id", newSessionId);
+  if (sessionId) {
+    args.push("--resume", sessionId);
+    if (forkSession) args.push("--fork-session");
+  } else if (newSessionId) {
+    args.push("--session-id", newSessionId);
+  }
   args.push(prompt);
   return { bin: cliBin, args, cwd };
 }

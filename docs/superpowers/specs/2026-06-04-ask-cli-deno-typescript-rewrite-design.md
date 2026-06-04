@@ -1,4 +1,4 @@
-# ask-cli Deno/TypeScript Rewrite Design
+# ask-ai Deno/TypeScript Rewrite Design
 
 ## Status
 
@@ -6,15 +6,15 @@ Approved direction: safety-first Deno/TypeScript rewrite.
 
 Review inputs:
 
-- GLM review: `/tmp/ask-cli-review-glm.md`
-- agy review: `/tmp/ask-cli-review-agy.md`
+- GLM review: `/tmp/ask-ai-review-glm.md`
+- agy review: `/tmp/ask-ai-review-agy.md`
 - Opus review: `/home/vscode/.claude/plans/you-are-opus-acting-moonlit-donut.md`
 
 Current runtime target: Deno 2.6.10 or newer stable Deno 2.x.
 
 ## Goal
 
-Rewrite `.agents/skills/ask-cli` from Node `.mjs` to Deno-native TypeScript while preserving existing user-visible behavior and eliminating whole categories of reliability, maintainability, portability, and testability issues.
+Rewrite `.agents/skills/ask-ai` from Node `.mjs` to Deno-native TypeScript while preserving existing user-visible behavior and eliminating whole categories of reliability, maintainability, portability, and testability issues.
 
 ## Non-goals
 
@@ -22,7 +22,7 @@ Rewrite `.agents/skills/ask-cli` from Node `.mjs` to Deno-native TypeScript whil
 - Do not introduce routing-by-prompt or automatic model selection.
 - Do not claim Deno permissions sandbox spawned child CLIs. Deno constrains the wrapper process; child CLIs still enforce their own safety policies.
 - Do not keep opaque agy BLOB/protobuf scraping as a default relevance signal.
-- Do not preserve `node ask-cli.mjs` compatibility unless a small transition note is needed. The supported runtime becomes Deno.
+- Do not preserve `node ask-ai.mjs` compatibility unless a small transition note is needed. The supported runtime becomes Deno.
 
 ## Behavior to Preserve
 
@@ -41,15 +41,15 @@ Rewrite `.agents/skills/ask-cli` from Node `.mjs` to Deno-native TypeScript whil
 1. **Tests before porting.** Add characterization/orchestration tests around behavior before deleting the `.mjs` implementation.
 2. **Typed external boundaries.** Config, settings files, JSONL sessions, agy history/project metadata, and command outputs are parsed into typed results with validation failures recorded, not silently swallowed.
 3. **Streaming by default.** Large files, JSONL sessions, and git diffs are streamed or bounded. No unbounded `readFile`, `execFileSync`, `spawnSync`, or full-output string concatenation on untrusted size inputs.
-4. **Honest safety language.** The wrapper constrains how ask-cli invokes child CLIs, but spawned agents are not sandboxed by Deno. Documentation must say which parts are mechanical safeguards and which are prompt-level guidance.
+4. **Honest safety language.** The wrapper constrains how ask-ai invokes child CLIs, but spawned agents are not sandboxed by Deno. Documentation must say which parts are mechanical safeguards and which are prompt-level guidance.
 5. **Small modules with explicit interfaces.** Keep the existing agent contract idea, but split shared utilities by responsibility.
 6. **Fail closed for session reuse.** If a session store cannot be parsed or scoped confidently, do not auto-resume it. `sessions` mode may report degraded candidates with a reason.
 
 ## Proposed File Layout
 
 ```text
-.agents/skills/ask-cli/
-  ask-cli                         # POSIX wrapper: exec deno run with fixed permissions
+.agents/skills/ask-ai/
+  ask-ai                         # POSIX wrapper: exec deno run with fixed permissions
   deno.json                      # tasks, imports, fmt, lint, lock config
   deno.lock
   src/
@@ -83,7 +83,7 @@ Rewrite `.agents/skills/ask-cli` from Node `.mjs` to Deno-native TypeScript whil
 
 ## CLI and Entrypoint
 
-Use a POSIX shell wrapper named `ask-cli` instead of a multi-flag TypeScript shebang.
+Use a POSIX shell wrapper named `ask-ai` instead of a multi-flag TypeScript shebang.
 
 Reasons:
 
@@ -229,7 +229,7 @@ Use `deno test` with dependency injection:
 - Pure unit tests for config, model, scoring, prompt, paths, and CLI parsing.
 - Fixture tests for claude/pi JSONL parsing and agy metadata parsing.
 - Orchestrator tests with fake agents, fake git, fake session stores, and fake process runner.
-- Integration smoke tests for `ask-cli --dry-run` through the wrapper.
+- Integration smoke tests for `ask-ai --dry-run` through the wrapper.
 
 ### Quality Gates
 
@@ -245,9 +245,9 @@ deno test --allow-read --allow-env --allow-run=git
 Child CLI smoke tests use dry-run only unless explicitly requested:
 
 ```bash
-./ask-cli claude ask "dry run?" --fresh --dry-run
-./ask-cli agy ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --dry-run
+./ask-ai claude ask "dry run?" --fresh --dry-run
+./ask-ai agy ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --dry-run
 ```
 
 ## Documentation Updates
@@ -282,7 +282,7 @@ Child CLI smoke tests use dry-run only unless explicitly requested:
 ## Acceptance Criteria
 
 - No Node `.mjs` runtime path remains for supported use.
-- `./ask-cli` works for `claude`, `agy`, and `pi` dry-runs.
+- `./ask-ai` works for `claude`, `agy`, and `pi` dry-runs.
 - Existing behavior is preserved unless this spec explicitly changes it.
 - Agy does not auto-resume from unscoped or opaque scraped content.
 - Large diffs/session stores are bounded or streamed.

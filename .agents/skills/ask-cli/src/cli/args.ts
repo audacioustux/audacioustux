@@ -68,11 +68,11 @@ export function parseCliArgs(argv: string[]): ParsedCliArgs {
   for (const arg of rest) {
     if (arg === "--sandbox" || arg.startsWith("--sandbox=")) {
       throw new Error(
-        "--sandbox is not supported by ask-ai; child CLI sandbox behavior is not reliable",
+        "--sandbox is not supported by ask-cli; child CLI sandbox behavior is not reliable",
       );
     }
     if (arg === "--no-sandbox" || arg.startsWith("--no-sandbox=")) {
-      throw new Error("--no-sandbox is not supported by ask-ai; no sandbox is enabled by default");
+      throw new Error("--no-sandbox is not supported by ask-cli; no sandbox is enabled by default");
     }
   }
 

@@ -1,9 +1,9 @@
 ---
-name: ask-ai
+name: ask-cli
 description: Use when the user asks to ask Claude, ask Gemini/agy, ask Pi, get a second opinion, run adversarial review, critique a plan, challenge architecture, review code, or use the claude/agy/pi CLI with relevant prior session context.
 ---
 
-# ask-ai
+# ask-cli
 
 ## Overview
 
@@ -13,17 +13,17 @@ Invoke an independent AI reviewer as a second brain with relevance-scoped sessio
 - **agy** via the Antigravity `agy` CLI
 - **pi** via the Pi coding-agent `pi` CLI
 
-The implementation is Deno-native TypeScript. Use the bundled executable wrapper `ask-ai`; it runs `deno run` with the permissions required to read local session stores, read the current repo, read model/config environment variables, run `git`, and invoke the selected child CLI.
+The implementation is Deno-native TypeScript. Use the bundled executable wrapper `ask-cli`; it runs `deno run` with the permissions required to read local session stores, read the current repo, read model/config environment variables, run `git`, and invoke the selected child CLI.
 
 ## Hard Rules
 
-- Use the bundled helper (`ask-ai`); do not hand-roll `claude`/`agy`/`pi` commands unless the helper is broken.
+- Use the bundled helper (`ask-cli`); do not hand-roll `claude`/`agy`/`pi` commands unless the helper is broken.
 - Never use `claude --continue`, `agy --continue`/`-c`, or `pi --continue`/`-c` for this workflow. They resume the latest session, which may be unrelated.
 - Treat review modes as **best-effort constrained**, not magically sandboxed:
   - `claude` is invoked with `--permission-mode plan`.
   - `pi` is invoked with `--tools read,grep,find,ls`.
-  - `agy` has no reliable mechanical read-only flag in the observed CLI; ask-ai uses prompt constraints and safe metadata reuse only.
-- Deno permissions constrain the ask-ai wrapper process. They do **not** sandbox spawned child CLIs.
+  - `agy` has no reliable mechanical read-only flag in the observed CLI; ask-cli uses prompt constraints and safe metadata reuse only.
+- Deno permissions constrain the ask-cli wrapper process. They do **not** sandbox spawned child CLIs.
 - Treat model output as critique, not truth. Verify findings before changing code.
 
 ## Agents
@@ -43,29 +43,29 @@ The implementation is Deno-native TypeScript. Use the bundled executable wrapper
 
 | Priority | Source | Scope |
 |---|---|---|
-| 1 | `ask-ai <agent> ask --model <name> "..."` | Per-run |
+| 1 | `ask-cli <agent> ask --model <name> "..."` | Per-run |
 | 2 | `$ASK_AI_MODEL_CLAUDE` / `$ASK_AI_MODEL_AGY` / `$ASK_AI_MODEL_PI` | Per-shell |
 | 3 | `<skill>/config.json` → `agents.<agent>.model` | Per-project |
 | 4 | CLI's own configured default | Fallback |
 
 **For claude:** `--model` is passed to `claude --model <name>`.
 
-**For agy:** `--model` is a preference hint only. The actual model is read from `~/.gemini/antigravity-cli/settings.json`. If preferred and actual differ during invocation, ask-ai prints a warning.
+**For agy:** `--model` is a preference hint only. The actual model is read from `~/.gemini/antigravity-cli/settings.json`. If preferred and actual differ during invocation, ask-cli prints a warning.
 
-**For pi:** `--model` is real and is passed to `pi --model <provider/model[:thinking]>`. Without an override, ask-ai reads `~/.pi/agent/settings.json` to report the configured default while letting Pi use its own configuration.
+**For pi:** `--model` is real and is passed to `pi --model <provider/model[:thinking]>`. Without an override, ask-cli reads `~/.pi/agent/settings.json` to report the configured default while letting Pi use its own configuration.
 
 Copy `config.example.json` to `config.json` to set persistent defaults.
 
 ## Quick Reference
 
 ```bash
-ask-ai claude ask "What am I missing?"
-ask-ai agy plan docs/superpowers/plans/foo.md
-ask-ai pi adversarial docs/superpowers/specs/foo.md
-ask-ai claude review --base HEAD~1 --head HEAD
-ask-ai pi sessions "beam quic transport"
-ask-ai claude ask --model opus "is this safe?"
-ask-ai pi ask --model zai/glm-5.1:xhigh "challenge this plan"
+ask-cli claude ask "What am I missing?"
+ask-cli agy plan docs/superpowers/plans/foo.md
+ask-cli pi adversarial docs/superpowers/specs/foo.md
+ask-cli claude review --base HEAD~1 --head HEAD
+ask-cli pi sessions "beam quic transport"
+ask-cli claude ask --model opus "is this safe?"
+ask-cli pi ask --model zai/glm-5.1:xhigh "challenge this plan"
 ```
 
 | Option | Use |
@@ -93,14 +93,14 @@ ask-ai pi ask --model zai/glm-5.1:xhigh "challenge this plan"
 
 ## Agy Session Reuse Limitation
 
-Agy's opaque conversation DB/protobuf contents are not scraped by default. ask-ai only uses structured, scoped metadata from `history.jsonl` and `cache/projects.json`. If the current repo cannot be mapped confidently, candidates are marked untrusted and are not auto-selected.
+Agy's opaque conversation DB/protobuf contents are not scraped by default. ask-cli only uses structured, scoped metadata from `history.jsonl` and `cache/projects.json`. If the current repo cannot be mapped confidently, candidates are marked untrusted and are not auto-selected.
 
 ## Verification
 
 ```bash
-cd .agents/skills/ask-ai
+cd .agents/skills/ask-cli
 deno task verify
-./ask-ai claude ask "dry run?" --fresh --dry-run
-./ask-ai agy ask "dry run?" --fresh --dry-run
-./ask-ai pi ask "dry run?" --fresh --dry-run
+./ask-cli claude ask "dry run?" --fresh --dry-run
+./ask-cli agy ask "dry run?" --fresh --dry-run
+./ask-cli pi ask "dry run?" --fresh --dry-run
 ```
