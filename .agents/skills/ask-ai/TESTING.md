@@ -1,97 +1,74 @@
 # ask-ai Skill Testing
 
+## Runtime
+
+`ask-ai` is a Deno-native TypeScript skill. Use Deno 2.6.10 or newer stable Deno 2.x.
+
 ## Test Layout
 
-```
+```text
 ask-ai/
-├── shared.test.mjs          # 29 tests — core utilities (config, model, scoring, prompt, git)
-├── agents/
-│   ├── claude.test.mjs       # 13 tests — sessionOpts, resolveModel, promptIdentity, buildArgs
-│   └── agy.test.mjs          # 15 tests — loadActualModel, resolveModel, KNOWN_MODELS, buildArgs
-└── ask-ai.test.mjs           #  9 tests — parseCliArgs, error handling
+├── deno.json
+├── src/
+│   ├── cli/args_test.ts          # CLI parsing
+│   ├── core/*_test.ts            # config, model precedence, scoring, prompts
+│   ├── sys/*_test.ts             # paths, bounded files/JSONL, git wrapper
+│   ├── storage/agy_test.ts       # safe agy metadata parsing
+│   ├── agents/*_test.ts          # claude, agy, pi agent contracts
+│   └── orchestrator_test.ts      # workflow orchestration with fake deps
+└── fixtures/                     # anonymized session/settings metadata samples
 ```
 
-Run all tests:
+## Full Verification
+
+Run from the skill directory:
 
 ```bash
 cd .agents/skills/ask-ai
-node --no-warnings --test shared.test.mjs agents/claude.test.mjs agents/agy.test.mjs ask-ai.test.mjs
+deno task verify
 ```
 
-## What Each File Tests
-
-### shared.test.mjs
-
-- `defaultConfigFile` resolves to the skill directory when given the orchestrator's `import.meta.url`.
-- `loadConfig` handles missing, malformed, non-object root, and valid config files.
-- `resolveModel` precedence: CLI flag > env var > config file > default.
-- `tokenize` deduplicates, splits on path punctuation, filters stop words and short tokens.
-- `scoreSession` rewards matched terms and recency; returns 0 on no-match.
-- `selectSession` enforces threshold and minMatchedTerms.
-- `serializeCandidate` redacts everything except id/score/lastTimestamp.
-- `findRepoRoot` walks up to the nearest `.git`.
-- `readIfFile` reads bounded file content; returns empty for missing/empty.
-- `gitOutput` runs git in a given cwd and returns stdout.
-- `buildPrompt` produces mode-specific shapes with a custom identity.
-- `buildSearchQuery` joins non-empty parts, drops empty.
-- `requireValue` returns the next arg or throws.
-
-### agents/claude.test.mjs
-
-- `sessionOpts` maps repoRoot to a deterministic sessionsDir.
-- `resolveModel` delegates to shared; returns `actual = preferred` always.
-- `promptIdentity` names the model or falls back to generic "Claude".
-- `sessionName` includes agent id and mode.
-- `buildArgs` handles --model, --resume, --fork-session, --session-id, --permission-mode, --name.
-
-### agents/agy.test.mjs
-
-- `sessionOpts` returns the standard agy paths.
-- `loadActualModel` reads `model` from settings.json; handles missing/malformed/blank.
-- `resolveModel` merges shared preferred + settings.json actual; reports modelKnown.
-- `promptIdentity` prefers actual over preferred; falls back to generic "Antigravity (agy)".
-- `sessionName` includes agent id and mode.
-- `buildArgs` handles --conversation, --sandbox, --print-timeout; never includes --model.
-
-### ask-ai.test.mjs
-
-- `parseCliArgs` rejects unknown agent/mode with clear error messages.
-- `parseCliArgs` rejects --resume + --fresh and --threshold NaN.
-- `parseCliArgs` accepts agy-specific --sandbox and review --base/--head.
-
-## Dry-Run Verification (does not invoke CLI)
+This runs:
 
 ```bash
-node ask-ai.mjs claude ask "dry run?" --dry-run
-node ask-ai.mjs agy ask "dry run?" --dry-run
+deno fmt --check src deno.json config.example.json
+deno lint src
+deno check src/main.ts
+deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git
 ```
 
-Expected output:
+Expected result: all checks pass and all Deno tests pass.
 
-- `claude`: `preferred: null`, `actual: null` (uses claude's default), `command` starts with `claude -p --permission-mode plan`.
-- `agy`: `preferred: null`, `actual: "Gemini 3.1 Pro (High)"` (from settings.json), `modelKnown: true`, `command` starts with `agy -p`.
+## Dry-Run Smoke Tests
 
-## Test Coverage Notes
+These do not invoke child CLIs beyond constructing dry-run command JSON:
 
-### Verified behavior
+```bash
+./ask-ai claude ask "dry run?" --fresh --dry-run
+./ask-ai agy ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --dry-run
+./ask-ai pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
+```
 
-- Config loading handles missing, malformed, and valid files.
-- Model resolution follows the documented precedence (CLI > env > config > default).
-- Session discovery uses the correct agent-specific paths and formats.
-- Scoring ranks relevant older sessions above newer unrelated ones.
-- Redacts raw prior transcript text from sessions output.
-- Prompt identity names the correct model for each agent.
-- CLI args include agent-specific flags (--model for claude, --conversation for agy, --sandbox agy-only).
-- Error handling surfaces clear messages for unknown agents/modes and conflicting flags.
+Expected command shapes:
 
-### Not tested (intentionally)
+- `claude`: command starts with `claude -p --permission-mode plan`.
+- `agy`: command starts with `agy -p` and never includes `--model`.
+- `pi`: command starts with `pi -p --tools read,grep,find,ls`.
+- `pi --model ...`: command includes `--model <provider/model[:thinking]>`.
 
-- Full end-to-end integration with real `claude`/`agy` binaries (tested manually via dry-run + smoke tests).
-- SQLite session reading in agy (requires `node:sqlite` and actual database files).
-- Session JSONL parsing in claude (covered by existing claude CLI tests).
+## Fixture Policy
 
-### Bug magnets guarded by tests
+Fixtures are intentionally small and anonymized. They cover structure, not real transcript contents:
 
-- `defaultConfigFile` resolves to shared.mjs's directory (same as ask-ai.mjs in the current layout). If shared.mjs were moved to a subdirectory, the caller must pass its own `import.meta.url`.
-- `tokenize` filters stop words like 'plan' and 'review' from search queries — this is intentional to avoid false matches.
-- `scoreSession` returns 0 when no terms match — prevents blindly continuing the latest session.
+- `fixtures/claude-session.jsonl` — Claude JSONL messages.
+- `fixtures/pi-session.jsonl` — Pi JSONL messages, model changes, thinking changes, and ignored tool results.
+- `fixtures/agy-history.jsonl` and `fixtures/agy-projects.json` — safe agy metadata only.
+
+Do not add real transcripts, secrets, raw tool outputs, or opaque agy BLOB/protobuf dumps to fixtures.
+
+## Intentional Limits
+
+- Agy auto-resume uses structured metadata only. Opaque DB/protobuf scraping is not part of the supported default path.
+- Deno permissions constrain the wrapper process, not spawned child CLIs.
+- Legacy Node `.mjs` files are not part of Deno verification and are removed after the Deno runtime is fully verified.

@@ -1,6 +1,11 @@
 import { dirname, join, normalize, resolve, SEPARATOR } from "@std/path";
 
-export function homeDir(env: Record<string, string | undefined> = Deno.env.toObject()): string {
+export function homeDir(
+  env: Record<string, string | undefined> = {
+    HOME: Deno.env.get("HOME"),
+    USERPROFILE: Deno.env.get("USERPROFILE"),
+  },
+): string {
   const home = env.HOME ?? env.USERPROFILE;
   if (!home) throw new Error("Cannot determine home directory from HOME/USERPROFILE");
   return home;

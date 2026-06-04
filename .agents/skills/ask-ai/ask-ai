@@ -5,6 +5,6 @@ exec deno run \
   --quiet \
   --no-prompt \
   --allow-read \
-  --allow-env=ASK_AI_MODEL_CLAUDE,ASK_AI_MODEL_AGY,ASK_AI_MODEL_PI,HOME,PATH \
+  --allow-env=ASK_AI_MODEL_CLAUDE,ASK_AI_MODEL_AGY,ASK_AI_MODEL_PI,HOME,PATH,USERPROFILE \
   --allow-run=git,claude,agy,pi \
   "$SCRIPT_DIR/src/main.ts" "$@"
