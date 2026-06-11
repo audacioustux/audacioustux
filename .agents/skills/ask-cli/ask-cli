@@ -19,8 +19,10 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$SELF")" && pwd)
 # ── Run with frozen lockfile ──────────────────────────────────────────────────
 # --no-config   ignore any root deno.json (works inside host Deno workspaces)
 # --lock/--frozen  enforce exact dependency versions from deno.lock
-# --allow-read     read session stores, target files, repo contents
-# --allow-env      read model/config env vars plus HOME/PATH
+# --allow-read     read subject files, repo contents (bounded)
+# --allow-env      read model/config env vars plus HOME/USERPROFILE
+#                   (HOME is needed to resolve ~/.gemini/antigravity-cli/settings.json
+#                    for the agy model-mismatch warning)
 # --allow-run      invoke git and child CLIs
 
 exec deno run \
@@ -30,6 +32,6 @@ exec deno run \
   --quiet \
   --no-prompt \
   --allow-read \
-  --allow-env=ASK_AI_MODEL_CLAUDE,ASK_AI_MODEL_AGY,ASK_AI_MODEL_PI,HOME,PATH,USERPROFILE \
+  --allow-env=ASK_AI_MODEL_CLAUDE,ASK_AI_MODEL_AGY,ASK_AI_MODEL_PI,HOME,USERPROFILE \
   --allow-run=git,claude,agy,pi \
   "$SCRIPT_DIR/src/main.ts" "$@"

@@ -1,116 +1,113 @@
 ---
 name: ask-cli
-description: Use when the user requests an external AI second opinion, adversarial critique, code review, plan review, architecture challenge, or explicitly asks to use the claude, agy/Antigravity/Gemini, or pi CLI.
+description: >
+  Invoke an independent AI CLI (claude, agy, pi) as a constrained second brain for
+  adversarial review, plan critique, code review, architecture challenges, or general
+  second opinions. Use when the user asks to "ask claude", "ask agy", "ask pi", wants
+  a second opinion, adversarial critique, or explicitly requests an external reviewer.
 ---
 
 # ask-cli
 
 ## Overview
 
-Invoke an independent AI reviewer as a second brain with relevance-scoped session reuse:
+`ask-cli` is a thin Deno wrapper that invokes `claude`, `agy`, or `pi` as a read-only
+second brain. The wrapper exists to enforce a small number of safety invariants the
+calling agent must not be able to forget:
 
-- **claude** via the `claude` CLI
-- **agy** via the Antigravity `agy` CLI
-- **pi** via the Pi coding-agent `pi` CLI
+- `--continue` / `-c` are **rejected**. They resume the most recent session globally
+  and bypass repo scoping. Use `--resume <id>` instead.
+- For `claude`, `--permission-mode plan` is always added. Read-only by default.
+- For `pi`, `--tools read,grep,find,ls` is always added. Read-only by default.
+- For `claude`, `--resume <id>` always adds `--fork-session` so the prior session
+  is not extended. **Pi has no `--fork-session` equivalent**: resuming a pi session
+  extends the prior conversation. Avoid `pi --resume` unless the prior conversation
+  is the one you intend to continue.
+- For `agy`, `--model` is rejected. Agy's model is configured in
+  `~/.gemini/antigravity-cli/settings.json`. If the env var
+  `ASK_AI_MODEL_AGY` or `config.json` set a different model, the wrapper
+  prints a stderr warning naming the configured model so the discrepancy
+  is visible.
 
-The implementation is Deno-native TypeScript. Use the bundled executable wrapper `ask-cli`; it runs `deno run` with the permissions required to read local session stores, read the current repo, read model/config environment variables, run `git`, and invoke the selected child CLI.
-
-For installation, public reuse, privacy notes, and troubleshooting, see [README.md](./README.md).
+Everything else is delegated to the calling agent. Session discovery, scoring,
+JSONL parsing, and prior-session reuse are not part of this skill — call the
+child CLI directly when you need that.
 
 ## Hard Rules
 
-- Use the bundled helper (`ask-cli`); do not hand-roll `claude`/`agy`/`pi` commands unless the helper is broken.
-- Never use `claude --continue`, `agy --continue`/`-c`, or `pi --continue`/`-c` for this workflow. They resume the latest session, which may be unrelated.
-- Treat review modes as **best-effort constrained**, not magically sandboxed:
-  - `claude` is invoked with `--permission-mode plan`.
-  - `pi` is invoked with `--tools read,grep,find,ls`.
-  - `agy` has no reliable mechanical read-only flag in the observed CLI; ask-cli uses prompt constraints and safe metadata reuse only.
-- Deno permissions constrain the ask-cli wrapper process. They do **not** sandbox spawned child CLIs.
-- By default, ask-cli scans local session history and may resume a prior session it scores as relevant.
-- Use `--fresh` when prior local session context should not be reused; use `--dry-run` to inspect selected session/model/prompt metadata/redacted command shape first.
-- Treat model output as critique, not truth. Verify findings before changing code.
-
-## Agents
-
-| | **claude** | **agy** | **pi** |
-|---|---|---|---|
-| CLI | `claude` | `agy` | `pi` |
-| Models | Any model the `claude` CLI supports | Actual model from agy settings | Any enabled Pi model (`provider/model[:thinking]`) |
-| Default model | Claude's own default | `~/.gemini/antigravity-cli/settings.json` → `model` | `~/.pi/agent/settings.json` → `defaultProvider/defaultModel/defaultThinkingLevel` |
-| Session storage | `~/.claude/projects/<encoded-cwd>/*.jsonl` | Safe metadata from `history.jsonl` + `cache/projects.json` | `~/.pi/agent/sessions/<encoded-cwd>/*.jsonl` |
-| Session resume | `--resume <id>` + `--fork-session` | `--conversation <id>` | `--session <id>` |
-| New session id | `--session-id <uuid>` | CLI-created | `--session-id <uuid>` |
-| Mechanical constraints | `--permission-mode plan` | none observed | `--tools read,grep,find,ls` |
-| Model in prompt | Preferred model name | Actual model from settings | Actual override or configured default |
-
-## Model Selection
-
-| Priority | Source | Scope |
-|---|---|---|
-| 1 | `ask-cli <agent> ask --model <name> "..."` | Per-run |
-| 2 | `$ASK_AI_MODEL_CLAUDE` / `$ASK_AI_MODEL_AGY` / `$ASK_AI_MODEL_PI` | Per-shell |
-| 3 | `<skill>/config.json` → `agents.<agent>.model` | Per-project |
-| 4 | CLI's own configured default | Fallback |
-
-**For claude:** `--model` is passed to `claude --model <name>`.
-
-**For agy:** `--model` is a preference hint only. The actual model is read from `~/.gemini/antigravity-cli/settings.json`. If preferred and actual differ during invocation, ask-cli prints a warning.
-
-**For pi:** `--model` is real and is passed to `pi --model <provider/model[:thinking]>`. Without an override, ask-cli reads `~/.pi/agent/settings.json` to report the configured default while letting Pi use its own configuration.
-
-Copy `config.example.json` to `config.json` to set persistent local defaults. Do not commit personal `config.json` files.
+- Use the bundled `ask-cli` wrapper. Do not hand-roll `claude -p`, `agy -p`, or `pi -p`.
+- Never pass `--continue` or `-c`. They are rejected; this is intentional.
+- `--resume` requires a session id you obtained from this skill or from the child CLI
+  directly. Do not guess.
 
 ## Quick Reference
 
 ```bash
 ask-cli claude ask "What am I missing?"
-ask-cli agy plan docs/superpowers/plans/foo.md
-ask-cli pi adversarial docs/superpowers/specs/foo.md
-ask-cli claude review --base "$(git merge-base main HEAD)" --head HEAD
-ask-cli pi sessions "beam quic transport"
-ask-cli claude ask --model opus "is this safe?"
-ask-cli pi ask --model provider/model:thinking "challenge this plan"
+ask-cli pi plan docs/plans/change.md
+ask-cli claude adversarial docs/specs/change.md
+ask-cli claude review --base main --head HEAD
+ask-cli agy ask "is this safe?" --fresh
+ask-cli pi ask "follow up" --resume <id>
 ```
 
-| Option | Use |
+| Mode | Use when |
 |---|---|
-| `--dry-run` | Show selected session, model, prompt metadata, warnings, and redacted CLI args without invoking |
-| `--model <name>` | Preferred model override for this run |
-| `--config <path>` | Override `config.json` path |
-| `--resume <id>` | Force a specific session/conversation id |
-| `--fresh` | Skip session scan; start a new thread |
-| `--threshold <n>` | Minimum relevance score for reuse (default: 12) |
-| `--base <ref>` | Base ref for review mode (default: HEAD~1) |
-| `--head <ref>` | Head ref for review mode (default: HEAD) |
-| `--extra "..."` | Additional focus instructions for the reviewer |
+| `ask` | General second opinion or follow-up question |
+| `plan` | Plan completeness, sequencing, assumptions critique |
+| `adversarial` | Strongest-objection review of design/spec/approach |
+| `review` | Read-only committed-range diff review (`git diff base..head`) |
+
+| Flag | Purpose |
+|---|---|
+| `--resume <id>` | Resume a known session. For claude, `--fork-session` is forced; for pi, no fork equivalent (resuming extends the prior session) |
+| `--fresh` | Start a new session explicitly |
+| `--dry-run` | Print redacted argv shape; do not invoke the child CLI |
+| `--model <name>` | Override model when supported (not agy) |
+| `--base <ref>` / `--head <ref>` | Review mode refs (default: `HEAD~1`..`HEAD`) |
+| `--extra "..."` | Additional reviewer focus |
 | `--cwd <path>` | Override invocation cwd |
 
-## Modes
+## Model Selection
 
-| Mode | Use when | Example |
-|---|---|---|
-| `ask` | General second opinion or follow-up question | `ask "Is this API sound?"` |
-| `plan` | Plan completeness and sequencing critique | `plan docs/.../plan.md` |
-| `adversarial` | Strongest-objection review of design/spec/approach | `adversarial docs/.../design.md` |
-| `review` | Committed-range diff review | `review --base main --head HEAD` |
-| `sessions` | Show ranked candidate sessions without invoking an agent | `sessions "auth websocket handoff"` |
+Priority: `--model` flag → env var (`ASK_AI_MODEL_CLAUDE` etc.) → `config.json` → child
+CLI default. For agy, the model is read from `~/.gemini/antigravity-cli/settings.json`
+and `--model` is rejected.
 
-## Review Scope and Privacy
+Copy `config.example.json` to `config.json` for persistent local defaults. Do not
+commit personal `config.json` files.
 
-`review` mode reviews committed refs with `git diff <base>..<head>`. For branch reviews, pass the merge base or exact ancestor as `--base` to avoid unrelated upstream changes. For uncommitted work, commit to a throwaway branch first or save `git diff` to a file and use `adversarial`/`ask`.
+## Privacy and security
 
-ask-cli runs with broad local read access so it can read session stores, target files, and repository diffs. It may read local Claude, agy, and Pi session metadata/transcripts to rank relevance for the current repository. If a session is selected, the child CLI may receive or resume prior conversation context judged relevant by best-effort scoring. Prompt payloads may include bounded target file contents or bounded diff output. Deno permissions constrain only the wrapper process; spawned child CLIs are not sandboxed by ask-cli and run with their normal process privileges/environment behavior. Do not use this workflow for secrets or data the selected child CLI/model is not approved to receive.
+- `--dry-run` prints the redacted argv without invoking the child CLI.
+- Subject file reads are bounded to 20 KB. `git diff` is bounded to 1 MB; oversize
+  output is truncated with a SIGTERM kill and marked in the prompt.
+- The wrapper does not read session stores. It does not pass session context unless
+  the caller supplies `--resume <id>`.
+- Child CLIs run with their normal process privileges. `--permission-mode plan` and
+  `--tools read,grep,find,ls` constrain the model, not the wrapper.
+- Treat child model output as critique, not truth. Verify findings before changing code.
 
-## Agy Session Reuse Limitation
+## What this skill does NOT do (intentionally)
 
-Agy's opaque conversation DB/protobuf contents are not scraped by default. ask-cli only uses structured, scoped metadata from `history.jsonl` and `cache/projects.json`. If the current repo cannot be mapped confidently, candidates are marked untrusted and are not auto-selected.
+To keep the wrapper auditable, the following are not features of this skill:
+
+- Session JSONL discovery or relevance scoring
+- Auto-resume based on heuristic scoring
+- A `sessions` mode
+- A `sessions --fresh` warning
+- Auto-detection of "I meant the current repo"
+- Pinned sessions by topic/tag
+
+If you need any of these, call the child CLI directly. The wrapper is the
+safety contract, not a workflow.
 
 ## Verification
 
 ```bash
-cd .agents/skills/ask-cli
+cd skills/.apm/skills/ask-cli
 deno task verify
-./ask-cli claude ask "dry run?" --fresh --dry-run
-./ask-cli agy ask "dry run?" --fresh --dry-run
-./ask-cli pi ask "dry run?" --fresh --dry-run
+./ask-cli pi ask "dry run?" --dry-run
 ```
+
+See [TESTING.md](./TESTING.md) for fixtures and installed-copy checks.

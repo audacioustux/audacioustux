@@ -19,15 +19,6 @@ export function expandHome(input: string, home = homeDir()): string {
   return input;
 }
 
-export function encodeClaudeProjectPath(repoRoot: string): string {
-  return resolve(repoRoot).replace(/[\\/]+/g, "-");
-}
-
-export function encodePiProjectPath(repoRoot: string): string {
-  const resolved = resolve(repoRoot);
-  return `--${resolved.replace(/^[\\/]/, "").replace(/[\\/:]/g, "-")}--`;
-}
-
 async function gitTopLevel(cwd: string): Promise<string | undefined> {
   try {
     const result = await new Deno.Command("git", {

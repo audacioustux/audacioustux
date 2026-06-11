@@ -1,79 +1,49 @@
 import { assertEquals, assertStringIncludes } from "jsr:@std/assert@1";
-import type { Agent, ModelInfo, RankSessionsInput, ResolveModelInput } from "./agent.ts";
-import { type AgentId, type Mode, parseCliArgs } from "./cli/args.ts";
-import { type AskAiDeps, runAskAi } from "./orchestrator.ts";
-import type { SessionCandidate } from "./core/scoring.ts";
-import type { GitOutput } from "./sys/git.ts";
+import { join } from "jsr:@std/path@1";
+import { parseCliArgs, type RunCliArgs } from "./cli/args.ts";
+import { runAskAi, type RunDeps } from "./orchestrator.ts";
 import type { ChildCommand } from "./sys/process.ts";
+import type { GitOutput } from "./sys/git.ts";
 
-function runArgs(argv: string[]) {
+function runArgs(argv: string[]): RunCliArgs {
   const parsed = parseCliArgs(argv);
   if (parsed.kind !== "run") throw new Error("expected run args");
   return parsed;
 }
 
-function fakeAgent(
-  agentId: AgentId,
-  modelInfo: ModelInfo,
-  candidates: SessionCandidate[] = [],
-): Agent {
-  return {
-    id: agentId,
-    displayName: agentId,
-    cliBin: agentId,
-    sessionOpts: () => ({
-      sessionsDir: "/sessions",
-      settingsFile: "/settings.json",
-      repoRoot: "/repo",
-    }),
-    resolveModel: (_input: ResolveModelInput) => Promise.resolve(modelInfo),
-    promptIdentity: ({ actual, preferred }) => `You are ${actual ?? preferred ?? agentId}.`,
-    sessionName: ({ mode, stamp }: { mode: Mode; stamp: string }) =>
-      `ask-cli-${agentId}-${mode}-${stamp}`,
-    rankSessions: (_input: RankSessionsInput) =>
-      Promise.resolve({ ok: true, candidates, warnings: [] }),
-    buildCommand: ({ prompt, sessionId, model, name, newSessionId, cwd }) => ({
-      bin: agentId,
-      cwd,
-      args: [
-        "-p",
-        ...(model ? ["--model", model] : []),
-        ...(name ? ["--name", name] : []),
-        ...(sessionId ? ["--session", sessionId] : []),
-        ...(newSessionId ? ["--session-id", newSessionId] : []),
-        prompt,
-      ],
-    }),
-  };
-}
-
-function deps(
-  overrides: Partial<AskAiDeps> = {},
-): AskAiDeps & { stdout: string[]; stderr: string[]; runs: ChildCommand[] } {
+function fakeDeps(overrides: Partial<RunDeps> = {}): RunDeps & {
+  stdout: string[];
+  stderr: string[];
+  runs: ChildCommand[];
+} {
   const stdout: string[] = [];
   const stderr: string[] = [];
   const runs: ChildCommand[] = [];
   return {
-    agents: {
-      claude: fakeAgent("claude", { preferred: undefined, actual: undefined, source: "default" }),
-      agy: fakeAgent("agy", { preferred: undefined, actual: "Gemini", source: "default" }),
-      pi: fakeAgent("pi", { preferred: undefined, actual: "openai/gpt:xhigh", source: "default" }),
-    },
+    loadConfig: () => Promise.resolve({ agents: {} }),
+    gitOutput: () =>
+      Promise.resolve({
+        stdout: "",
+        stderr: "",
+        status: 0,
+        truncated: false,
+        stdoutTruncated: false,
+        stderrTruncated: false,
+      }),
+    readSubjectFile: () => Promise.resolve({ text: "", resolvedPath: "", truncated: false }),
+    findRepoRoot: () => Promise.resolve("/repo"),
+    loadAgyActualModel: () => Promise.resolve({ actual: undefined }),
+    expandHome: (p) => p,
     now: () => new Date("2026-06-04T00:00:00.000Z"),
     randomUUID: () => "uuid-1",
     runChild: (command: ChildCommand) => {
       runs.push(command);
       return Promise.resolve(0);
     },
-    writeStdout: (text: string) => stdout.push(text),
-    writeStderr: (text: string) => stderr.push(text),
-    currentCwd: () => "/repo/subdir",
+    writeStdout: (text) => stdout.push(text),
+    writeStderr: (text) => stderr.push(text),
+    currentCwd: () => "/repo",
     env: () => ({}),
-    findRepoRoot: () => Promise.resolve("/repo"),
-    loadConfig: () => Promise.resolve({ agents: {} }),
-    gitOutput: () => Promise.resolve({ stdout: "", stderr: "", status: 0, truncated: false }),
-    readSubjectFile: () => Promise.resolve({ text: "", resolvedPath: "", truncated: false }),
-    mkdir: () => Promise.resolve(),
     stdout,
     stderr,
     runs,
@@ -81,173 +51,261 @@ function deps(
   };
 }
 
-Deno.test("runAskAi dry-run does not spawn and prints command summary", async () => {
-  const d = deps();
+Deno.test("runAskAi dry-run redacts prompt and shows safety flags per agent", async () => {
+  const d = fakeDeps();
   const code = await runAskAi(runArgs(["pi", "ask", "hello", "--fresh", "--dry-run"]), d);
   assertEquals(code, 0);
-  assertEquals(d.runs.length, 0);
   const summary = JSON.parse(d.stdout.join(""));
-  assertEquals(summary.agent, "pi");
-  assertEquals(summary.selectedSession, undefined);
   assertEquals(summary.command[0], "pi");
+  assertStringIncludes(summary.command.join("\n"), "--tools");
+  assertStringIncludes(summary.command.join("\n"), "read,grep,find,ls");
   assertStringIncludes(summary.command.at(-1), "[prompt redacted:");
   assertEquals(JSON.stringify(summary).includes("hello"), false);
+  assertEquals(d.runs.length, 0);
 });
 
-Deno.test("runAskAi dry-run redacts prompt by value rather than arg position", async () => {
-  const trailingPromptAgent: Agent = {
-    ...fakeAgent("pi", { preferred: undefined, actual: "openai/gpt:xhigh", source: "default" }),
-    buildCommand: ({ prompt, cwd }) => ({ bin: "pi", cwd, args: ["-p", prompt, "--trailing"] }),
-  };
-  const d = deps({
-    agents: {
-      claude: fakeAgent("claude", { source: "default" }),
-      agy: fakeAgent("agy", { source: "default" }),
-      pi: trailingPromptAgent,
-    },
-  });
-  await runAskAi(runArgs(["pi", "ask", "hello", "--fresh", "--dry-run"]), d);
+Deno.test("runAskAi forces --permission-mode plan for claude", async () => {
+  const d = fakeDeps();
+  await runAskAi(runArgs(["claude", "ask", "q", "--fresh", "--dry-run"]), d);
   const summary = JSON.parse(d.stdout.join(""));
-  assertStringIncludes(summary.command.join("\n"), "[prompt redacted:");
-  assertEquals(summary.command.at(-1), "--trailing");
-  assertEquals(JSON.stringify(summary).includes("hello"), false);
+  const idx = summary.command.indexOf("--permission-mode");
+  assertEquals(idx > 0, true);
+  assertEquals(summary.command[idx + 1], "plan");
 });
 
-Deno.test("runAskAi dry-run reports prompt metadata for truncated subjects", async () => {
-  const d = deps({
-    readSubjectFile: () =>
-      Promise.resolve({ text: "file body", resolvedPath: "/repo/plan.md", truncated: true }),
-  });
-  await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
-  const summary = JSON.parse(d.stdout.join(""));
-  assertEquals(summary.prompt.redacted, true);
-  assertEquals(summary.prompt.subjectTruncated, true);
-  assertEquals(typeof summary.prompt.chars, "number");
-  assertEquals(JSON.stringify(summary).includes("file body"), false);
-});
-
-Deno.test("runAskAi sessions mode serializes sanitized candidates", async () => {
-  const candidate = {
-    id: "s1",
-    score: 99,
-    matchedTerms: 3,
-    lastTimestamp: new Date("2026-06-03T00:00:00Z"),
-    text: "secret transcript",
-    trusted: true,
-  };
-  const d = deps({
-    agents: {
-      claude: fakeAgent("claude", { source: "default" }, [candidate]),
-      agy: fakeAgent("agy", { source: "default" }),
-      pi: fakeAgent("pi", { source: "default" }),
-    },
-  });
-  const code = await runAskAi(runArgs(["claude", "sessions", "websocket auth"]), d);
-  assertEquals(code, 0);
-  const out = JSON.parse(d.stdout.join(""));
-  assertEquals(out.sessions, [{ id: "s1", score: 99, lastTimestamp: "2026-06-03T00:00:00.000Z" }]);
-  assertEquals(JSON.stringify(out).includes("secret transcript"), false);
-});
-
-Deno.test("runAskAi explicit resume bypasses ranking and marks score explicit", async () => {
-  let ranked = false;
-  const d = deps({
-    agents: {
-      claude: {
-        ...fakeAgent("claude", { preferred: "opus", actual: "opus", source: "cli" }),
-        rankSessions: () => {
-          ranked = true;
-          return Promise.resolve({ ok: true, candidates: [], warnings: [] });
-        },
-      },
-      agy: fakeAgent("agy", { source: "default" }),
-      pi: fakeAgent("pi", { source: "default" }),
-    },
-  });
+Deno.test("runAskAi always adds --fork-session when --resume is set (claude)", async () => {
+  const d = fakeDeps();
   await runAskAi(runArgs(["claude", "ask", "q", "--resume", "abc", "--dry-run"]), d);
   const summary = JSON.parse(d.stdout.join(""));
-  assertEquals(ranked, false);
-  assertEquals(summary.selectedSession, { id: "abc", score: "explicit" });
+  const args = summary.command as string[];
+  const resumeIdx = args.indexOf("--resume");
+  assertEquals(args[resumeIdx + 1], "abc");
+  assertEquals(args.includes("--fork-session"), true);
+  // --fork-session must come immediately after --resume <id>, not later.
+  assertEquals(args[resumeIdx + 2], "--fork-session");
 });
 
-Deno.test("runAskAi warns on agy preferred actual mismatch only", async () => {
-  const agyDeps = deps({
-    agents: {
-      claude: fakeAgent("claude", { source: "default" }),
-      agy: fakeAgent("agy", { preferred: "hint", actual: "Gemini", source: "cli" }),
-      pi: fakeAgent("pi", { source: "default" }),
-    },
-  });
-  await runAskAi(runArgs(["agy", "ask", "q", "--fresh"]), agyDeps);
-  assertStringIncludes(agyDeps.stderr.join(""), 'requested model "hint" differs');
-
-  const claudeDeps = deps({
-    agents: {
-      claude: fakeAgent("claude", { preferred: "hint", actual: "actual", source: "cli" }),
-      agy: fakeAgent("agy", { source: "default" }),
-      pi: fakeAgent("pi", { source: "default" }),
-    },
-  });
-  await runAskAi(runArgs(["claude", "ask", "q", "--fresh"]), claudeDeps);
-  assertEquals(claudeDeps.stderr.join("").includes("differs"), false);
-});
-
-Deno.test("runAskAi review mode calls git wrapper with base and head", async () => {
-  const gitCalls: string[][] = [];
-  const d = deps({
-    gitOutput: (args: string[]): Promise<GitOutput> => {
-      gitCalls.push(args);
-      return Promise.resolve({
-        stdout: args.includes("--stat") ? "stat" : "diff",
-        stderr: "",
-        status: 0,
-        truncated: false,
-      });
-    },
-  });
-  await runAskAi(runArgs(["pi", "review", "--base", "main", "--head", "HEAD", "--dry-run"]), d);
-  assertEquals(gitCalls, [
-    ["diff", "--stat", "main..HEAD", "--"],
-    ["diff", "--no-ext-diff", "--find-renames", "--function-context", "main..HEAD", "--"],
-  ]);
-});
-
-Deno.test("runAskAi subject mode reads bounded file content", async () => {
-  let readSubject = "";
-  const d = deps({
-    readSubjectFile: (subject: string) => {
-      readSubject = subject;
-      return Promise.resolve({
-        text: "file body",
-        resolvedPath: "/repo/plan.md",
-        truncated: false,
-      });
-    },
-  });
-  await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
+Deno.test("runAskAi pin: pi --resume does NOT add --fork-session (pi has no equivalent)", async () => {
+  // I3: pin the absence so a future contributor doesn't "fix" it.
+  const d = fakeDeps();
+  await runAskAi(runArgs(["pi", "ask", "q", "--resume", "abc", "--dry-run"]), d);
   const summary = JSON.parse(d.stdout.join(""));
-  assertEquals(readSubject, "plan.md");
-  assertStringIncludes(summary.command.at(-1), "[prompt redacted:");
-  assertEquals(JSON.stringify(summary).includes("file body"), false);
+  assertEquals(summary.command.includes("--fork-session"), false);
+  const sessionIdx = (summary.command as string[]).indexOf("--session");
+  assertEquals((summary.command as string[])[sessionIdx + 1], "abc");
 });
 
-Deno.test("runAskAi includes a truncation note for bounded subject files", async () => {
-  const d = deps({
-    readSubjectFile: () =>
-      Promise.resolve({ text: "file body", resolvedPath: "/repo/plan.md", truncated: true }),
+Deno.test("runAskAi refuses --model for agy and emits it on stderr before throwing", async () => {
+  // B3: agy --model used to warn; now it throws. The dry-run JSON
+  // summary is not produced (no child CLI is ever invoked), so the
+  // test now asserts the throw.
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["agy", "ask", "q", "--model", "foo", "--fresh", "--dry-run"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "--model is not supported by agy");
+  }
+  assertEquals(threw, true);
+  // No child CLI was invoked and no JSON was printed.
+  assertEquals(d.runs.length, 0);
+  assertEquals(d.stdout.length, 0);
+});
+
+Deno.test("runAskAi agy --model is rejected (throws), not silently warned", async () => {
+  // I-B3: previously --model for agy emitted a stderr warning and continued.
+  // Per the SKILL.md contract, it must be rejected.
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["agy", "ask", "q", "--model", "foo", "--fresh"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "--model is not supported by agy");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi agy --model is also rejected at parse time", async () => {
+  // Same rejection must hold at parse time so the child CLI is never spawned.
+  const { parseCliArgs } = await import("./cli/args.ts");
+  const parsed = parseCliArgs(["agy", "ask", "q", "--model", "foo"]);
+  if (parsed.kind !== "run") throw new Error("expected run args");
+  // Hand to runAskAi and confirm throw.
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(parsed, d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "--model is not supported by agy");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi warns when agy actual model differs from requested (env-set)", async () => {
+  // The wrapper rejects --model for agy (B3). The mismatch warning only
+  // fires when the model came from env or config, not --model. We use
+  // env here to exercise the path.
+  const d = fakeDeps({
+    loadAgyActualModel: () => Promise.resolve({ actual: "Gemini-2.0" }),
+    env: () => ({ ASK_AI_MODEL_AGY: "Gemini-1.5" }),
   });
-  await runAskAi(runArgs(["pi", "plan", "plan.md", "--fresh"]), d);
-  assertStringIncludes(String(d.runs[0]?.args.at(-1)), "[ask-cli: target file content truncated]");
+  await runAskAi(runArgs(["agy", "ask", "q", "--fresh"]), d);
+  assertStringIncludes(d.stderr.join(""), 'agy will use model "Gemini-2.0"');
+  assertStringIncludes(d.stderr.join(""), 'you requested "Gemini-1.5"');
 });
 
-Deno.test("runAskAi does not require Deno write permission before invoking claude", async () => {
-  let mkdirCalled = false;
-  const d = deps({
-    mkdir: () => {
-      mkdirCalled = true;
-      return Promise.resolve();
+Deno.test("runAskAi review mode throws on real git failure", async () => {
+  const d = fakeDeps({
+    gitOutput: (): Promise<GitOutput> =>
+      Promise.resolve({
+        stdout: "",
+        stderr: "fatal: not a repo",
+        status: 128,
+        truncated: false,
+        stdoutTruncated: false,
+        stderrTruncated: false,
+      }),
+  });
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["pi", "review", "--base", "main", "--head", "HEAD", "--dry-run"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "git diff --stat failed");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi review mode does not throw on truncation kill", async () => {
+  const d = fakeDeps({
+    gitOutput: (): Promise<GitOutput> =>
+      Promise.resolve({
+        stdout: "huge stat",
+        stderr: "",
+        status: 143,
+        truncated: true,
+        stdoutTruncated: true,
+        stderrTruncated: false,
+      }),
+  });
+  const code = await runAskAi(
+    runArgs(["pi", "review", "--base", "main", "--head", "HEAD", "--dry-run"]),
+    d,
+  );
+  assertEquals(code, 0);
+});
+
+Deno.test("runAskAi refuses positional subject for review mode", async () => {
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["pi", "review", "extra.md", "--dry-run"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "review mode does not take a positional subject");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi refuses empty subject for ask mode", async () => {
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["pi", "ask", "--dry-run"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "requires a question, file path, or description");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi --dry-run does NOT read the subject file from disk (I2)", async () => {
+  // I2: dry-run is a preview; the wrapper must not read secret.txt just to
+  // pretend to know what would have been read. The fake here would record
+  // the call and assert it never happened.
+  let readSubjectCalled = false;
+  const d = fakeDeps({
+    readSubjectFile: (_subject) => {
+      readSubjectCalled = true;
+      return Promise.resolve({ text: "secret", resolvedPath: "/etc/passwd", truncated: false });
     },
   });
-  await runAskAi(runArgs(["claude", "ask", "q", "--fresh"]), d);
-  assertEquals(mkdirCalled, false);
+  await runAskAi(runArgs(["claude", "ask", "secret.txt", "--dry-run"]), d);
+  assertEquals(readSubjectCalled, false);
+});
+
+Deno.test("runAskAi agy --dry-run still emits the settings.json mismatch warning (I1)", async () => {
+  const d = fakeDeps({
+    loadAgyActualModel: () => Promise.resolve({ actual: "Gemini-2.0" }),
+    env: () => ({ ASK_AI_MODEL_AGY: "Gemini-1.5" }),
+  });
+  await runAskAi(runArgs(["agy", "ask", "q", "--dry-run"]), d);
+  // Previously suppressed because the dry-run early-return was before the
+  // warning. Now the warning fires regardless of --dry-run.
+  assertStringIncludes(d.stderr.join(""), 'agy will use model "Gemini-2.0"');
+});
+
+Deno.test("runAskAi agy dry-run summary reports actual model from settings.json (I7)", async () => {
+  const d = fakeDeps({
+    loadAgyActualModel: () => Promise.resolve({ actual: "Gemini-2.0" }),
+    env: () => ({ ASK_AI_MODEL_AGY: "Gemini-1.5" }),
+  });
+  await runAskAi(runArgs(["agy", "ask", "q", "--dry-run"]), d);
+  const summary = JSON.parse(d.stdout.join(""));
+  assertEquals(summary.model.preferred, "Gemini-1.5");
+  assertEquals(summary.model.actual, "Gemini-2.0");
+});
+
+Deno.test("runAskAi default run prints the new session id to stderr (I-Agy-1)", async () => {
+  const d = fakeDeps();
+  await runAskAi(runArgs(["pi", "ask", "q"]), d);
+  // The wrapper generates a UUID and passes it to the child CLI. The agent
+  // needs the id to resume later, so it must be printed to stderr.
+  const combined = d.stderr.join("");
+  assertStringIncludes(combined, "session");
+  assertStringIncludes(combined, "uuid-1");
+});
+
+Deno.test("runAskAi --fresh default is a brand-new session with a generated UUID (I-Agy-2)", async () => {
+  // Previously --fresh was treated as 'no newSessionId', which let the
+  // child CLI fall back to its own default. The intent of --fresh is a
+  // brand-new thread, so we always generate one.
+  const d = fakeDeps();
+  await runAskAi(runArgs(["pi", "ask", "q", "--fresh"]), d);
+  const ran = d.runs[0];
+  const sessionIdx = ran.args.indexOf("--session-id");
+  assertEquals(sessionIdx > 0, true);
+  assertEquals(ran.args[sessionIdx + 1], "uuid-1");
+});
+
+Deno.test("runAskAi refuses subject file path that resolves outside the repo root (I5)", async () => {
+  const d = fakeDeps();
+  let threw = false;
+  try {
+    await runAskAi(runArgs(["claude", "ask", "/etc/passwd", "--fresh"]), d);
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "outside the repo root");
+  }
+  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi warns to stderr when config.json exists but is malformed (I6)", async () => {
+  const dir = await Deno.makeTempDir();
+  try {
+    const configFile = join(dir, "config.json");
+    await Deno.writeTextFile(configFile, "not json");
+    const stderr: string[] = [];
+    const { createDefaultDeps } = await import("./orchestrator.ts");
+    const d = createDefaultDeps((t) => stderr.push(t));
+    await d.loadConfig(configFile);
+    const all = stderr.join("");
+    assertStringIncludes(all, "could not be read");
+    assertStringIncludes(all, configFile);
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
 });

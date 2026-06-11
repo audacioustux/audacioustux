@@ -1,3 +1,0 @@
-{"type":"summary","summary":"router websocket auth handoff","sessionId":"claude-session-a","timestamp":"2026-06-03T00:00:00.000Z"}
-{"sessionId":"claude-session-a","timestamp":"2026-06-03T00:00:01.000Z","message":{"role":"user","content":[{"type":"text","text":"Please review websocket auth token propagation."}]}}
-{"sessionId":"claude-session-a","timestamp":"2026-06-03T00:00:02.000Z","message":{"role":"assistant","content":[{"type":"text","text":"Check the router handoff."}]}}

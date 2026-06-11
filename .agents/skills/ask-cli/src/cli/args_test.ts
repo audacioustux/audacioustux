@@ -25,24 +25,29 @@ Deno.test("parseCliArgs accepts pi with model override", () => {
   assertEquals(parsed.dryRun, true);
 });
 
+Deno.test("parseCliArgs rejects --continue and -c to enforce resume safety", () => {
+  assertThrows(
+    () => parseCliArgs(["claude", "ask", "q", "--continue"]),
+    Error,
+    "--continue/-c is not allowed",
+  );
+  assertThrows(
+    () => parseCliArgs(["agy", "ask", "q", "-c"]),
+    Error,
+    "--continue/-c is not allowed",
+  );
+  assertThrows(
+    () => parseCliArgs(["pi", "ask", "q", "-c", "extra"]),
+    Error,
+    "--continue/-c is not allowed",
+  );
+});
+
 Deno.test("parseCliArgs rejects resume and fresh together", () => {
   assertThrows(
     () => parseCliArgs(["claude", "ask", "q", "--resume", "abc", "--fresh"]),
     Error,
     "--resume and --fresh are mutually exclusive",
-  );
-});
-
-Deno.test("parseCliArgs rejects unsupported sandbox flags", () => {
-  assertThrows(
-    () => parseCliArgs(["agy", "ask", "q", "--sandbox"]),
-    Error,
-    "--sandbox is not supported",
-  );
-  assertThrows(
-    () => parseCliArgs(["agy", "ask", "q", "--no-sandbox"]),
-    Error,
-    "--no-sandbox is not supported",
   );
 });
 

@@ -2,6 +2,8 @@ export type GitOutput = {
   stdout: string;
   stderr: string;
   truncated: boolean;
+  stdoutTruncated: boolean;
+  stderrTruncated: boolean;
   status: number;
 };
 
@@ -78,7 +80,9 @@ export async function gitOutput(args: string[], cwd: string, maxBytes: number): 
   return {
     stdout: stdout.text,
     stderr: stderr.text,
+    status: status.code,
+    stdoutTruncated: stdout.truncated,
+    stderrTruncated: stderr.truncated,
     truncated: stdout.truncated || stderr.truncated,
-    status: killedForTruncation ? 0 : status.code,
   };
 }

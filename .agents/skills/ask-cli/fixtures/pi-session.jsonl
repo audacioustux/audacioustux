@@ -1,6 +1,0 @@
-{"type":"session","id":"pi-session-a","cwd":"/repo","timestamp":"2026-06-03T00:00:00.000Z"}
-{"type":"model_change","provider":"openai-codex","modelId":"gpt-5.5","timestamp":"2026-06-03T00:00:01.000Z"}
-{"type":"thinking_level_change","thinkingLevel":"xhigh","timestamp":"2026-06-03T00:00:02.000Z"}
-{"type":"message","timestamp":"2026-06-03T00:00:03.000Z","message":{"role":"user","content":[{"type":"text","text":"Please review the plugin router websocket handoff and auth token propagation."}]}}
-{"type":"message","timestamp":"2026-06-03T00:00:04.000Z","message":{"role":"assistant","content":[{"type":"thinking","thinking":"Router websocket auth handoff may be brittle."},{"type":"text","text":"Check router websocket auth token handling before merging."},{"type":"toolCall","name":"read","arguments":{"path":"src/router.ts"}}]}}
-{"type":"message","timestamp":"2026-06-03T00:00:05.000Z","message":{"role":"toolResult","toolName":"read","content":[{"type":"text","text":"secret output must not influence scoring"}]}}
