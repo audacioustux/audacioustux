@@ -63,7 +63,10 @@ Model precedence:
 4. The child CLI's own configured default
 
 Agy does not accept `--model`; its model is configured in
-`~/.gemini/antigravity-cli/settings.json`.
+`~/.gemini/antigravity-cli/settings.json`. Antigravity is multi-model — the
+configured model may be a Gemini model, Claude Sonnet/Opus with Thinking, GPT-OSS,
+or another model exposed by Antigravity. The wrapper reads and reports the configured
+model string; it does not assume Gemini.
 
 ## Usage
 
@@ -108,7 +111,8 @@ The wrapper rejects or forces the following:
 - `pi` always gets `--tools read,grep,find,ls`.
 - `claude --resume` always adds `--fork-session`. Pi has no fork equivalent — resuming a pi session extends the prior conversation.
 - `agy --model` is rejected; agy uses the model configured in
-  `~/.gemini/antigravity-cli/settings.json`.
+  `~/.gemini/antigravity-cli/settings.json` (for example Gemini, Claude Sonnet/Opus
+  Thinking, or GPT-OSS model choices exposed by Antigravity).
 
 These are checked at parse time, so a calling agent that obeys the SKILL.md
 cannot accidentally bypass them.

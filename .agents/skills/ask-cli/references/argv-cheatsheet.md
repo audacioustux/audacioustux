@@ -39,7 +39,10 @@ Invariants enforced by the wrapper:
   from `~/.gemini/antigravity-cli/settings.json`; if the caller's
   `--model` (or env var or config) disagrees with the configured model,
   the wrapper emits a stderr warning and the child CLI is invoked
-  without `--model`.
+  without `--model`. Antigravity is multi-model — the configured model
+  may be Gemini, Claude Sonnet/Opus with Thinking, GPT-OSS, or another
+  model exposed by Antigravity. The wrapper treats it as an opaque
+  configured model string.
 - `--conversation <id>` is passed only if `--resume` is set. There is
   no `--fork-session` equivalent for agy; resuming a conversation
   extends it. The wrapper does not silently resume, so this is

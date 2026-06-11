@@ -71,8 +71,11 @@ ask-cli pi ask "follow up" --resume <id>
 ## Model Selection
 
 Priority: `--model` flag → env var (`ASK_AI_MODEL_CLAUDE` etc.) → `config.json` → child
-CLI default. For agy, the model is read from `~/.gemini/antigravity-cli/settings.json`
-and `--model` is rejected.
+CLI default. For agy, `--model` is rejected because Antigravity's headless CLI does
+not accept a per-invocation model flag. The wrapper reads the configured model string
+from `~/.gemini/antigravity-cli/settings.json` and reports mismatches. Antigravity is
+multi-model: the configured model may be Gemini, Claude Sonnet/Opus with Thinking,
+GPT-OSS, or another model exposed by Antigravity.
 
 Copy `config.example.json` to `config.json` for persistent local defaults. Do not
 commit personal `config.json` files.

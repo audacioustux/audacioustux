@@ -9,7 +9,7 @@ export function usage(): string {
 
 Agents:
   claude       Wraps the claude CLI (Anthropic)
-  agy          Wraps the agy CLI (Antigravity / Gemini)
+  agy          Wraps the agy CLI (Antigravity)
   pi           Wraps the pi CLI (Pi coding agent)
 
 Modes:
