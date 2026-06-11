@@ -34,12 +34,12 @@ agy -p (--conversation <id>) <prompt>
 
 Invariants enforced by the wrapper:
 
-- `--model` is **rejected** at parse time. Agy does not have a
-  headless `--model` flag. The actual model is read from
-  `~/.gemini/antigravity-cli/settings.json`; if the caller's `--model`
-  (or env var or config) disagrees with the configured model, the
-  wrapper emits a stderr warning and the child CLI is invoked without
-  `--model`.
+- `--model` is **rejected** by the wrapper before invoking the child CLI.
+  Agy does not have a headless `--model` flag. The actual model is read
+  from `~/.gemini/antigravity-cli/settings.json`; if the caller's
+  `--model` (or env var or config) disagrees with the configured model,
+  the wrapper emits a stderr warning and the child CLI is invoked
+  without `--model`.
 - `--conversation <id>` is passed only if `--resume` is set. There is
   no `--fork-session` equivalent for agy; resuming a conversation
   extends it. The wrapper does not silently resume, so this is

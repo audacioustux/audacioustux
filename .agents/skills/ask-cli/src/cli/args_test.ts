@@ -43,6 +43,15 @@ Deno.test("parseCliArgs rejects --continue and -c to enforce resume safety", () 
   );
 });
 
+Deno.test("parseCliArgs allows --continue after -- (treated as positional question)", () => {
+  // After --, everything is positional text. The agent might ask
+  // "should I use --continue?" and that should work.
+  const parsed = parseCliArgs(["pi", "ask", "--", "should I use --continue?"]);
+  assertEquals(parsed.kind, "run");
+  if (parsed.kind !== "run") throw new Error("expected run args");
+  assertEquals(parsed.positional, ["should I use --continue?"]);
+});
+
 Deno.test("parseCliArgs rejects resume and fresh together", () => {
   assertThrows(
     () => parseCliArgs(["claude", "ask", "q", "--resume", "abc", "--fresh"]),

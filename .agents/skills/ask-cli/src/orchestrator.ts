@@ -301,24 +301,24 @@ export async function runAskAi(args: RunCliArgs, deps: RunDeps): Promise<number>
     promptMeta = { diffTruncated: diff.truncated, diffStatTruncated: stat.truncated };
   } else {
     const subject = args.positional.join(" ").trim();
-    // I5: a bare path-like subject is forced inside the repo root.
-    // We only enforce this for tokens that look like a file path,
-    // not for free-form questions. A token is path-like if it starts
-    // with `/`, `./`, `../`, `~/`, or contains a `/` and a `.` (e.g.
-    // `docs/foo.md`).
-    const looksLikePath = (s: string) =>
-      s === "" ? false : /[\\/]([^\\/]*\.)[^\\/]+$/.test(s) ||
-        s.startsWith("/") || s.startsWith("./") || s.startsWith("../") || s.startsWith("~/");
+    // I5: a bare path-like subject (single token) is forced inside the repo root.
+    // We do NOT enforce this on multi-token subjects (free-form questions),
+    // because the agent might mention a path in context. For multi-token
+    // subjects, readSubjectFile gracefully falls back to empty text if the
+    // file doesn't exist.
+    const looksLikePath = (s: string) => s === "" ? false : /[\\/]/.test(s) || s.startsWith("~/");
     const subjectTokens = subject.split(/\s+/);
-    const pathLike = subjectTokens.find(looksLikePath);
-    if (pathLike && !args.dryRun) {
-      // Defer the actual read, but resolve the candidate path so we
-      // can reject anything outside the repo root.
-      const candidates = [resolve(invocationCwd, pathLike), resolve(repoRoot, pathLike)];
-      const inside = candidates.some((c) => c === repoRoot || c.startsWith(repoRoot + "/"));
-      if (!inside) {
+    if (subjectTokens.length === 1 && looksLikePath(subject) && !args.dryRun) {
+      const resolved = resolve(invocationCwd, subject);
+      const normalizedRoot = resolve(repoRoot);
+      // Platform-agnostic containment: check that the char after the root
+      // prefix is a separator (so /repo/file matches but /repo-other/x doesn't).
+      const isInside = resolved === normalizedRoot ||
+        (resolved.startsWith(normalizedRoot) &&
+          (resolved[normalizedRoot.length] === "/" || resolved[normalizedRoot.length] === "\\"));
+      if (!isInside) {
         throw new Error(
-          `subject path "${pathLike}" resolves outside the repo root (${repoRoot}); ` +
+          `subject path "${subject}" resolves outside the repo root (${repoRoot}); ` +
             `refusing to read it. Move the file inside the repo or pass it as a question.`,
         );
       }

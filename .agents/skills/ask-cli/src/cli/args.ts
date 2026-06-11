@@ -59,6 +59,7 @@ function help(error?: string): ParsedCliArgs {
 // ignoring the current repo. This is the single most important safety rule.
 function rejectResumeShortcut(rest: string[]): void {
   for (const arg of rest) {
+    if (arg === "--") break;
     if (arg === "--continue" || arg === "-c") {
       throw new Error(
         "--continue/-c is not allowed; it resumes the most recent session globally. " +

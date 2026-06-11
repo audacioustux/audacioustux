@@ -293,6 +293,20 @@ Deno.test("runAskAi refuses subject file path that resolves outside the repo roo
   assertEquals(threw, true);
 });
 
+Deno.test("runAskAi allows multi-token subject mentioning a path (does not throw)", async () => {
+  // Multi-token subjects are questions, not bare paths. The repo-root
+  // check only applies to single-token path-like subjects.
+  const d = fakeDeps({
+    readSubjectFile: (_s, _cwd, _repo) =>
+      Promise.resolve({ text: "", resolvedPath: "", truncated: false }),
+  });
+  const code = await runAskAi(
+    runArgs(["claude", "ask", "review docs/spec.md and api/changes.md", "--fresh", "--dry-run"]),
+    d,
+  );
+  assertEquals(code, 0);
+});
+
 Deno.test("runAskAi warns to stderr when config.json exists but is malformed (I6)", async () => {
   const dir = await Deno.makeTempDir();
   try {

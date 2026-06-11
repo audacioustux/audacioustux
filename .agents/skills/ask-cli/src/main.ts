@@ -31,11 +31,11 @@ Options:
   --help               Show this help.
 
 Safety:
-  -claude/agy/pi --continue and -c are rejected to prevent resuming the wrong session.
-  -claude always gets --permission-mode plan; pi always gets --tools read,grep,find,ls.
-  -claude --resume always adds --fork-session. (Pi has no fork equivalent.)
-  -agy --model is rejected; agy uses ~/.gemini/antigravity-cli/settings.json.
-  -Subject file paths must resolve inside the repo root.
+  - claude/agy/pi --continue and -c are rejected to prevent resuming the wrong session.
+  - claude always gets --permission-mode plan; pi always gets --tools read,grep,find,ls.
+  - claude --resume always adds --fork-session. (Pi has no fork equivalent.)
+  - agy --model is rejected; agy uses ~/.gemini/antigravity-cli/settings.json.
+  - Subject file paths must resolve inside the repo root.
 `;
 }
 
