@@ -1,5 +1,5 @@
 import { isAbsolute, relative, resolve } from "jsr:@std/path@1";
-import { defaultConfigFile, loadConfig as loadConfigDefault } from "./core/config.ts";
+import { defaultConfigFile } from "./core/config.ts";
 import { loadAgyActualModel } from "./agents/agy.ts";
 import * as claude from "./agents/claude.ts";
 import * as agy from "./agents/agy.ts";
@@ -77,39 +77,61 @@ export function createDefaultDeps(
 ): RunDeps {
   return {
     loadConfig: async (configFile) => {
-      // I6: distinguish "missing file" (normal) from "malformed file"
-      // (the user has a config and we ignored it). We re-implement the
-      // swallow-and-warn here so the warning goes to the wrapper's
-      // stderr instead of being silently dropped.
-      const result = await loadConfigDefault(configFile);
-      if (!configFile) return result;
+      if (!configFile) return { agents: {} };
       let stat: Deno.FileInfo | undefined;
       try {
         stat = await Deno.stat(configFile);
       } catch {
-        return result;
+        return { agents: {} };
       }
-      if (!stat.isFile) return result;
-      // File exists; try to read and parse. If anything goes wrong,
-      // log to stderr.
+      if (!stat.isFile) return { agents: {} };
+
+      let raw: string;
       try {
-        const raw = await Deno.readTextFile(configFile);
-        const parsed: unknown = JSON.parse(raw);
-        if (
-          !parsed || typeof parsed !== "object" || !("agents" in parsed) ||
-          !parsed.agents || typeof parsed.agents !== "object"
-        ) {
+        const read = await readTextFileBounded(configFile, 64_000);
+        raw = read.text;
+        if (read.truncated) {
           writeStderr(
-            `ask-cli: config.json at ${configFile} has no agents block; ignoring it\n`,
+            `ask-cli: config.json at ${configFile} exceeds 64000 bytes; ignoring truncated config\n`,
           );
+          return { agents: {} };
         }
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         writeStderr(
           `ask-cli: config.json at ${configFile} could not be read (${message}); ignoring it\n`,
         );
+        return { agents: {} };
       }
-      return result;
+
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        writeStderr(
+          `ask-cli: config.json at ${configFile} could not be parsed (${message}); ignoring it\n`,
+        );
+        return { agents: {} };
+      }
+
+      if (
+        !parsed || typeof parsed !== "object" || !("agents" in parsed) ||
+        !parsed.agents || typeof parsed.agents !== "object" || Array.isArray(parsed.agents)
+      ) {
+        writeStderr(
+          `ask-cli: config.json at ${configFile} has no agents block; ignoring it\n`,
+        );
+        return { agents: {} };
+      }
+
+      const agents: Record<string, { model: string }> = {};
+      for (const [name, value] of Object.entries(parsed.agents)) {
+        if (!value || typeof value !== "object" || Array.isArray(value)) continue;
+        const model = (value as Record<string, unknown>).model;
+        if (typeof model === "string" && model.trim()) agents[name] = { model: model.trim() };
+      }
+      return { agents };
     },
     gitOutput: gitOutputDefault,
     readSubjectFile: readSubjectFileDefault,

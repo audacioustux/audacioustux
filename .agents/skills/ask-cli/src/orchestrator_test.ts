@@ -127,8 +127,9 @@ Deno.test("runAskAi agy --model is rejected (throws), not silently warned", asyn
   assertEquals(threw, true);
 });
 
-Deno.test("runAskAi agy --model is also rejected at parse time", async () => {
-  // Same rejection must hold at parse time so the child CLI is never spawned.
+Deno.test("runAskAi agy --model is rejected before child invocation", async () => {
+  // parseCliArgs accepts the syntactic flag; runAskAi rejects it before
+  // constructing or spawning the agy child command.
   const { parseCliArgs } = await import("./cli/args.ts");
   const parsed = parseCliArgs(["agy", "ask", "q", "--model", "foo"]);
   if (parsed.kind !== "run") throw new Error("expected run args");
@@ -365,8 +366,24 @@ Deno.test("runAskAi warns to stderr when config.json exists but is malformed (I6
     const d = createDefaultDeps((t) => stderr.push(t));
     await d.loadConfig(configFile);
     const all = stderr.join("");
-    assertStringIncludes(all, "could not be read");
+    assertStringIncludes(all, "could not be parsed");
     assertStringIncludes(all, configFile);
+  } finally {
+    await Deno.remove(dir, { recursive: true });
+  }
+});
+
+Deno.test("runAskAi bounds config.json warning read", async () => {
+  const dir = await Deno.makeTempDir();
+  try {
+    const configFile = join(dir, "config.json");
+    await Deno.writeTextFile(configFile, "{" + "x".repeat(70_000));
+    const stderr: string[] = [];
+    const { createDefaultDeps } = await import("./orchestrator.ts");
+    const d = createDefaultDeps((t) => stderr.push(t));
+    const config = await d.loadConfig(configFile);
+    assertEquals(config, { agents: {} });
+    assertStringIncludes(stderr.join(""), "exceeds 64000 bytes");
   } finally {
     await Deno.remove(dir, { recursive: true });
   }
