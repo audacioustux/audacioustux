@@ -1,4 +1,4 @@
-import { resolve } from "jsr:@std/path@1";
+import { isAbsolute, relative, resolve } from "jsr:@std/path@1";
 import { defaultConfigFile, loadConfig as loadConfigDefault } from "./core/config.ts";
 import { loadAgyActualModel } from "./agents/agy.ts";
 import * as claude from "./agents/claude.ts";
@@ -130,6 +130,18 @@ export function createDefaultDeps(
   };
 }
 
+function ensureInsideRepo(repoRoot: string, candidate: string, realCandidate: string): void {
+  const realRoot = Deno.realPathSync(repoRoot);
+  const rel = relative(realRoot, realCandidate);
+  const inside = rel === "" || (!rel.startsWith("..") && !isAbsolute(rel));
+  if (!inside) {
+    throw new Error(
+      `subject path "${candidate}" resolves outside the repo root (${repoRoot}); ` +
+        `refusing to read it. Move the file inside the repo or pass it as a question.`,
+    );
+  }
+}
+
 async function readSubjectFileDefault(
   subject: string,
   invocationCwd: string,
@@ -140,9 +152,12 @@ async function readSubjectFileDefault(
     try {
       const stats = await Deno.stat(candidate);
       if (!stats.isFile) continue;
-      const read = await readTextFileBounded(candidate, SUBJECT_FILE_BYTE_LIMIT);
-      return { text: read.text, resolvedPath: candidate, truncated: read.truncated };
-    } catch {
+      const realCandidate = await Deno.realPath(candidate);
+      ensureInsideRepo(repoRoot, candidate, realCandidate);
+      const read = await readTextFileBounded(realCandidate, SUBJECT_FILE_BYTE_LIMIT);
+      return { text: read.text, resolvedPath: realCandidate, truncated: read.truncated };
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("outside the repo root")) throw error;
       // Try next candidate.
     }
   }
@@ -301,28 +316,6 @@ export async function runAskAi(args: RunCliArgs, deps: RunDeps): Promise<number>
     promptMeta = { diffTruncated: diff.truncated, diffStatTruncated: stat.truncated };
   } else {
     const subject = args.positional.join(" ").trim();
-    // I5: a bare path-like subject (single token) is forced inside the repo root.
-    // We do NOT enforce this on multi-token subjects (free-form questions),
-    // because the agent might mention a path in context. For multi-token
-    // subjects, readSubjectFile gracefully falls back to empty text if the
-    // file doesn't exist.
-    const looksLikePath = (s: string) => s === "" ? false : /[\\/]/.test(s) || s.startsWith("~/");
-    const subjectTokens = subject.split(/\s+/);
-    if (subjectTokens.length === 1 && looksLikePath(subject) && !args.dryRun) {
-      const resolved = resolve(invocationCwd, subject);
-      const normalizedRoot = resolve(repoRoot);
-      // Platform-agnostic containment: check that the char after the root
-      // prefix is a separator (so /repo/file matches but /repo-other/x doesn't).
-      const isInside = resolved === normalizedRoot ||
-        (resolved.startsWith(normalizedRoot) &&
-          (resolved[normalizedRoot.length] === "/" || resolved[normalizedRoot.length] === "\\"));
-      if (!isInside) {
-        throw new Error(
-          `subject path "${subject}" resolves outside the repo root (${repoRoot}); ` +
-            `refusing to read it. Move the file inside the repo or pass it as a question.`,
-        );
-      }
-    }
     let subjectFile: SubjectRead = { text: "", resolvedPath: "", truncated: false };
     // I2: --dry-run must not read the subject file from disk. The
     // summary uses the raw subject path; the actual file is read only
@@ -384,11 +377,10 @@ export async function runAskAi(args: RunCliArgs, deps: RunDeps): Promise<number>
 
   // I1: agy model-mismatch warning fires regardless of --dry-run so the
   // agent sees the discrepancy even when it never actually invokes agy.
-  if (
-    args.agent === "agy" && model.preferred && agyActualModel && model.preferred !== agyActualModel
-  ) {
+  if (args.agent === "agy" && model.preferred && model.preferred !== agyActualModel) {
+    const actual = agyActualModel ? `model "${agyActualModel}"` : "its configured/default model";
     deps.writeStderr(
-      `ask-cli: agy will use model "${agyActualModel}" (from ${agy.SETTINGS_PATH_HINT}); ` +
+      `ask-cli: agy will use ${actual} (from ${agy.SETTINGS_PATH_HINT}); ` +
         `you requested "${model.preferred}" but agy does not accept --model.\n`,
     );
   }

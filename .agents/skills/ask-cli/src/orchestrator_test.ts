@@ -248,6 +248,16 @@ Deno.test("runAskAi agy --dry-run still emits the settings.json mismatch warning
   assertStringIncludes(d.stderr.join(""), 'agy will use model "Gemini-2.0"');
 });
 
+Deno.test("runAskAi agy warns when preferred model exists but actual model is unknown", async () => {
+  const d = fakeDeps({
+    loadAgyActualModel: () => Promise.resolve({ actual: undefined }),
+    env: () => ({ ASK_AI_MODEL_AGY: "Claude Opus 4.6 (Thinking)" }),
+  });
+  await runAskAi(runArgs(["agy", "ask", "q", "--dry-run"]), d);
+  assertStringIncludes(d.stderr.join(""), "agy will use its configured/default model");
+  assertStringIncludes(d.stderr.join(""), 'you requested "Claude Opus 4.6 (Thinking)"');
+});
+
 Deno.test("runAskAi agy dry-run summary reports actual model from settings.json (I7)", async () => {
   const d = fakeDeps({
     loadAgyActualModel: () => Promise.resolve({ actual: "Gemini-2.0" }),
@@ -282,15 +292,53 @@ Deno.test("runAskAi --fresh default is a brand-new session with a generated UUID
 });
 
 Deno.test("runAskAi refuses subject file path that resolves outside the repo root (I5)", async () => {
-  const d = fakeDeps();
-  let threw = false;
+  const repo = await Deno.makeTempDir();
   try {
-    await runAskAi(runArgs(["claude", "ask", "/etc/passwd", "--fresh"]), d);
-  } catch (e) {
-    threw = true;
-    assertStringIncludes(String(e), "outside the repo root");
+    const { createDefaultDeps } = await import("./orchestrator.ts");
+    const d = fakeDeps({
+      currentCwd: () => repo,
+      findRepoRoot: () => Promise.resolve(repo),
+      readSubjectFile: (subject, cwd, repoRoot) =>
+        createDefaultDeps().readSubjectFile(subject, cwd, repoRoot),
+    });
+    let threw = false;
+    try {
+      await runAskAi(runArgs(["claude", "ask", "/etc/passwd", "--fresh"]), d);
+    } catch (e) {
+      threw = true;
+      assertStringIncludes(String(e), "outside the repo root");
+    }
+    assertEquals(threw, true);
+  } finally {
+    await Deno.remove(repo, { recursive: true });
   }
-  assertEquals(threw, true);
+});
+
+Deno.test("runAskAi refuses outside-repo subject file path even when path contains spaces", async () => {
+  const temp = await Deno.makeTempDir();
+  const outside = join(temp, "file with spaces.txt");
+  await Deno.writeTextFile(outside, "secret");
+  const repo = await Deno.makeTempDir();
+  try {
+    const { createDefaultDeps } = await import("./orchestrator.ts");
+    const d = fakeDeps({
+      currentCwd: () => repo,
+      findRepoRoot: () => Promise.resolve(repo),
+      readSubjectFile: (subject, cwd, repoRoot) =>
+        createDefaultDeps().readSubjectFile(subject, cwd, repoRoot),
+    });
+    let threw = false;
+    try {
+      await runAskAi(runArgs(["claude", "ask", outside, "--fresh"]), d);
+    } catch (e) {
+      threw = true;
+      assertStringIncludes(String(e), "outside the repo root");
+    }
+    assertEquals(threw, true);
+  } finally {
+    await Deno.remove(temp, { recursive: true });
+    await Deno.remove(repo, { recursive: true });
+  }
 });
 
 Deno.test("runAskAi allows multi-token subject mentioning a path (does not throw)", async () => {
