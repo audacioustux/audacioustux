@@ -22,6 +22,13 @@ type SubjectRead = {
   truncated: boolean;
 };
 
+type PromptMeta = {
+  subjectTruncated?: boolean;
+  targetResolvedPath?: string;
+  diffTruncated?: boolean;
+  diffStatTruncated?: boolean;
+};
+
 export type AskAiDeps = {
   agents: Record<string, Agent>;
   now: () => Date;
@@ -103,6 +110,17 @@ function candidateListForSessions(candidates: SessionCandidate[]) {
   return candidates.slice(0, 10).map(serializeCandidate);
 }
 
+function commandForSummary(command: { bin: string; args: string[] }, prompt: string) {
+  const args = command.args.map((arg) =>
+    arg === prompt ? `[prompt redacted: ${prompt.length} chars]` : arg
+  );
+  return [command.bin, ...args];
+}
+
+function promptForSummary(prompt: string, meta: PromptMeta) {
+  return { redacted: true, chars: prompt.length, ...meta };
+}
+
 async function promptForReview({
   agent,
   args,
@@ -115,7 +133,7 @@ async function promptForReview({
   repoRoot: string;
   modelInfo: ModelInfo;
   deps: AskAiDeps;
-}): Promise<{ prompt: string; query: string }> {
+}): Promise<{ prompt: string; query: string; promptMeta: PromptMeta }> {
   const range = `${args.base}..${args.head}`;
   const stat = await deps.gitOutput(
     ["diff", "--stat", range, "--"],
@@ -148,6 +166,10 @@ async function promptForReview({
       extra: args.extra,
       diffStat: statText,
     }),
+    promptMeta: {
+      diffTruncated: diff.truncated,
+      diffStatTruncated: stat.truncated,
+    },
   };
 }
 
@@ -165,7 +187,7 @@ async function promptForSubject({
   repoRoot: string;
   modelInfo: ModelInfo;
   deps: AskAiDeps;
-}): Promise<{ prompt: string; query: string }> {
+}): Promise<{ prompt: string; query: string; promptMeta: PromptMeta }> {
   const subject = args.positional.join(" ").trim();
   if (!subject && args.mode !== "sessions") {
     throw new Error(`${args.mode} mode requires a question, file path, or description`);
@@ -193,6 +215,10 @@ async function promptForSubject({
       subjectText,
       extra: args.extra,
     }),
+    promptMeta: {
+      subjectTruncated: subjectFile.truncated,
+      targetResolvedPath: subjectFile.resolvedPath || undefined,
+    },
   };
 }
 
@@ -214,7 +240,7 @@ export async function runAskAi(args: RunCliArgs, deps: AskAiDeps): Promise<numbe
       : undefined,
   });
 
-  const { prompt, query } = args.mode === "review"
+  const { prompt, query, promptMeta } = args.mode === "review"
     ? await promptForReview({ agent, args, repoRoot, modelInfo, deps })
     : await promptForSubject({ agent, args, invocationCwd, repoRoot, modelInfo, deps });
 
@@ -269,7 +295,8 @@ export async function runAskAi(args: RunCliArgs, deps: AskAiDeps): Promise<numbe
     selectedSession: selectedForSummary(selected),
     topCandidates: candidatesForSummary(ranked),
     warnings,
-    command: [command.bin, ...command.args],
+    prompt: promptForSummary(prompt, promptMeta),
+    command: commandForSummary(command, prompt),
   };
 
   if (args.dryRun) {

@@ -90,6 +90,40 @@ Deno.test("runAskAi dry-run does not spawn and prints command summary", async ()
   assertEquals(summary.agent, "pi");
   assertEquals(summary.selectedSession, undefined);
   assertEquals(summary.command[0], "pi");
+  assertStringIncludes(summary.command.at(-1), "[prompt redacted:");
+  assertEquals(JSON.stringify(summary).includes("hello"), false);
+});
+
+Deno.test("runAskAi dry-run redacts prompt by value rather than arg position", async () => {
+  const trailingPromptAgent: Agent = {
+    ...fakeAgent("pi", { preferred: undefined, actual: "openai/gpt:xhigh", source: "default" }),
+    buildCommand: ({ prompt, cwd }) => ({ bin: "pi", cwd, args: ["-p", prompt, "--trailing"] }),
+  };
+  const d = deps({
+    agents: {
+      claude: fakeAgent("claude", { source: "default" }),
+      agy: fakeAgent("agy", { source: "default" }),
+      pi: trailingPromptAgent,
+    },
+  });
+  await runAskAi(runArgs(["pi", "ask", "hello", "--fresh", "--dry-run"]), d);
+  const summary = JSON.parse(d.stdout.join(""));
+  assertStringIncludes(summary.command.join("\n"), "[prompt redacted:");
+  assertEquals(summary.command.at(-1), "--trailing");
+  assertEquals(JSON.stringify(summary).includes("hello"), false);
+});
+
+Deno.test("runAskAi dry-run reports prompt metadata for truncated subjects", async () => {
+  const d = deps({
+    readSubjectFile: () =>
+      Promise.resolve({ text: "file body", resolvedPath: "/repo/plan.md", truncated: true }),
+  });
+  await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
+  const summary = JSON.parse(d.stdout.join(""));
+  assertEquals(summary.prompt.redacted, true);
+  assertEquals(summary.prompt.subjectTruncated, true);
+  assertEquals(typeof summary.prompt.chars, "number");
+  assertEquals(JSON.stringify(summary).includes("file body"), false);
 });
 
 Deno.test("runAskAi sessions mode serializes sanitized candidates", async () => {
@@ -193,7 +227,8 @@ Deno.test("runAskAi subject mode reads bounded file content", async () => {
   await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
   const summary = JSON.parse(d.stdout.join(""));
   assertEquals(readSubject, "plan.md");
-  assertStringIncludes(summary.command.at(-1), "file body");
+  assertStringIncludes(summary.command.at(-1), "[prompt redacted:");
+  assertEquals(JSON.stringify(summary).includes("file body"), false);
 });
 
 Deno.test("runAskAi includes a truncation note for bounded subject files", async () => {
@@ -201,9 +236,8 @@ Deno.test("runAskAi includes a truncation note for bounded subject files", async
     readSubjectFile: () =>
       Promise.resolve({ text: "file body", resolvedPath: "/repo/plan.md", truncated: true }),
   });
-  await runAskAi(runArgs(["pi", "plan", "plan.md", "--dry-run", "--fresh"]), d);
-  const summary = JSON.parse(d.stdout.join(""));
-  assertStringIncludes(summary.command.at(-1), "[ask-cli: target file content truncated]");
+  await runAskAi(runArgs(["pi", "plan", "plan.md", "--fresh"]), d);
+  assertStringIncludes(String(d.runs[0]?.args.at(-1)), "[ask-cli: target file content truncated]");
 });
 
 Deno.test("runAskAi does not require Deno write permission before invoking claude", async () => {

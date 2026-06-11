@@ -1,6 +1,6 @@
 ---
 name: ask-cli
-description: Use when the user asks to ask Claude, ask Gemini/agy, ask Pi, get a second opinion, run adversarial review, critique a plan, challenge architecture, review code, or use the claude/agy/pi CLI with relevant prior session context.
+description: Use when the user requests an external AI second opinion, adversarial critique, code review, plan review, architecture challenge, or explicitly asks to use the claude, agy/Antigravity/Gemini, or pi CLI.
 ---
 
 # ask-cli
@@ -15,6 +15,8 @@ Invoke an independent AI reviewer as a second brain with relevance-scoped sessio
 
 The implementation is Deno-native TypeScript. Use the bundled executable wrapper `ask-cli`; it runs `deno run` with the permissions required to read local session stores, read the current repo, read model/config environment variables, run `git`, and invoke the selected child CLI.
 
+For installation, public reuse, privacy notes, and troubleshooting, see [README.md](./README.md).
+
 ## Hard Rules
 
 - Use the bundled helper (`ask-cli`); do not hand-roll `claude`/`agy`/`pi` commands unless the helper is broken.
@@ -24,6 +26,8 @@ The implementation is Deno-native TypeScript. Use the bundled executable wrapper
   - `pi` is invoked with `--tools read,grep,find,ls`.
   - `agy` has no reliable mechanical read-only flag in the observed CLI; ask-cli uses prompt constraints and safe metadata reuse only.
 - Deno permissions constrain the ask-cli wrapper process. They do **not** sandbox spawned child CLIs.
+- By default, ask-cli scans local session history and may resume a prior session it scores as relevant.
+- Use `--fresh` when prior local session context should not be reused; use `--dry-run` to inspect selected session/model/prompt metadata/redacted command shape first.
 - Treat model output as critique, not truth. Verify findings before changing code.
 
 ## Agents
@@ -54,7 +58,7 @@ The implementation is Deno-native TypeScript. Use the bundled executable wrapper
 
 **For pi:** `--model` is real and is passed to `pi --model <provider/model[:thinking]>`. Without an override, ask-cli reads `~/.pi/agent/settings.json` to report the configured default while letting Pi use its own configuration.
 
-Copy `config.example.json` to `config.json` to set persistent defaults.
+Copy `config.example.json` to `config.json` to set persistent local defaults. Do not commit personal `config.json` files.
 
 ## Quick Reference
 
@@ -62,15 +66,15 @@ Copy `config.example.json` to `config.json` to set persistent defaults.
 ask-cli claude ask "What am I missing?"
 ask-cli agy plan docs/superpowers/plans/foo.md
 ask-cli pi adversarial docs/superpowers/specs/foo.md
-ask-cli claude review --base HEAD~1 --head HEAD
+ask-cli claude review --base "$(git merge-base main HEAD)" --head HEAD
 ask-cli pi sessions "beam quic transport"
 ask-cli claude ask --model opus "is this safe?"
-ask-cli pi ask --model zai/glm-5.1:xhigh "challenge this plan"
+ask-cli pi ask --model provider/model:thinking "challenge this plan"
 ```
 
 | Option | Use |
 |---|---|
-| `--dry-run` | Show selected session, model, warnings, and CLI args without invoking |
+| `--dry-run` | Show selected session, model, prompt metadata, warnings, and redacted CLI args without invoking |
 | `--model <name>` | Preferred model override for this run |
 | `--config <path>` | Override `config.json` path |
 | `--resume <id>` | Force a specific session/conversation id |
@@ -90,6 +94,12 @@ ask-cli pi ask --model zai/glm-5.1:xhigh "challenge this plan"
 | `adversarial` | Strongest-objection review of design/spec/approach | `adversarial docs/.../design.md` |
 | `review` | Committed-range diff review | `review --base main --head HEAD` |
 | `sessions` | Show ranked candidate sessions without invoking an agent | `sessions "auth websocket handoff"` |
+
+## Review Scope and Privacy
+
+`review` mode reviews committed refs with `git diff <base>..<head>`. For branch reviews, pass the merge base or exact ancestor as `--base` to avoid unrelated upstream changes. For uncommitted work, commit to a throwaway branch first or save `git diff` to a file and use `adversarial`/`ask`.
+
+ask-cli runs with broad local read access so it can read session stores, target files, and repository diffs. It may read local Claude, agy, and Pi session metadata/transcripts to rank relevance for the current repository. If a session is selected, the child CLI may receive or resume prior conversation context judged relevant by best-effort scoring. Prompt payloads may include bounded target file contents or bounded diff output. Deno permissions constrain only the wrapper process; spawned child CLIs are not sandboxed by ask-cli and run with their normal process privileges/environment behavior. Do not use this workflow for secrets or data the selected child CLI/model is not approved to receive.
 
 ## Agy Session Reuse Limitation
 

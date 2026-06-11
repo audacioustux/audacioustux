@@ -6,6 +6,7 @@ result/
 .env
 .env.local
 .env.*.local
+.agents/skills/ask-cli/config.json
 
 # Editor
 .vscode/.history/

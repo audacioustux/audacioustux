@@ -32,12 +32,13 @@ This runs:
 
 ```bash
 deno fmt --check src deno.json config.example.json
+deno cache --no-config --lock=deno.lock --frozen src/main.ts
 deno lint src
 deno check src/main.ts
 deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git
 ```
 
-Expected result: all checks pass and all Deno tests pass.
+Expected result: all checks pass, lockfile resolution is frozen, and all Deno tests pass.
 
 ### Installed inside another Deno workspace
 
@@ -62,12 +63,23 @@ These do not invoke child CLIs beyond constructing dry-run command JSON:
 ./ask-cli pi ask "dry run?" --fresh --model zai/glm-5.1:xhigh --dry-run
 ```
 
+Dry-run output redacts the prompt payload and reports prompt metadata such as prompt length and truncation flags.
+
 Expected command shapes:
 
 - `claude`: command starts with `claude -p --permission-mode plan`.
 - `agy`: command starts with `agy -p` and never includes `--model`.
 - `pi`: command starts with `pi -p --tools read,grep,find,ls`.
 - `pi --model ...`: command includes `--model <provider/model[:thinking]>`.
+
+Symlink smoke test:
+
+```bash
+ln -s "$PWD/ask-cli" /tmp/ask-cli-smoke
+/tmp/ask-cli-smoke pi ask "dry run?" --fresh --dry-run
+```
+
+Expected result: JSON output includes `"agent": "pi"` and `[prompt redacted:`.
 
 ## Fixture Policy
 
@@ -82,5 +94,5 @@ Do not add real transcripts, secrets, raw tool outputs, or opaque agy BLOB/proto
 ## Intentional Limits
 
 - Agy auto-resume uses structured metadata only. Opaque DB/protobuf scraping is not part of the supported default path.
-- Deno permissions constrain the wrapper process, not spawned child CLIs.
+- The wrapper intentionally uses broad local read access. Deno permissions constrain only the wrapper process, not spawned child CLIs.
 - Legacy Node `.mjs` files are not part of Deno verification and are removed after the Deno runtime is fully verified.

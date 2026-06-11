@@ -33,7 +33,7 @@ Options:
   --head <ref>         Head ref for review mode (default: HEAD).
   --extra "..."        Additional focus instructions for the reviewer.
   --cwd <path>         Override invocation cwd.
-  --dry-run            Print selected session, model, and CLI args; do not invoke.
+  --dry-run            Print selected session, model, prompt metadata, and redacted CLI args; do not invoke.
   --help               Show this help.
 `;
 }

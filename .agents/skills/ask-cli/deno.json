@@ -3,8 +3,9 @@
     "test": "deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git",
     "check": "deno check src/main.ts",
     "lint": "deno lint src",
+    "lock:check": "deno cache --no-config --lock=deno.lock --frozen src/main.ts",
     "fmt:check": "deno fmt --check src deno.json config.example.json",
-    "verify": "deno fmt --check src deno.json config.example.json && deno lint src && deno check src/main.ts && deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git"
+    "verify": "deno fmt --check src deno.json config.example.json && deno task lock:check && deno lint src && deno check src/main.ts && deno test src --allow-read --allow-write=/tmp --allow-env --allow-run=git"
   },
   "imports": {
     "@std/assert": "jsr:@std/assert@1",
