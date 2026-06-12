@@ -21,7 +21,11 @@ export const runChildInherit: CommandRunner = async (command) => {
     try {
       await writer.write(new TextEncoder().encode(command.stdin));
     } finally {
-      await writer.close();
+      try {
+        await writer.close();
+      } catch {
+        // Child may exit early and close stdin; preserve the child exit status.
+      }
     }
   }
 

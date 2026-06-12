@@ -201,6 +201,10 @@ function resolveModel(
   return { preferred: undefined, source: "default" };
 }
 
+function sanitizeFenceText(text: string): string {
+  return text.replaceAll("```", "`\u200b``");
+}
+
 function buildPromptText(
   mode: RunCliArgs["mode"],
   subject: string,
@@ -212,7 +216,9 @@ function buildPromptText(
   identity: string,
 ): string {
   const target = subjectText
-    ? `${subject}\n\nTarget file contents (bounded):\n\`\`\`text\n${subjectText}\n\`\`\``
+    ? `${subject}\n\nTarget file contents (bounded):\n\`\`\`text\n${
+      sanitizeFenceText(subjectText)
+    }\n\`\`\``
     : subject;
   const suffix = extra ? `\n\nAdditional instructions:\n${extra}` : "";
   switch (mode) {
@@ -236,9 +242,10 @@ function buildCommand(
   newSessionId: string,
   repoRoot: string,
   modelPreferred: string | undefined,
+  now: Date,
 ) {
   const mod = AGENT_MODULES[agent];
-  const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+  const stamp = now.toISOString().replace(/[:.]/g, "-").slice(0, 19);
   return mod.buildCommand({
     prompt,
     resume,
@@ -380,6 +387,7 @@ export async function runAskAi(args: RunCliArgs, deps: RunDeps): Promise<number>
     newSessionId ?? "",
     repoRoot,
     model.preferred,
+    deps.now(),
   );
 
   const summary = {

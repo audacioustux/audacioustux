@@ -64,6 +64,29 @@ Deno.test("runAskAi dry-run redacts prompt and shows safety flags per agent", as
   assertEquals(d.runs.length, 0);
 });
 
+Deno.test("runAskAi uses injected clock for session names", async () => {
+  const d = fakeDeps();
+  await runAskAi(runArgs(["pi", "ask", "hello", "--fresh", "--dry-run"]), d);
+  const summary = JSON.parse(d.stdout.join(""));
+  assertStringIncludes(summary.command.join("\n"), "ask-cli-pi-ask-2026-06-04T00-00-00");
+});
+
+Deno.test("runAskAi sanitizes fenced subject file content before embedding prompt", async () => {
+  const d = fakeDeps({
+    readSubjectFile: () =>
+      Promise.resolve({
+        text: "before\n```js\nalert(1)\n```\nafter",
+        resolvedPath: "/repo/a.md",
+        truncated: false,
+      }),
+  });
+  await runAskAi(runArgs(["pi", "ask", "a.md", "--fresh"]), d);
+  const prompt = String(d.runs[0].args.at(-1));
+  assertEquals(prompt.includes("```js"), false);
+  assertEquals(prompt.includes("`\u200b``js"), true);
+  assertEquals(prompt.includes("`\u200b``\nafter"), true);
+});
+
 Deno.test("runAskAi forces --permission-mode plan for claude", async () => {
   const d = fakeDeps();
   await runAskAi(runArgs(["claude", "ask", "q", "--fresh", "--dry-run"]), d);
