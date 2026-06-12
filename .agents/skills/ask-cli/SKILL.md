@@ -11,34 +11,46 @@ description: >
 
 ## Overview
 
-`ask-cli` is a thin Deno wrapper that invokes `claude`, `agy`, or `pi` as a read-only
-second brain. The wrapper exists to enforce a small number of safety invariants the
-calling agent must not be able to forget:
+`ask-cli` is a thin Deno wrapper that invokes `claude`, `agy`, or `pi` as a read-only second brain.
+The wrapper exists to enforce a small number of safety invariants the calling agent must not be able
+to forget:
 
-- `--continue` / `-c` are **rejected**. They resume the most recent session globally
-  and bypass repo scoping. Use `--resume <id>` instead.
+- `--continue` / `-c` are **rejected**. They resume the most recent session globally and bypass repo
+  scoping. Use `--resume <id>` instead.
 - For `claude`, `--permission-mode plan` is always added. Read-only by default.
 - For `pi`, `--tools read,grep,find,ls` is always added. Read-only by default.
-- For `claude`, `--resume <id>` always adds `--fork-session` so the prior session
-  is not extended. **Pi has no `--fork-session` equivalent**: resuming a pi session
-  extends the prior conversation. Avoid `pi --resume` unless the prior conversation
-  is the one you intend to continue.
+- For `claude`, `--resume <id>` always adds `--fork-session` so the prior session is not extended.
+  **Pi has no `--fork-session` equivalent**: resuming a pi session extends the prior conversation.
+  Avoid `pi --resume` unless the prior conversation is the one you intend to continue.
 - For `agy`, `--model` is rejected. Agy's model is configured in
-  `~/.gemini/antigravity-cli/settings.json`. If the env var
-  `ASK_AI_MODEL_AGY` or `config.json` set a different model, the wrapper
-  prints a stderr warning naming the configured model so the discrepancy
-  is visible.
+  `~/.gemini/antigravity-cli/settings.json`. If the env var `ASK_AI_MODEL_AGY` or `config.json` set
+  a different model, the wrapper prints a stderr warning naming the configured model so the
+  discrepancy is visible.
 
-Everything else is delegated to the calling agent. Session discovery, scoring,
-JSONL parsing, and prior-session reuse are not part of this skill — call the
-child CLI directly when you need that.
+Everything else is delegated to the calling agent. Session discovery, scoring, JSONL parsing, and
+prior-session reuse are not part of this skill — call the child CLI directly when you need that.
 
 ## Hard Rules
 
 - Use the bundled `ask-cli` wrapper. Do not hand-roll `claude -p`, `agy -p`, or `pi -p`.
 - Never pass `--continue` or `-c`. They are rejected; this is intentional.
-- `--resume` requires a session id you obtained from this skill or from the child CLI
-  directly. Do not guess.
+- `--resume` requires a session id you obtained from this skill or from the child CLI directly. Do
+  not guess.
+
+## Session continuity policy
+
+Default to a fresh session for new tasks, new repositories, security-sensitive reviews, or when you
+want an unbiased second opinion.
+
+For iterative work on the same PR, plan, spec, or review thread, prefer explicit `--resume <id>`
+with a session id previously printed by this skill or obtained from the child CLI. This avoids
+repeatedly regenerating the same context while keeping continuity intentional and auditable.
+
+Never use `--continue` / `-c`; those resume the most recent global session and can cross repository
+or task boundaries.
+
+For `claude`, resumed sessions are forked by the wrapper. For `pi`, no fork equivalent exists, so
+`pi --resume` extends the prior conversation; use it only when that is intended.
 
 ## Quick Reference
 
@@ -51,42 +63,42 @@ ask-cli agy ask "is this safe?" --fresh
 ask-cli pi ask "follow up" --resume <id>
 ```
 
-| Mode | Use when |
-|---|---|
-| `ask` | General second opinion or follow-up question |
-| `plan` | Plan completeness, sequencing, assumptions critique |
-| `adversarial` | Strongest-objection review of design/spec/approach |
-| `review` | Read-only committed-range diff review (`git diff base..head`) |
+| Mode          | Use when                                                      |
+| ------------- | ------------------------------------------------------------- |
+| `ask`         | General second opinion or follow-up question                  |
+| `plan`        | Plan completeness, sequencing, assumptions critique           |
+| `adversarial` | Strongest-objection review of design/spec/approach            |
+| `review`      | Read-only committed-range diff review (`git diff base..head`) |
 
-| Flag | Purpose |
-|---|---|
-| `--resume <id>` | Resume a known session. For claude, `--fork-session` is forced; for pi, no fork equivalent (resuming extends the prior session) |
-| `--fresh` | Start a new session explicitly |
-| `--dry-run` | Print redacted argv shape; do not invoke the child CLI |
-| `--model <name>` | Override model when supported (not agy) |
-| `--base <ref>` / `--head <ref>` | Review mode refs (default: `HEAD~1`..`HEAD`) |
-| `--extra "..."` | Additional reviewer focus |
-| `--cwd <path>` | Override invocation cwd |
+| Flag                            | Purpose                                                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `--resume <id>`                 | Resume a known session. For claude, `--fork-session` is forced; for pi, no fork equivalent (resuming extends the prior session) |
+| `--fresh`                       | Start a new session explicitly                                                                                                  |
+| `--dry-run`                     | Print redacted argv shape; do not invoke the child CLI                                                                          |
+| `--model <name>`                | Override model when supported (not agy)                                                                                         |
+| `--base <ref>` / `--head <ref>` | Review mode refs (default: `HEAD~1`..`HEAD`)                                                                                    |
+| `--extra "..."`                 | Additional reviewer focus                                                                                                       |
+| `--cwd <path>`                  | Override invocation cwd                                                                                                         |
 
 ## Model Selection
 
-Priority: `--model` flag → env var (`ASK_AI_MODEL_CLAUDE` etc.) → `config.json` → child
-CLI default. For agy, `--model` is rejected because Antigravity's headless CLI does
-not accept a per-invocation model flag. The wrapper reads the configured model string
-from `~/.gemini/antigravity-cli/settings.json` and reports mismatches. Antigravity is
-multi-model: the configured model may be Gemini, Claude Sonnet/Opus with Thinking,
-GPT-OSS, or another model exposed by Antigravity.
+Priority: `--model` flag → env var (`ASK_AI_MODEL_CLAUDE` etc.) → `config.json` → child CLI default.
+For agy, `--model` is rejected because Antigravity's headless CLI does not accept a per-invocation
+model flag. The wrapper reads the configured model string from
+`~/.gemini/antigravity-cli/settings.json` and reports mismatches. Antigravity is multi-model: the
+configured model may be Gemini, Claude Sonnet/Opus with Thinking, GPT-OSS, or another model exposed
+by Antigravity.
 
-Copy `config.example.json` to `config.json` for persistent local defaults. Do not
-commit personal `config.json` files.
+Copy `config.example.json` to `config.json` for persistent local defaults. Do not commit personal
+`config.json` files.
 
 ## Privacy and security
 
 - `--dry-run` prints the redacted argv without invoking the child CLI.
-- Subject file reads are bounded to 20 KB. `git diff` is bounded to 1 MB; oversize
-  output is truncated with a SIGTERM kill and marked in the prompt.
-- The wrapper does not read session stores. It does not pass session context unless
-  the caller supplies `--resume <id>`.
+- Subject file reads are bounded to 20 KB. `git diff` is bounded to 1 MB; oversize output is
+  truncated with a SIGTERM kill and marked in the prompt.
+- The wrapper does not read session stores. It does not pass session context unless the caller
+  supplies `--resume <id>`.
 - Child CLIs run with their normal process privileges. `--permission-mode plan` and
   `--tools read,grep,find,ls` constrain the model, not the wrapper.
 - Treat child model output as critique, not truth. Verify findings before changing code.
@@ -102,8 +114,8 @@ To keep the wrapper auditable, the following are not features of this skill:
 - Auto-detection of "I meant the current repo"
 - Pinned sessions by topic/tag
 
-If you need any of these, call the child CLI directly. The wrapper is the
-safety contract, not a workflow.
+If you need any of these, call the child CLI directly. The wrapper is the safety contract, not a
+workflow.
 
 ## Verification
 
