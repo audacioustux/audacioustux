@@ -27,13 +27,16 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y fonts-lato
+          fc-cache -f
+          typst fonts | grep -i '^lato$'
 
       - name: Compile CV PDF
         shell: bash
+        working-directory: assets
         run: |
-          font_args=()
-          [[ -d assets/fonts ]] && font_args=(--font-path assets/fonts)
-          typst compile "${font_args[@]}" assets/cv.typ assets/cv.pdf
+          font_args=(--font-path /usr/share/fonts/truetype/lato)
+          [[ -d fonts ]] && font_args=(--font-path fonts)
+          typst compile "${font_args[@]}" cv.typ cv.pdf
 
       - name: Commit and push CV PDF
         run: |
