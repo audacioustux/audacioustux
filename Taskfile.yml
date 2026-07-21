@@ -1,35 +1,45 @@
-version: '3'
+version: "3"
 
 tasks:
+  # ── Devcontainer Hooks ─────────────────────────────────────────────────────
   dev:setup:
-    desc: "Main setup hook (Runs on postCreate)"
-    cmds:
-      - task: dev:shell
-      - task: dev:git
-
+    desc: "Main setup hook (runs on postCreate in devcontainer)"
+    deps:
+      - task: zsh:setup
+      - task: git:setup
+      - task: rust:install
   dev:start:
-    desc: "Startup hook (Runs on postStart)"
-    cmd: git submodule update --init --recursive
+    desc: "Startup hook (runs on postStart in devcontainer)"
+    deps: [git:submodules:update, pm2:start]
+  pm2:start:
+    desc: "Start/restart pm2 services (idempotent, sequential)"
+    cmd: pm2 start ecosystem.config.js
 
-  dev:shell:
-    desc: "Apply clean shell configuration"
+  # ── Zsh ──────────────────────────────────────────────────────────────────────
+  zsh:setup:
+    desc: "Apply zsh configuration from devcontainer"
     cmds:
-      # 1. Copy our clean .zshrc to the user home
-      - cp .devcontainer/.zshrc ~/.zshrc
-      # 2. Trust the .envrc so direnv loads the flake environment immediately
+      - for f in .devcontainer/home/*; do cp -f "$f" ~/; done
       - direnv allow .
 
-  dev:git:
-    desc: "Rewrite Git URLs to use Token (Codespaces Only)"
-    # Skip this task entirely if we are not in Codespaces
+  # ── Git ──────────────────────────────────────────────────────────────────────
+  git:setup:
+    desc: "Rewrite Git URLs to use Token (Codespaces only)"
     status:
       - '[ "$CODESPACES" != "true" ]'
     vars:
-      # Construct the authenticated URL using the environment token
       AuthURL: "https://x-access-token:{{.GITHUB_TOKEN}}@github.com/"
     cmds:
-      - for: 
+      - for:
           - "ssh://git@github.com/"
           - "git@github.com/"
           - "git@github.com:"
         cmd: git config --global --add url.{{.AuthURL}}.insteadOf {{.ITEM}}
+  git:submodules:update:
+    desc: "Update Git submodules"
+    cmd: git submodule update --init --recursive
+
+  # ── Rust ──────────────────────────────────────────────────────────────────────
+  rust:install:
+    desc: "Install Rust toolchain"
+    cmd: rustup toolchain install

@@ -1,25 +1,89 @@
-# Nix
-result/
+# ── Rust ──────────────────────────────────────────────────────────────────────
+/target/
+target/
+*.rs.bk
+*.pdb
+rustc-ice-*.txt
+
+# ── Nix / direnv ──────────────────────────────────────────────────────────────
+result
+result-*
 .direnv/
+.envrc
+.envrc.cache
+.pre-commit-config.yaml
 
-# Environment
-.env
-.env.local
-.env.*.local
-.agents/skills/ask-cli/config.json
-
-# Editor
-.vscode/.history/
+# ── IDE / editor ──────────────────────────────────────────────────────────────
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
 *.swp
 *.swo
 *~
+*.code-workspace
 
-# OS
+# ── OS files ──────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
 
-# Dependencies
+# ── Build artifacts ───────────────────────────────────────────────────────────
+*.out
+*.zip
+*.data
+*.old
+*.backup
+*.bak
+*.tmp
+*.prof
+*.log
 node_modules/
+dist/
+build/
+vendor/
+coverage/
 __pycache__/
 *.pyc
-target/
+.venv/
+venv/
+.next/
+.cache/
+
+# ── Local dev artifacts ───────────────────────────────────────────────────────
+tmp/
+local/
+cache/
+.firecrawl/
+*.local
+.local.*
+*.local.*
+Screenshot*.png
+.forge
+*.bifrost
+*.stderr
+
+# PM2-managed Redis dumps live in the project root by convention.
+*.rdb
+
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+*.env
+
+# ── Agent / harness local state ───────────────────────────────────────────────
+.codex/
+.claude/
+.omx/
+.vite/
+.agents/
+GSD.md
+.active-workstream
+.gsd/
+.bg-shell/
+.gsd-id
+
+# ── CLI-specific local files ──────────────────────────────────────────────────
+.litellm_cache/
+.antigravitycli
+.worktrees/

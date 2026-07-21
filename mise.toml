@@ -1,0 +1,3 @@
+[tools]
+"github:can1357/oh-my-pi" = "latest"
+"npm:lean-ctx-bin" = "3.9.12"

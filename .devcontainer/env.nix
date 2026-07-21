@@ -5,18 +5,16 @@
 let
   pkgs = import <nixpkgs> { inherit system; };
 
-  # Fetch flake-compat (Standard Nix, no experimental features needed)
   flakeCompat = fetchTarball "https://github.com/NixOS/flake-compat/archive/master.tar.gz";
-
-  # Load the flake
   flake = (import flakeCompat { src = ../.; }).defaultNix;
 
-  # Read the explicit dependency list from flake.nix
-  allDeps = flake.containerDependencies.${system};
+  # Get packages from the default devShell
+  allDeps =
+    (flake.devShells.${system}.default.buildInputs or [ ])
+    ++ (flake.devShells.${system}.default.nativeBuildInputs or [ ]);
 in
-# Build the environment
 pkgs.buildEnv {
-  name = "dev-container-env";
+  name = "devcontainer";
   paths = allDeps;
   ignoreCollisions = true;
 }

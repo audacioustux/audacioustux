@@ -6,7 +6,12 @@
     },
     "remoteUser": "vscode",
     "runArgs": [
-        "--init"
+        "--init",
+        "--privileged",
+        "-p",
+        "8000:8000/tcp",
+        "-p",
+        "4433:4433/udp"
     ],
     "hostRequirements": {
         "cpus": 4
@@ -17,6 +22,9 @@
             "installOhMyZsh": true,
             "upgradePackages": true,
             "username": "vscode"
+        },
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
         }
     },
     "customizations": {
@@ -26,17 +34,26 @@
                 "nix.enableLanguageServer": true,
                 "nix.serverPath": "nixd",
                 "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.sendAltAsMetaKey": true,
                 "editor.formatOnSave": true,
+                "rust-analyzer.check.command": "clippy",
+                "rust-analyzer.cargo.features": "all",
                 "github.copilot.chat.codeGeneration.useInstructionFiles": true
             },
             "extensions": [
                 "jnoortheen.nix-ide",
+                "rust-lang.rust-analyzer",
+                "vadimcn.vscode-lldb",
+                "tamasfe.even-better-toml",
                 "redhat.vscode-yaml",
                 "github.copilot",
                 "mhutchie.git-graph",
                 "Gruntfuggly.todo-tree",
                 "mutantdino.resourcemonitor",
-                "tamasfe.even-better-toml"
+                "fill-labs.dependi",
+                "github.vscode-github-actions",
+                "denoland.vscode-deno",
+                "bradlc.vscode-tailwindcss"
             ]
         },
         "codespaces": {
@@ -46,7 +63,8 @@
                         "contents": "write",
                         "pull_requests": "write",
                         "issues": "write",
-                        "workflows": "write"
+                        "workflows": "write",
+                        "packages": "write"
                     }
                 }
             }

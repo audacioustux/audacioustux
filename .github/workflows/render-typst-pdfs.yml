@@ -1,0 +1,46 @@
+name: Render Typst PDFs
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Typst
+        uses: typst-community/setup-typst@v4
+
+      - name: Compile all Typst files to adjacent PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -d '' typ_files < <(find . -type f -name '*.typ' -print0)
+
+          if [[ ${#typ_files[@]} -eq 0 ]]; then
+            echo "No .typ files found."
+            exit 0
+          fi
+
+          for typ_file in "${typ_files[@]}"; do
+            out_file="${typ_file%.typ}.pdf"
+            echo "Compiling ${typ_file} -> ${out_file}"
+            typst compile "${typ_file}" "${out_file}"
+          done
+
+      - name: Commit generated PDFs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: render typst PDFs"
+          file_pattern: "**/*.pdf"
