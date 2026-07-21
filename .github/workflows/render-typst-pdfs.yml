@@ -14,33 +14,23 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v7
 
       - name: Setup Typst
-        uses: typst-community/setup-typst@v4
+        uses: typst-community/setup-typst@v5
 
-      - name: Compile all Typst files to adjacent PDFs
-        shell: bash
+      - name: Compile Typst files to adjacent PDFs
         run: |
-          set -euo pipefail
-
-          mapfile -d '' typ_files < <(find . -type f -name '*.typ' -print0)
-
-          if [[ ${#typ_files[@]} -eq 0 ]]; then
-            echo "No .typ files found."
-            exit 0
-          fi
-
-          for typ_file in "${typ_files[@]}"; do
-            out_file="${typ_file%.typ}.pdf"
-            echo "Compiling ${typ_file} -> ${out_file}"
-            typst compile "${typ_file}" "${out_file}"
+          mapfile -d '' files < <(find . -name '*.typ' -print0)
+          for f in "${files[@]}"; do
+            typst compile "$f" "${f%.typ}.pdf"
           done
 
-      - name: Commit generated PDFs
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: render typst PDFs"
-          file_pattern: "**/*.pdf"
+      - name: Commit and push rendered PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add '*.pdf'
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: render typst PDFs"
+          git push
