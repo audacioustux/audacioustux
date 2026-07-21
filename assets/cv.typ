@@ -311,7 +311,7 @@
     sector: [LLM SaaS],
     org: [Clearsenses Tech Pvt Ltd, India],
     date: [Oct ‘23],
-    blurb: [Clearsenses Tech is working on #link("https://arakoo.ai")[Arakoo.ai] - Serverless LLMs served with Tasty Java.],
+    blurb: [Clearsenses Tech is working on Arakoo.ai - Serverless LLMs served with Tasty Java.],
   ),
   [
     - Building complete *FaaS platform* based on Knative - including *billing* (based on resource usage per service), *infrastructure automation* (AWS EKS, ECR, Aurora, etc.), *continuous delivery* (integrated with GitHub Apps)
